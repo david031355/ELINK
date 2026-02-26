@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" class="transition-colors duration-300">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELINK - מחולל קישורים</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&display=swap');
+        body {
+            font-family: 'Heebo', sans-serif;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100 dark:bg-gray-900 transition-colors duration-300 relative">
+
+    <!-- Theme Toggle Button -->
+    <button onclick="toggleTheme()" class="absolute top-4 left-4 p-3 rounded-full bg-white dark:bg-gray-800 shadow-md text-gray-800 dark:text-yellow-400 hover:scale-110 transition-transform focus:outline-none" title="החלף מצב תצוגה">
+        <i id="themeIcon" class="fas fa-moon text-xl"></i>
+    </button>
+
+    <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl w-full max-w-lg transition-colors duration-300">
+        <div class="text-center mb-8">
+            <h2 class="text-4xl font-extrabold text-blue-600 dark:text-blue-400 tracking-tight">ELINK</h2>
+            <p class="text-gray-500 dark:text-gray-400 mt-2 font-medium">מחולל הקישורים החכם</p>
+        </div>
+
+        <div class="space-y-5">
+            <!-- בחירת תוכנית -->
+            <div>
+                <label for="programSelect" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">בחר תוכנית:</label>
+                <select id="programSelect" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
+                    <option value="" disabled selected>-- בחר מרשימת התוכניות --</option>
+                    
+                    <optgroup label="תוכניות יומיות / שבועיות">
+                        <option value='{"type":"programs", "folder":"Gil_Israelov", "prefix":"Gil_Israelov", "yearLen":4}'>גיל ישראלוב</option>
+                        <option value='{"type":"programs", "folder":"Mendy_Weiss", "prefix":"Mendy_Weiss", "yearLen":4}'>מנדי וייס</option>
+                        <option value='{"type":"programs", "folder":"Avi_Ilson", "prefix":"Avi_Ilson", "yearLen":2}'>אבי אילסון</option>
+                        <option value='{"type":"programs", "folder":"Hershey_Eisenbach", "prefix":"Hershey_Eisenbach", "yearLen":4}'>הרשי אייזנבך</option>
+                        <option value='{"type":"programs", "folder":"Eli_Klein", "prefix":"Klein", "yearLen":4}'>אלי קליין</option>
+                        <option value='{"type":"programs", "folder":"Yehuda_Galili", "prefix":"Yehuda_Galili", "yearLen":4}'>יהודה גלילי</option>
+                        <option value='{"type":"programs", "folder":"Bardak", "prefix":"Bardak", "yearLen":2}'>ברדק</option>
+                        <option value='{"type":"programs", "folder":"Habama_Hamerkzit", "prefix":"Habama_Hamerkzit", "yearLen":2}'>הבמה המרכזית</option>
+                        <option value='{"type":"programs", "folder":"Kobi_Sela", "prefix":"Kobis", "yearLen":2}'>קובי סלע</option>
+                        <option value='{"type":"programs", "folder":"Yaron_Bar", "prefix":"Yaron_Bar", "yearLen":4}'>ירון בר</option>
+                        <option value='{"type":"programs", "folder":"Ackerman", "prefix":"Ackerman", "yearLen":2}'>אקרמן</option>
+                        <option value='{"type":"programs", "folder":"Kobi_mendy", "prefix":"Kobi_mendy", "yearLen":2}'>קובי ומנדי</option>
+                        <option value='{"type":"programs", "folder":"Avremi_Roth", "prefix":"Avremi_Roth", "yearLen":2}'>אברמי רוט</option>
+                        <option value='{"type":"programs", "folder":"Eli_Friedman", "prefix":"Eli_Friedman", "yearLen":4}'>אלי פרידמן</option>
+                        <option value='{"type":"programs", "folder":"Naftali_kempeh", "prefix":"Naftali_kempeh", "yearLen":4}'>נפתלי קמפה</option>
+                        <option value='{"type":"programs", "folder":"meni_shwartz", "prefix":"meni_shwartz", "yearLen":4}'>מני שוורץ</option>
+                        <option value='{"type":"programs", "folder":"Erez_Shmueli", "prefix":"Erez_Shmueli", "yearLen":4}'>ארז שמואלי</option>
+                        <option value='{"type":"programs", "folder":"Yuval_Stupel", "prefix":"Yuval_Stupel", "yearLen":4}'>יובל סטופל</option>
+                        <option value='{"type":"programs", "folder":"Beketzev_hayom", "prefix":"Beketzev_hayom", "yearLen":2}'>בקצב היום</option>
+                        <option value='{"type":"programs", "folder":"Kobi_brumer", "prefix":"kobi_brumer", "yearLen":2}'>קובי ברומר</option>
+                        <option value='{"type":"programs", "folder":"Yehuda_Dim", "prefix":"Dim", "yearLen":4}'>יהודה דים</option>
+                        <option value='{"type":"programs", "folder":"Bayamim_Hahem", "prefix":"Bayamim_Hahem", "yearLen":4}'>בימים ההם</option>
+                        <option value='{"type":"programs", "folder":"Yakov_Bloch", "prefix":"Yakov_Bloch", "yearLen":4}'>יעקב בלוך</option>
+                        <option value='{"type":"programs", "folder":"Ephraim_Kamisar", "prefix":"Ephraim_Kamisar", "yearLen":4}'>אפרים קמיסר</option>
+                        <option value='{"type":"programs", "folder":"Until_Lag_Baomer", "prefix":"Until_Lag_Baomer", "yearLen":2}'>עד ל"ג בעומר</option>
+                        <option value='{"type":"programs", "folder":"Gideon_Levine", "prefix":"Gideon_Levine", "yearLen":2}'>גדעון לוין</option>
+                        <option value='{"type":"programs", "folder":"Zvi_Weiss", "prefix":"Zvi_Weiss", "yearLen":4}'>צבי וייס</option>
+                    </optgroup>
+                    
+                    <optgroup label="פודקאסטים">
+                        <option value='{"type":"podcasts", "folder":"YourMelody", "prefix":"Hamangina_Shelachem", "yearLen":2}'>המנגינה שלכם</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <!-- בחירת תאריך -->
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label for="dateSelect" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">בחר תאריך:</label>
+                    <input type="date" id="dateSelect" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
+                </div>
+                <div>
+                    <label for="partSelect" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">חלק (אופציונלי):</label>
+                    <input type="text" id="partSelect" placeholder="למשל: a או b" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
+                </div>
+            </div>
+
+            <!-- כפתור יצירה -->
+            <button onclick="generateLink()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all flex justify-center items-center gap-2">
+                <i class="fas fa-link"></i> הפק קישור
+            </button>
+
+            <!-- אזור תוצאה -->
+            <div id="resultArea" class="hidden mt-6">
+                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">הקישור שהופק:</label>
+                <div class="relative">
+                    <textarea id="output" readonly class="w-full px-4 py-3 pr-12 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 text-left font-mono text-sm h-24 resize-none focus:outline-none transition-colors" dir="ltr"></textarea>
+                    <button onclick="copyToClipboard()" class="absolute top-3 right-3 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="העתק קישור">
+                        <i class="fas fa-copy text-xl"></i>
+                    </button>
+                </div>
+                <div id="copyMsg" class="text-green-600 dark:text-green-400 text-sm font-semibold mt-2 hidden text-center">הקישור הועתק בהצלחה!</div>
+            </div>
+        </div>
+        
+        <!-- הקדשה אישית -->
+        <div class="mt-8 pt-4 border-t border-gray-200 dark:border-gray-700 text-center">
+            <p class="text-xs font-medium text-gray-400 dark:text-gray-500 italic tracking-wider">
+                Written specially for Eli from Monsey
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // אתחול מצב כהה לפי העדפות השמורות בדפדפן
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            document.getElementById('themeIcon').classList.replace('fa-moon', 'fa-sun');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        // פונקציית החלפת ערכת הנושא (כהה/בהיר)
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('themeIcon');
+            
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.theme = 'light';
+                icon.classList.replace('fa-sun', 'fa-moon');
+            } else {
+                html.classList.add('dark');
+                localStorage.theme = 'dark';
+                icon.classList.replace('fa-moon', 'fa-sun');
+            }
+        }
+
+        // פונקציית יצירת הקישור
+        function generateLink() {
+            const programSelect = document.getElementById('programSelect').value;
+            const dateVal = document.getElementById('dateSelect').value;
+            const partVal = document.getElementById('partSelect').value.trim().toLowerCase();
+            
+            if (!programSelect) {
+                alert('אנא בחר תוכנית מהרשימה');
+                return;
+            }
+            if (!dateVal) {
+                alert('אנא בחר תאריך');
+                return;
+            }
+
+            const programData = JSON.parse(programSelect);
+            
+            // חילוץ חלקי התאריך
+            const dateObj = new Date(dateVal);
+            const year = dateObj.getFullYear().toString(); 
+            const month = String(dateObj.getMonth() + 1).padStart(2, '0'); 
+            const day = String(dateObj.getDate()).padStart(2, '0'); 
+
+            // פורמט שנה לסוף הקובץ
+            const fileYear = programData.yearLen === 2 ? year.slice(-2) : year;
+
+            // הרכבת הלינק הסופי
+            const basePath = `/upload/mp3/${programData.type}`;
+            const link = `${basePath}/${programData.folder}/${year}/${month}/${programData.prefix}${day}-${month}-${fileYear}${partVal}.mp3`;
+
+            // הצגת התוצאה
+            const outputEl = document.getElementById('output');
+            outputEl.value = link;
+            
+            document.getElementById('resultArea').classList.remove('hidden');
+            document.getElementById('copyMsg').classList.add('hidden');
+        }
+
+        // פונקציית העתקה ללוח
+        function copyToClipboard() {
+            const outputEl = document.getElementById('output');
+            
+            // יצירת אלמנט זמני להעתקה בסביבות מוגבלות
+            const tempInput = document.createElement("input");
+            tempInput.value = outputEl.value;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            
+            try {
+                document.execCommand("copy");
+                const msg = document.getElementById('copyMsg');
+                msg.classList.remove('hidden');
+                setTimeout(() => {
+                    msg.classList.add('hidden');
+                }, 3000);
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+                alert("ההעתקה נכשלה. אנא העתק ידנית.");
+            }
+            
+            document.body.removeChild(tempInput);
+        }
+    </script>
+</body>
+</html>
