@@ -20,56 +20,65 @@
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100 dark:bg-gray-900 transition-colors duration-300 relative">
 
-    <!-- Theme Toggle Button -->
-    <button onclick="toggleTheme()" class="absolute top-4 left-4 p-3 rounded-full bg-white dark:bg-gray-800 shadow-md text-gray-800 dark:text-yellow-400 hover:scale-110 transition-transform focus:outline-none" title="החלף מצב תצוגה">
-        <i id="themeIcon" class="fas fa-moon text-xl"></i>
-    </button>
+    <!-- Top Action Buttons (Theme & Language) -->
+    <div class="absolute top-4 w-full max-w-7xl px-4 flex justify-between left-1/2 -translate-x-1/2 z-10">
+        <!-- Theme Toggle -->
+        <button onclick="toggleTheme()" class="p-3 rounded-full bg-white dark:bg-gray-800 shadow-md text-gray-800 dark:text-yellow-400 hover:scale-110 transition-transform focus:outline-none" data-i18n-title="themeToggle">
+            <i id="themeIcon" class="fas fa-moon text-xl"></i>
+        </button>
+        
+        <!-- Language Toggle -->
+        <button onclick="toggleLanguage()" class="py-2 px-4 rounded-full bg-white dark:bg-gray-800 shadow-md text-gray-800 dark:text-gray-200 hover:scale-105 transition-transform focus:outline-none font-bold text-sm flex items-center gap-2">
+            <i class="fas fa-globe"></i>
+            <span id="langBtnText">English</span>
+        </button>
+    </div>
 
-    <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl w-full max-w-lg transition-colors duration-300">
+    <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl w-full max-w-lg transition-colors duration-300 mt-10">
         <div class="text-center mb-8">
-            <h2 class="text-4xl font-extrabold text-blue-600 dark:text-blue-400 tracking-tight">ELINK</h2>
-            <p class="text-gray-500 dark:text-gray-400 mt-2 font-medium">מחולל הקישורים החכם</p>
+            <h2 class="text-4xl font-extrabold text-blue-600 dark:text-blue-400 tracking-tight" data-i18n="appTitle">ELINK</h2>
+            <p class="text-gray-500 dark:text-gray-400 mt-2 font-medium" data-i18n="appSubtitle">מחולל הקישורים החכם</p>
         </div>
 
         <div class="space-y-5">
             <!-- בחירת תוכנית -->
             <div>
-                <label for="programSelect" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">בחר תוכנית:</label>
+                <label for="programSelect" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="selectProgramLabel">בחר תוכנית:</label>
                 <select id="programSelect" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
-                    <option value="" disabled selected>-- בחר מרשימת התוכניות --</option>
+                    <option value="" disabled selected data-i18n="selectProgramPlaceholder">-- בחר מרשימת התוכניות --</option>
                     
-                    <optgroup label="תוכניות יומיות / שבועיות">
-                        <option value='{"type":"programs", "folder":"Gil_Israelov", "prefix":"Gil_Israelov", "yearLen":4}'>גיל ישראלוב</option>
-                        <option value='{"type":"programs", "folder":"Mendy_Weiss", "prefix":"Mendy_Weiss", "yearLen":4}'>מנדי וייס</option>
-                        <option value='{"type":"programs", "folder":"Avi_Ilson", "prefix":"Avi_Ilson", "yearLen":2}'>אבי אילסון</option>
-                        <option value='{"type":"programs", "folder":"Hershey_Eisenbach", "prefix":"Hershey_Eisenbach", "yearLen":4}'>הרשי אייזנבך</option>
-                        <option value='{"type":"programs", "folder":"Eli_Klein", "prefix":"Klein", "yearLen":4}'>אלי קליין</option>
-                        <option value='{"type":"programs", "folder":"Yehuda_Galili", "prefix":"Yehuda_Galili", "yearLen":4}'>יהודה גלילי</option>
-                        <option value='{"type":"programs", "folder":"Bardak", "prefix":"Bardak", "yearLen":2}'>ברדק</option>
-                        <option value='{"type":"programs", "folder":"Habama_Hamerkzit", "prefix":"Habama_Hamerkzit", "yearLen":2}'>הבמה המרכזית</option>
-                        <option value='{"type":"programs", "folder":"Kobi_Sela", "prefix":"Kobis", "yearLen":2}'>קובי סלע</option>
-                        <option value='{"type":"programs", "folder":"Yaron_Bar", "prefix":"Yaron_Bar", "yearLen":4}'>ירון בר</option>
-                        <option value='{"type":"programs", "folder":"Ackerman", "prefix":"Ackerman", "yearLen":2}'>אקרמן</option>
-                        <option value='{"type":"programs", "folder":"Kobi_mendy", "prefix":"Kobi_mendy", "yearLen":2}'>קובי ומנדי</option>
-                        <option value='{"type":"programs", "folder":"Avremi_Roth", "prefix":"Avremi_Roth", "yearLen":2}'>אברמי רוט</option>
-                        <option value='{"type":"programs", "folder":"Eli_Friedman", "prefix":"Eli_Friedman", "yearLen":4}'>אלי פרידמן</option>
-                        <option value='{"type":"programs", "folder":"Naftali_kempeh", "prefix":"Naftali_kempeh", "yearLen":4}'>נפתלי קמפה</option>
-                        <option value='{"type":"programs", "folder":"meni_shwartz", "prefix":"meni_shwartz", "yearLen":4}'>מני שוורץ</option>
-                        <option value='{"type":"programs", "folder":"Erez_Shmueli", "prefix":"Erez_Shmueli", "yearLen":4}'>ארז שמואלי</option>
-                        <option value='{"type":"programs", "folder":"Yuval_Stupel", "prefix":"Yuval_Stupel", "yearLen":4}'>יובל סטופל</option>
-                        <option value='{"type":"programs", "folder":"Beketzev_hayom", "prefix":"Beketzev_hayom", "yearLen":2}'>בקצב היום</option>
-                        <option value='{"type":"programs", "folder":"Kobi_brumer", "prefix":"kobi_brumer", "yearLen":2}'>קובי ברומר</option>
-                        <option value='{"type":"programs", "folder":"Yehuda_Dim", "prefix":"Dim", "yearLen":4}'>יהודה דים</option>
-                        <option value='{"type":"programs", "folder":"Bayamim_Hahem", "prefix":"Bayamim_Hahem", "yearLen":4}'>בימים ההם</option>
-                        <option value='{"type":"programs", "folder":"Yakov_Bloch", "prefix":"Yakov_Bloch", "yearLen":4}'>יעקב בלוך</option>
-                        <option value='{"type":"programs", "folder":"Ephraim_Kamisar", "prefix":"Ephraim_Kamisar", "yearLen":4}'>אפרים קמיסר</option>
-                        <option value='{"type":"programs", "folder":"Until_Lag_Baomer", "prefix":"Until_Lag_Baomer", "yearLen":2}'>עד ל"ג בעומר</option>
-                        <option value='{"type":"programs", "folder":"Gideon_Levine", "prefix":"Gideon_Levine", "yearLen":2}'>גדעון לוין</option>
-                        <option value='{"type":"programs", "folder":"Zvi_Weiss", "prefix":"Zvi_Weiss", "yearLen":4}'>צבי וייס</option>
+                    <optgroup label="תוכניות יומיות / שבועיות" data-i18n-label="dailyProgramsGroup">
+                        <option value='{"type":"programs", "folder":"Gil_Israelov", "prefix":"Gil_Israelov", "yearLen":4}' data-i18n="prog_Gil_Israelov">גיל ישראלוב</option>
+                        <option value='{"type":"programs", "folder":"Mendy_Weiss", "prefix":"Mendy_Weiss", "yearLen":4}' data-i18n="prog_Mendy_Weiss">מנדי וייס</option>
+                        <option value='{"type":"programs", "folder":"Avi_Ilson", "prefix":"Avi_Ilson", "yearLen":2}' data-i18n="prog_Avi_Ilson">אבי אילסון</option>
+                        <option value='{"type":"programs", "folder":"Hershey_Eisenbach", "prefix":"Hershey_Eisenbach", "yearLen":4}' data-i18n="prog_Hershey_Eisenbach">הרשי אייזנבך</option>
+                        <option value='{"type":"programs", "folder":"Eli_Klein", "prefix":"Klein", "yearLen":4}' data-i18n="prog_Eli_Klein">אלי קליין</option>
+                        <option value='{"type":"programs", "folder":"Yehuda_Galili", "prefix":"Yehuda_Galili", "yearLen":4}' data-i18n="prog_Yehuda_Galili">יהודה גלילי</option>
+                        <option value='{"type":"programs", "folder":"Bardak", "prefix":"Bardak", "yearLen":2}' data-i18n="prog_Bardak">ברדק</option>
+                        <option value='{"type":"programs", "folder":"Habama_Hamerkzit", "prefix":"Habama_Hamerkzit", "yearLen":2}' data-i18n="prog_Habama_Hamerkzit">הבמה המרכזית</option>
+                        <option value='{"type":"programs", "folder":"Kobi_Sela", "prefix":"Kobis", "yearLen":2}' data-i18n="prog_Kobi_Sela">קובי סלע</option>
+                        <option value='{"type":"programs", "folder":"Yaron_Bar", "prefix":"Yaron_Bar", "yearLen":4}' data-i18n="prog_Yaron_Bar">ירון בר</option>
+                        <option value='{"type":"programs", "folder":"Ackerman", "prefix":"Ackerman", "yearLen":2}' data-i18n="prog_Ackerman">אקרמן</option>
+                        <option value='{"type":"programs", "folder":"Kobi_mendy", "prefix":"Kobi_mendy", "yearLen":2}' data-i18n="prog_Kobi_mendy">קובי ומנדי</option>
+                        <option value='{"type":"programs", "folder":"Avremi_Roth", "prefix":"Avremi_Roth", "yearLen":2}' data-i18n="prog_Avremi_Roth">אברמי רוט</option>
+                        <option value='{"type":"programs", "folder":"Eli_Friedman", "prefix":"Eli_Friedman", "yearLen":4}' data-i18n="prog_Eli_Friedman">אלי פרידמן</option>
+                        <option value='{"type":"programs", "folder":"Naftali_kempeh", "prefix":"Naftali_kempeh", "yearLen":4}' data-i18n="prog_Naftali_kempeh">נפתלי קמפה</option>
+                        <option value='{"type":"programs", "folder":"meni_shwartz", "prefix":"meni_shwartz", "yearLen":4}' data-i18n="prog_meni_shwartz">מני שוורץ</option>
+                        <option value='{"type":"programs", "folder":"Erez_Shmueli", "prefix":"Erez_Shmueli", "yearLen":4}' data-i18n="prog_Erez_Shmueli">ארז שמואלי</option>
+                        <option value='{"type":"programs", "folder":"Yuval_Stupel", "prefix":"Yuval_Stupel", "yearLen":4}' data-i18n="prog_Yuval_Stupel">יובל סטופל</option>
+                        <option value='{"type":"programs", "folder":"Beketzev_hayom", "prefix":"Beketzev_hayom", "yearLen":2}' data-i18n="prog_Beketzev_hayom">בקצב היום</option>
+                        <option value='{"type":"programs", "folder":"Kobi_brumer", "prefix":"kobi_brumer", "yearLen":2}' data-i18n="prog_Kobi_brumer">קובי ברומר</option>
+                        <option value='{"type":"programs", "folder":"Yehuda_Dim", "prefix":"Dim", "yearLen":4}' data-i18n="prog_Yehuda_Dim">יהודה דים</option>
+                        <option value='{"type":"programs", "folder":"Bayamim_Hahem", "prefix":"Bayamim_Hahem", "yearLen":4}' data-i18n="prog_Bayamim_Hahem">בימים ההם</option>
+                        <option value='{"type":"programs", "folder":"Yakov_Bloch", "prefix":"Yakov_Bloch", "yearLen":4}' data-i18n="prog_Yakov_Bloch">יעקב בלוך</option>
+                        <option value='{"type":"programs", "folder":"Ephraim_Kamisar", "prefix":"Ephraim_Kamisar", "yearLen":4}' data-i18n="prog_Ephraim_Kamisar">אפרים קמיסר</option>
+                        <option value='{"type":"programs", "folder":"Until_Lag_Baomer", "prefix":"Until_Lag_Baomer", "yearLen":2}' data-i18n="prog_Until_Lag_Baomer">עד ל"ג בעומר</option>
+                        <option value='{"type":"programs", "folder":"Gideon_Levine", "prefix":"Gideon_Levine", "yearLen":2}' data-i18n="prog_Gideon_Levine">גדעון לוין</option>
+                        <option value='{"type":"programs", "folder":"Zvi_Weiss", "prefix":"Zvi_Weiss", "yearLen":4}' data-i18n="prog_Zvi_Weiss">צבי וייס</option>
                     </optgroup>
                     
-                    <optgroup label="פודקאסטים">
-                        <option value='{"type":"podcasts", "folder":"YourMelody", "prefix":"Hamangina_Shelachem", "yearLen":2}'>המנגינה שלכם</option>
+                    <optgroup label="פודקאסטים" data-i18n-label="podcastsGroup">
+                        <option value='{"type":"podcasts", "folder":"YourMelody", "prefix":"Hamangina_Shelachem", "yearLen":2}' data-i18n="prog_YourMelody">המנגינה שלכם</option>
                     </optgroup>
                 </select>
             </div>
@@ -77,37 +86,38 @@
             <!-- בחירת תאריך -->
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label for="dateSelect" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">בחר תאריך:</label>
+                    <label for="dateSelect" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="selectDateLabel">בחר תאריך:</label>
                     <input type="date" id="dateSelect" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
                 </div>
                 <div>
-                    <label for="partSelect" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">חלק (אופציונלי):</label>
-                    <input type="text" id="partSelect" placeholder="למשל: a או b" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
+                    <label for="partSelect" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="partOptionalLabel">חלק (אופציונלי):</label>
+                    <input type="text" id="partSelect" placeholder="למשל: a או b" data-i18n-placeholder="partPlaceholder" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
                 </div>
             </div>
 
             <!-- כפתור יצירה -->
             <button onclick="generateLink()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all flex justify-center items-center gap-2">
-                <i class="fas fa-link"></i> הפק קישור
+                <i class="fas fa-link"></i> <span data-i18n="generateLinkBtn">הפק קישור</span>
             </button>
 
             <!-- אזור תוצאה -->
             <div id="resultArea" class="hidden mt-6">
-                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">הקישור שהופק:</label>
+                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="generatedLinkLabel">הקישור שהופק:</label>
                 <div class="relative">
-                    <textarea id="output" readonly class="w-full px-4 py-3 pr-20 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 text-left font-mono text-sm h-24 resize-none focus:outline-none transition-colors" dir="ltr"></textarea>
+                    <textarea id="output" readonly class="w-full px-4 py-3 pr-20 ltr:pl-20 ltr:pr-4 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 text-left font-mono text-sm h-24 resize-none focus:outline-none transition-colors" dir="ltr"></textarea>
                     
-                    <div class="absolute top-3 right-3 flex flex-col gap-2">
-                        <button onclick="copyToClipboard()" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="העתק קישור">
+                    <div class="absolute top-3 right-3 rtl:right-3 ltr:left-3 ltr:right-auto flex flex-col gap-2">
+                        <button onclick="copyToClipboard()" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n-title="copyLinkTitle" title="העתק קישור">
                             <i class="fas fa-copy text-xl"></i>
                         </button>
-                        <a id="openLinkBtn" href="#" target="_blank" class="text-gray-500 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors" title="פתח בטאב חדש">
+                        <a id="openLinkBtn" href="#" target="_blank" class="text-gray-500 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors" data-i18n-title="openNewTabTitle" title="פתח בטאב חדש">
                             <i class="fas fa-external-link-alt text-xl"></i>
                         </a>
                     </div>
                 </div>
-                <div id="copyMsg" class="text-green-600 dark:text-green-400 text-sm font-semibold mt-2 hidden text-center">הקישור הועתק בהצלחה!</div>
+                <div id="copyMsg" class="text-green-600 dark:text-green-400 text-sm font-semibold mt-2 hidden text-center" data-i18n="copySuccessMsg">הקישור הועתק בהצלחה!</div>
             </div>
+            
         </div>
         
         <!-- הקדשה אישית -->
@@ -119,6 +129,168 @@
     </div>
 
     <script>
+        // מילון התרגומים
+        const i18n = {
+            he: {
+                appTitle: "ELINK",
+                appSubtitle: "מחולל הקישורים החכם",
+                selectProgramLabel: "בחר תוכנית:",
+                selectProgramPlaceholder: "-- בחר מרשימת התוכניות --",
+                dailyProgramsGroup: "תוכניות יומיות / שבועיות",
+                podcastsGroup: "פודקאסטים",
+                selectDateLabel: "בחר תאריך:",
+                partOptionalLabel: "חלק (אופציונלי):",
+                partPlaceholder: "למשל: a או b",
+                generateLinkBtn: "הפק קישור",
+                generatedLinkLabel: "הקישור שהופק:",
+                copySuccessMsg: "הקישור הועתק בהצלחה!",
+                themeToggle: "החלף מצב תצוגה",
+                copyLinkTitle: "העתק קישור",
+                openNewTabTitle: "פתח בטאב חדש",
+                alertNoProgram: "אנא בחר תוכנית מהרשימה",
+                alertNoDate: "אנא בחר תאריך",
+                alertCopyFail: "ההעתקה נכשלה. אנא העתק ידנית.",
+                langBtnText: "English",
+                
+                // תוכניות
+                prog_Gil_Israelov: "גיל ישראלוב",
+                prog_Mendy_Weiss: "מנדי וייס",
+                prog_Avi_Ilson: "אבי אילסון",
+                prog_Hershey_Eisenbach: "הרשי אייזנבך",
+                prog_Eli_Klein: "אלי קליין",
+                prog_Yehuda_Galili: "יהודה גלילי",
+                prog_Bardak: "ברדק",
+                prog_Habama_Hamerkzit: "הבמה המרכזית",
+                prog_Kobi_Sela: "קובי סלע",
+                prog_Yaron_Bar: "ירון בר",
+                prog_Ackerman: "אקרמן",
+                prog_Kobi_mendy: "קובי ומנדי",
+                prog_Avremi_Roth: "אברמי רוט",
+                prog_Eli_Friedman: "אלי פרידמן",
+                prog_Naftali_kempeh: "נפתלי קמפה",
+                prog_meni_shwartz: "מני שוורץ",
+                prog_Erez_Shmueli: "ארז שמואלי",
+                prog_Yuval_Stupel: "יובל סטופל",
+                prog_Beketzev_hayom: "בקצב היום",
+                prog_Kobi_brumer: "קובי ברומר",
+                prog_Yehuda_Dim: "יהודה דים",
+                prog_Bayamim_Hahem: "בימים ההם",
+                prog_Yakov_Bloch: "יעקב בלוך",
+                prog_Ephraim_Kamisar: "אפרים קמיסר",
+                prog_Until_Lag_Baomer: 'עד ל"ג בעומר',
+                prog_Gideon_Levine: "גדעון לוין",
+                prog_Zvi_Weiss: "צבי וייס",
+                prog_YourMelody: "המנגינה שלכם"
+            },
+            en: {
+                appTitle: "ELINK",
+                appSubtitle: "The Smart Link Generator",
+                selectProgramLabel: "Select Program:",
+                selectProgramPlaceholder: "-- Select from the list --",
+                dailyProgramsGroup: "Daily / Weekly Programs",
+                podcastsGroup: "Podcasts",
+                selectDateLabel: "Select Date:",
+                partOptionalLabel: "Part (Optional):",
+                partPlaceholder: "e.g., a or b",
+                generateLinkBtn: "Generate Link",
+                generatedLinkLabel: "Generated Link:",
+                copySuccessMsg: "Link copied successfully!",
+                themeToggle: "Toggle Theme",
+                copyLinkTitle: "Copy Link",
+                openNewTabTitle: "Open in New Tab",
+                alertNoProgram: "Please select a program from the list",
+                alertNoDate: "Please select a date",
+                alertCopyFail: "Copy failed. Please copy manually.",
+                langBtnText: "עברית",
+                
+                // Programs
+                prog_Gil_Israelov: "Gil Israelov",
+                prog_Mendy_Weiss: "Mendy Weiss",
+                prog_Avi_Ilson: "Avi Ilson",
+                prog_Hershey_Eisenbach: "Hershey Eisenbach",
+                prog_Eli_Klein: "Eli Klein",
+                prog_Yehuda_Galili: "Yehuda Galili",
+                prog_Bardak: "Bardak",
+                prog_Habama_Hamerkzit: "Main Stage",
+                prog_Kobi_Sela: "Kobi Sela",
+                prog_Yaron_Bar: "Yaron Bar",
+                prog_Ackerman: "Ackerman",
+                prog_Kobi_mendy: "Kobi & Mendy",
+                prog_Avremi_Roth: "Avremi Roth",
+                prog_Eli_Friedman: "Eli Friedman",
+                prog_Naftali_kempeh: "Naftali Kempeh",
+                prog_meni_shwartz: "Meni Shwartz",
+                prog_Erez_Shmueli: "Erez Shmueli",
+                prog_Yuval_Stupel: "Yuval Stupel",
+                prog_Beketzev_hayom: "Pace of the Day",
+                prog_Kobi_brumer: "Kobi Brumer",
+                prog_Yehuda_Dim: "Yehuda Dim",
+                prog_Bayamim_Hahem: "In Those Days",
+                prog_Yakov_Bloch: "Yakov Bloch",
+                prog_Ephraim_Kamisar: "Ephraim Kamisar",
+                prog_Until_Lag_Baomer: "Until Lag Baomer",
+                prog_Gideon_Levine: "Gideon Levine",
+                prog_Zvi_Weiss: "Zvi Weiss",
+                prog_YourMelody: "Your Melody"
+            }
+        };
+
+        // ניהול שפות
+        let currentLang = localStorage.getItem('app_lang') || 'he';
+
+        function initLanguage() {
+            applyLanguage(currentLang);
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'he' ? 'en' : 'he';
+            localStorage.setItem('app_lang', currentLang);
+            applyLanguage(currentLang);
+        }
+
+        function applyLanguage(lang) {
+            const doc = document.documentElement;
+            doc.lang = lang;
+            doc.dir = lang === 'he' ? 'rtl' : 'ltr';
+
+            const t = i18n[lang];
+
+            // עדכון טקסטים רגילים
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) el.textContent = t[key];
+            });
+
+            // עדכון פלייסחולדרים
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (t[key]) el.placeholder = t[key];
+            });
+
+            // עדכון optgroups
+            document.querySelectorAll('[data-i18n-label]').forEach(el => {
+                const key = el.getAttribute('data-i18n-label');
+                if (t[key]) el.label = t[key];
+            });
+
+            // עדכון titles (tooltips)
+            document.querySelectorAll('[data-i18n-title]').forEach(el => {
+                const key = el.getAttribute('data-i18n-title');
+                if (t[key]) el.title = t[key];
+            });
+
+            // עדכון כפתור שפה
+            document.getElementById('langBtnText').textContent = t.langBtnText;
+            
+            // עדכון כותרת המסמך
+            document.title = t.appTitle + " - " + (lang === 'he' ? "מחולל קישורים" : "Link Generator");
+        }
+
+        // פונקציית שליפת הודעות למערכת ההתראות מהמילון
+        function getAlertMsg(key) {
+            return i18n[currentLang][key];
+        }
+
         // אתחול מצב כהה לפי העדפות השמורות בדפדפן
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
@@ -126,6 +298,9 @@
         } else {
             document.documentElement.classList.remove('dark');
         }
+
+        // הפעלת שפה בטעינה
+        initLanguage();
 
         // פונקציית החלפת ערכת הנושא (כהה/בהיר)
         function toggleTheme() {
@@ -150,11 +325,11 @@
             const partVal = document.getElementById('partSelect').value.trim().toLowerCase();
             
             if (!programSelect) {
-                alert('אנא בחר תוכנית מהרשימה');
+                alert(getAlertMsg('alertNoProgram'));
                 return;
             }
             if (!dateVal) {
-                alert('אנא בחר תאריך');
+                alert(getAlertMsg('alertNoDate'));
                 return;
             }
 
@@ -204,7 +379,7 @@
                 }, 3000);
             } catch (err) {
                 console.error('Failed to copy text: ', err);
-                alert("ההעתקה נכשלה. אנא העתק ידנית.");
+                alert(getAlertMsg('alertCopyFail'));
             }
             
             document.body.removeChild(tempInput);
