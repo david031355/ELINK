@@ -101,21 +101,41 @@
             </button>
 
             <!-- אזור תוצאה -->
-            <div id="resultArea" class="hidden mt-6">
-                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="generatedLinkLabel">הקישור שהופק:</label>
-                <div class="relative">
-                    <textarea id="output" readonly class="w-full px-4 py-3 pr-20 ltr:pl-20 ltr:pr-4 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 text-left font-mono text-sm h-24 resize-none focus:outline-none transition-colors" dir="ltr"></textarea>
-                    
-                    <div class="absolute top-3 right-3 rtl:right-3 ltr:left-3 ltr:right-auto flex flex-col gap-2">
-                        <button onclick="copyToClipboard()" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n-title="copyLinkTitle" title="העתק קישור">
-                            <i class="fas fa-copy text-xl"></i>
-                        </button>
-                        <a id="openLinkBtn" href="#" target="_blank" class="text-gray-500 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors" data-i18n-title="openNewTabTitle" title="פתח בטאב חדש">
-                            <i class="fas fa-external-link-alt text-xl"></i>
-                        </a>
+            <div id="resultArea" class="hidden mt-6 space-y-4">
+                
+                <!-- שדה לינק מלא -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="generatedLinkLabel">הקישור שהופק:</label>
+                    <div class="relative">
+                        <textarea id="output" readonly class="w-full px-4 py-3 pr-20 ltr:pl-20 ltr:pr-4 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 text-left font-mono text-sm h-24 resize-none focus:outline-none transition-colors" dir="ltr"></textarea>
+                        
+                        <div class="absolute top-3 right-3 rtl:right-3 ltr:left-3 ltr:right-auto flex flex-col gap-2">
+                            <button onclick="copyToClipboard()" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n-title="copyLinkTitle" title="העתק קישור">
+                                <i class="fas fa-copy text-xl"></i>
+                            </button>
+                            <a id="openLinkBtn" href="#" target="_blank" class="text-gray-500 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors" data-i18n-title="openNewTabTitle" title="פתח בטאב חדש">
+                                <i class="fas fa-external-link-alt text-xl"></i>
+                            </a>
+                        </div>
                     </div>
+                    <div id="copyMsg" class="text-green-600 dark:text-green-400 text-sm font-semibold mt-2 hidden text-center" data-i18n="copySuccessMsg">הקישור הועתק בהצלחה!</div>
                 </div>
-                <div id="copyMsg" class="text-green-600 dark:text-green-400 text-sm font-semibold mt-2 hidden text-center" data-i18n="copySuccessMsg">הקישור הועתק בהצלחה!</div>
+
+                <!-- שדה שם קובץ -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="generatedFileNameLabel">שם הקובץ:</label>
+                    <div class="relative">
+                        <input type="text" id="fileNameOutput" readonly class="w-full px-4 py-3 pr-12 ltr:pl-12 ltr:pr-4 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 text-left font-mono text-sm focus:outline-none transition-colors" dir="ltr">
+                        
+                        <div class="absolute top-3 right-3 rtl:right-3 ltr:left-3 ltr:right-auto flex flex-col gap-2">
+                            <button onclick="copyFileNameToClipboard()" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n-title="copyFileNameTitle" title="העתק שם קובץ">
+                                <i class="fas fa-copy text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="copyFileNameMsg" class="text-green-600 dark:text-green-400 text-sm font-semibold mt-2 hidden text-center" data-i18n="copyFileNameSuccessMsg">שם הקובץ הועתק בהצלחה!</div>
+                </div>
+
             </div>
             
         </div>
@@ -144,6 +164,9 @@
                 generateLinkBtn: "הפק קישור",
                 generatedLinkLabel: "הקישור שהופק:",
                 copySuccessMsg: "הקישור הועתק בהצלחה!",
+                generatedFileNameLabel: "שם הקובץ:",
+                copyFileNameTitle: "העתק שם קובץ",
+                copyFileNameSuccessMsg: "שם הקובץ הועתק בהצלחה!",
                 themeToggle: "החלף מצב תצוגה",
                 copyLinkTitle: "העתק קישור",
                 openNewTabTitle: "פתח בטאב חדש",
@@ -195,6 +218,9 @@
                 generateLinkBtn: "Generate Link",
                 generatedLinkLabel: "Generated Link:",
                 copySuccessMsg: "Link copied successfully!",
+                generatedFileNameLabel: "File Name:",
+                copyFileNameTitle: "Copy File Name",
+                copyFileNameSuccessMsg: "File name copied successfully!",
                 themeToggle: "Toggle Theme",
                 copyLinkTitle: "Copy Link",
                 openNewTabTitle: "Open in New Tab",
@@ -344,27 +370,36 @@
             // פורמט שנה לסוף הקובץ
             const fileYear = programData.yearLen === 2 ? year.slice(-2) : year;
 
+            // יצירת שם הקובץ בלבד
+            const fileName = `${programData.prefix}${day}-${month}-${fileYear}${partVal}.mp3`;
+
             // הרכבת הלינק הסופי להעתקה (יחסי)
             const basePath = `/upload/mp3/${programData.type}`;
-            const relativeLink = `${basePath}/${programData.folder}/${year}/${month}/${programData.prefix}${day}-${month}-${fileYear}${partVal}.mp3`;
+            const relativeLink = `${basePath}/${programData.folder}/${year}/${month}/${fileName}`;
 
-            // הצגת התוצאה
+            // הצגת התוצאה (לינק מלא)
             const outputEl = document.getElementById('output');
             outputEl.value = relativeLink;
+
+            // הצגת התוצאה (שם קובץ בלבד)
+            const fileNameOutputEl = document.getElementById('fileNameOutput');
+            fileNameOutputEl.value = fileName;
             
             // עדכון כפתור הפתיחה בטאב חדש עם הקישור המלא
             const openLinkBtn = document.getElementById('openLinkBtn');
             openLinkBtn.href = `https://media.kcm.fm${relativeLink}`;
             
             document.getElementById('resultArea').classList.remove('hidden');
+            
+            // איפוס הודעות העתקה אם היו מוצגות
             document.getElementById('copyMsg').classList.add('hidden');
+            document.getElementById('copyFileNameMsg').classList.add('hidden');
         }
 
-        // פונקציית העתקה ללוח
+        // פונקציית העתקה ללוח - לינק מלא
         function copyToClipboard() {
             const outputEl = document.getElementById('output');
             
-            // יצירת אלמנט זמני להעתקה בסביבות מוגבלות
             const tempInput = document.createElement("input");
             tempInput.value = outputEl.value;
             document.body.appendChild(tempInput);
@@ -373,6 +408,30 @@
             try {
                 document.execCommand("copy");
                 const msg = document.getElementById('copyMsg');
+                msg.classList.remove('hidden');
+                setTimeout(() => {
+                    msg.classList.add('hidden');
+                }, 3000);
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+                alert(getAlertMsg('alertCopyFail'));
+            }
+            
+            document.body.removeChild(tempInput);
+        }
+
+        // פונקציית העתקה ללוח - שם קובץ בלבד
+        function copyFileNameToClipboard() {
+            const outputEl = document.getElementById('fileNameOutput');
+            
+            const tempInput = document.createElement("input");
+            tempInput.value = outputEl.value;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            
+            try {
+                document.execCommand("copy");
+                const msg = document.getElementById('copyFileNameMsg');
                 msg.classList.remove('hidden');
                 setTimeout(() => {
                     msg.classList.add('hidden');
