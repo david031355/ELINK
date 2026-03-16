@@ -361,29 +361,27 @@
 
             const programData = JSON.parse(programSelect);
             
-            // חילוץ חלקי התאריך
-            const dateObj = new Date(dateVal);
-            const year = dateObj.getFullYear().toString(); 
-            const month = String(dateObj.getMonth() + 1).padStart(2, '0'); 
-            const day = String(dateObj.getDate()).padStart(2, '0'); 
+            // חילוץ חלקי התאריך ישירות מהמחרוזת כדי למנוע בעיות של אזורי זמן (למשל בארה"ב)
+            const [year, month, day] = dateVal.split('-');
 
             // פורמט שנה לסוף הקובץ
             const fileYear = programData.yearLen === 2 ? year.slice(-2) : year;
 
-            // יצירת שם הקובץ בלבד
-            const fileName = `${programData.prefix}${day}-${month}-${fileYear}${partVal}.mp3`;
+            // יצירת שם הקובץ בלבד (ללא סיומת)
+            const baseFileName = `${programData.prefix}${day}-${month}-${fileYear}${partVal}`;
+            const fileNameWithExt = `${baseFileName}.mp3`;
 
             // הרכבת הלינק הסופי להעתקה (יחסי)
             const basePath = `/upload/mp3/${programData.type}`;
-            const relativeLink = `${basePath}/${programData.folder}/${year}/${month}/${fileName}`;
+            const relativeLink = `${basePath}/${programData.folder}/${year}/${month}/${fileNameWithExt}`;
 
             // הצגת התוצאה (לינק מלא)
             const outputEl = document.getElementById('output');
             outputEl.value = relativeLink;
 
-            // הצגת התוצאה (שם קובץ בלבד)
+            // הצגת התוצאה (שם קובץ בלבד ללא סיומת)
             const fileNameOutputEl = document.getElementById('fileNameOutput');
-            fileNameOutputEl.value = fileName;
+            fileNameOutputEl.value = baseFileName;
             
             // עדכון כפתור הפתיחה בטאב חדש עם הקישור המלא
             const openLinkBtn = document.getElementById('openLinkBtn');
