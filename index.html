@@ -96,7 +96,7 @@
             </div>
 
             <!-- כפתור יצירה -->
-            <button onclick="generateLink()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all flex justify-center items-center gap-2">
+            <button id="generateBtn" onclick="generateLink()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all flex justify-center items-center gap-2">
                 <i class="fas fa-link"></i> <span data-i18n="generateLinkBtn">הפק קישור</span>
             </button>
 
@@ -177,6 +177,7 @@
                 partOptionalLabel: "חלק (אופציונלי):",
                 partPlaceholder: "למשל: a או b",
                 generateLinkBtn: "הפק קישור",
+                generateLinkLoading: "מייצר...",
                 generatedLinkLabel: "הקישור שהופק:",
                 copySuccessMsg: "הקישור הועתק בהצלחה!",
                 generatedFileNameLabel: "שם הקובץ:",
@@ -234,6 +235,7 @@
                 partOptionalLabel: "Part (Optional):",
                 partPlaceholder: "e.g., a or b",
                 generateLinkBtn: "Generate Link",
+                generateLinkLoading: "Generating...",
                 generatedLinkLabel: "Generated Link:",
                 copySuccessMsg: "Link copied successfully!",
                 generatedFileNameLabel: "File Name:",
@@ -370,6 +372,8 @@
             const programSelect = document.getElementById('programSelect').value;
             const dateVal = document.getElementById('dateSelect').value;
             const partVal = document.getElementById('partSelect').value.trim().toLowerCase();
+            const btn = document.getElementById('generateBtn');
+            const originalBtnHtml = btn.innerHTML;
             
             if (!programSelect) {
                 alert(getAlertMsg('alertNoProgram'));
@@ -380,70 +384,127 @@
                 return;
             }
 
-            const programData = JSON.parse(programSelect);
-            
-            // חילוץ חלקי התאריך ישירות מהמחרוזת כדי למנוע בעיות של אזורי זמן (למשל בארה"ב)
-            const [year, month, day] = dateVal.split('-');
+            // אנימציית טעינה בכפתור
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>${getAlertMsg('generateLinkLoading')}</span>`;
+            btn.disabled = true;
 
-            // פורמט שנה לסוף הקובץ
-            const fileYear = programData.yearLen === 2 ? year.slice(-2) : year;
-
-            // יצירת שם הקובץ בלבד (ללא סיומת)
-            const baseFileName = `${programData.prefix}${day}-${month}-${fileYear}${partVal}`;
-            const fileNameWithExt = `${baseFileName}.mp3`;
-
-            // חישוב היום בשבוע בצורה בטוחה מאזורי זמן
-            const dateObjForDay = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-            const daysHe = ["יום ראשון", "יום שני", "יום שלישי", "יום רביעי", "יום חמישי", "יום שישי", "שבת"];
-            const dayIndex = dateObjForDay.getDay();
-            const dayName = daysHe[dayIndex]; // תמיד יציג בעברית
-
-            // קריאה ל-API חיצוני (Hebcal) לקבלת התאריך העברי באותיות תקניות
-            let formattedHebrewDate = "";
             try {
-                const hebcalUrl = `https://www.hebcal.com/converter?cfg=json&gy=${year}&gm=${parseInt(month)}&gd=${parseInt(day)}&g2h=1`;
-                const response = await fetch(hebcalUrl);
-                const data = await response.json();
+                const programData = JSON.parse(programSelect);
                 
-                if (data && data.hebrew) {
-                    // ה-API מחזיר טקסט עם ניקוד, אז ננקה את הניקוד בעזרת Regex כדי לקבל טקסט נקי
-                    formattedHebrewDate = data.hebrew.replace(/[\u0591-\u05C7]/g, '');
-                } else {
-                    formattedHebrewDate = "שגיאה בהמרה";
+                // חילוץ חלקי התאריך ישירות מהמחרוזת כדי למנוע בעיות של אזורי זמן (למשל בארה"ב)
+                const [year, month, day] = dateVal.split('-');
+
+                // פורמט שנה לסוף הקובץ
+                const fileYear = programData.yearLen === 2 ? year.slice(-2) : year;
+
+                // יצירת שם הקובץ בלבד (ללא סיומת)
+                const baseFileName = `${programData.prefix}${day}-${month}-${fileYear}${partVal}`;
+                const fileNameWithExt = `${baseFileName}.mp3`;
+
+                // קריאה ל-API חיצוני (Hebcal) לקבלת התאריך העברי באותיות תקניות ושנה עברית
+                let formattedHebrewDate = "";
+                let hebrewYearStr = "";
+                try {
+                    const hebcalUrl = `https://www.hebcal.com/converter?cfg=json&gy=${year}&gm=${parseInt(month)}&gd=${parseInt(day)}&g2h=1`;
+                    const response = await fetch(hebcalUrl);
+                    const data = await response.json();
+                    
+                    if (data && data.hebrew) {
+                        // ה-API מחזיר טקסט עם ניקוד, אז ננקה את הניקוד בעזרת Regex כדי לקבל טקסט נקי
+                        formattedHebrewDate = data.hebrew.replace(/[\u0591-\u05C7]/g, '');
+                        const words = formattedHebrewDate.split(' ');
+                        hebrewYearStr = words[words.length - 1]; // שולף את השנה (למשל: "תשפ״ו")
+                    } else {
+                        formattedHebrewDate = "שגיאה בהמרה";
+                    }
+                } catch (error) {
+                    console.error("Hebcal API error:", error);
+                    formattedHebrewDate = "שגיאת רשת";
                 }
-            } catch (error) {
-                console.error("Hebcal API error:", error);
-                formattedHebrewDate = "שגיאת רשת";
+
+                // הגדרת קידומות לימים בהתאם לסטנדרט
+                const dateObjForDay = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+                const dayIndex = dateObjForDay.getDay();
+                const daysPrefixes = ["יום ראשון", "יום שני", "יום שלישי", "יום רביעי", "יום חמישי", "ערב שבת", "מוצאי שבת"];
+                let dayName = daysPrefixes[dayIndex]; // ברירת המחדל
+
+                // שליפת שם הפרשה (או שבת מיוחדת) לקראת השבת הקרובה
+                try {
+                    const saturdayDate = new Date(dateObjForDay);
+                    saturdayDate.setDate(dateObjForDay.getDate() + (6 - dayIndex));
+                    const satYear = saturdayDate.getFullYear();
+                    const satMonth = saturdayDate.getMonth() + 1;
+                    const satDay = saturdayDate.getDate();
+
+                    const parashaUrl = `https://www.hebcal.com/hebcal?v=1&cfg=json&gy=${satYear}&gm=${satMonth}&gd=${satDay}&s=on&lg=h`;
+                    const pRes = await fetch(parashaUrl);
+                    const pData = await pRes.json();
+                    
+                    let parashaName = "";
+                    if (pData && pData.items) {
+                        const parashaItem = pData.items.find(i => i.category === 'parashat');
+                        // מחפש שבתות מיוחדות כמו "שבת הגדול"
+                        const specialShabbat = pData.items.find(i => i.hebrew && i.hebrew.startsWith('שבת ') && !i.hebrew.includes('מבָרְכִים'));
+                        
+                        let pName = parashaItem ? parashaItem.hebrew.replace(/[\u0591-\u05C7]/g, '') : "";
+                        let sName = specialShabbat ? specialShabbat.hebrew.replace(/[\u0591-\u05C7]/g, '') : "";
+
+                        if (dayIndex === 5 || dayIndex === 6) {
+                            // בשישי ושבת ניתן עדיפות לשבת מיוחדת כמו "שבת הגדול"
+                            if (sName) {
+                                // מורידים את המילה שבת כדי שלא יהיה "ערב שבת שבת הגדול" אלא "ערב שבת הגדול"
+                                parashaName = sName.replace("שבת ", ""); 
+                            } else {
+                                parashaName = pName;
+                            }
+                        } else {
+                            // בראשון עד חמישי, נשתמש תמיד בשם הפרשה הרגיל (למשל: יום ראשון פרשת צו)
+                            parashaName = pName;
+                        }
+                    }
+
+                    // אם מצאנו פרשה ושנה, נרכיב אותם יחד עם היום
+                    if (parashaName && hebrewYearStr) {
+                        dayName = `${dayName} ${parashaName} ${hebrewYearStr}`;
+                    }
+                } catch (err) {
+                    console.error("Parasha API error:", err);
+                }
+
+                // הרכבת המחרוזת המשולבת וחיבור הכל יחד לשורה אחת אלגנטית
+                const combinedDate = `${dayName} - ${formattedHebrewDate} / ${day}/${month}/${year}`;
+
+                // הרכבת הלינק הסופי להעתקה (יחסי)
+                const basePath = `/upload/mp3/${programData.type}`;
+                const relativeLink = `${basePath}/${programData.folder}/${year}/${month}/${fileNameWithExt}`;
+
+                // הצגת התוצאה (לינק מלא)
+                const outputEl = document.getElementById('output');
+                outputEl.value = relativeLink;
+
+                // הצגת התוצאה (שם קובץ בלבד ללא סיומת)
+                const fileNameOutputEl = document.getElementById('fileNameOutput');
+                fileNameOutputEl.value = baseFileName;
+
+                // הצגת התוצאה (יום ותאריך משולב)
+                const combinedDateOutputEl = document.getElementById('combinedDateOutput');
+                combinedDateOutputEl.value = combinedDate;
+                
+                // עדכון כפתור הפתיחה בטאב חדש עם הקישור המלא
+                const openLinkBtn = document.getElementById('openLinkBtn');
+                openLinkBtn.href = `https://media.kcm.fm${relativeLink}`;
+                
+                document.getElementById('resultArea').classList.remove('hidden');
+                
+                // איפוס הודעות העתקה אם היו מוצגות
+                document.getElementById('copyMsg').classList.add('hidden');
+                document.getElementById('copyFileNameMsg').classList.add('hidden');
+                document.getElementById('copyCombinedDateMsg').classList.add('hidden');
+            } finally {
+                // החזרת הכפתור למצב רגיל
+                btn.innerHTML = originalBtnHtml;
+                btn.disabled = false;
             }
-
-            const combinedDate = `${dayName} ${formattedHebrewDate} / ${day}/${month}/${year}`;
-
-            // הרכבת הלינק הסופי להעתקה (יחסי)
-            const basePath = `/upload/mp3/${programData.type}`;
-            const relativeLink = `${basePath}/${programData.folder}/${year}/${month}/${fileNameWithExt}`;
-
-            // הצגת התוצאה (לינק מלא)
-            const outputEl = document.getElementById('output');
-            outputEl.value = relativeLink;
-
-            // הצגת התוצאה (שם קובץ בלבד ללא סיומת)
-            const fileNameOutputEl = document.getElementById('fileNameOutput');
-            fileNameOutputEl.value = baseFileName;
-
-            // הצגת התוצאה (יום ותאריך משולב)
-            const combinedDateOutputEl = document.getElementById('combinedDateOutput');
-            combinedDateOutputEl.value = combinedDate;
-            
-            // עדכון כפתור הפתיחה בטאב חדש עם הקישור המלא
-            const openLinkBtn = document.getElementById('openLinkBtn');
-            openLinkBtn.href = `https://media.kcm.fm${relativeLink}`;
-            
-            document.getElementById('resultArea').classList.remove('hidden');
-            
-            // איפוס הודעות העתקה אם היו מוצגות
-            document.getElementById('copyMsg').classList.add('hidden');
-            document.getElementById('copyFileNameMsg').classList.add('hidden');
-            document.getElementById('copyCombinedDateMsg').classList.add('hidden');
         }
 
         // פונקציית העתקה ללוח - לינק מלא
@@ -470,9 +531,9 @@
             document.body.removeChild(tempInput);
         }
 
-        // פונקציית העתקה ללוח - יום ותאריך
-        function copyDateToClipboard() {
-            const outputEl = document.getElementById('dateOutput');
+        // פונקציית העתקה ללוח - שם קובץ בלבד
+        function copyFileNameToClipboard() {
+            const outputEl = document.getElementById('fileNameOutput');
             
             const tempInput = document.createElement("input");
             tempInput.value = outputEl.value;
@@ -481,7 +542,7 @@
             
             try {
                 document.execCommand("copy");
-                const msg = document.getElementById('copyDateMsg');
+                const msg = document.getElementById('copyFileNameMsg');
                 msg.classList.remove('hidden');
                 setTimeout(() => {
                     msg.classList.add('hidden');
