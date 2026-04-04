@@ -34,133 +34,181 @@
         </button>
     </div>
 
-    <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl w-full max-w-lg transition-colors duration-300 mt-10">
-        <div class="text-center mb-8">
-            <h2 class="text-4xl font-extrabold text-blue-600 dark:text-blue-400 tracking-tight" data-i18n="appTitle">ELINK</h2>
-            <p class="text-gray-500 dark:text-gray-400 mt-2 font-medium" data-i18n="appSubtitle">מחולל הקישורים החכם</p>
-        </div>
-
-        <div class="space-y-5">
-            <!-- בחירת תוכנית -->
-            <div>
-                <label for="programSelect" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="selectProgramLabel">בחר תוכנית:</label>
-                <select id="programSelect" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
-                    <option value="" disabled selected data-i18n="selectProgramPlaceholder">-- בחר מרשימת התוכניות --</option>
-                    
-                    <optgroup label="תוכניות יומיות / שבועיות" data-i18n-label="dailyProgramsGroup">
-                        <option value='{"type":"programs", "folder":"Gil_Israelov", "prefix":"Gil_Israelov", "yearLen":4}' data-i18n="prog_Gil_Israelov">גיל ישראלוב</option>
-                        <option value='{"type":"programs", "folder":"Mendy_Weiss", "prefix":"Mendy_Weiss", "yearLen":4}' data-i18n="prog_Mendy_Weiss">מנדי וייס</option>
-                        <option value='{"type":"programs", "folder":"Avi_Ilson", "prefix":"Avi_Ilson", "yearLen":2}' data-i18n="prog_Avi_Ilson">אבי אילסון</option>
-                        <option value='{"type":"programs", "folder":"Hershey_Eisenbach", "prefix":"Hershey_Eisenbach", "yearLen":4}' data-i18n="prog_Hershey_Eisenbach">הרשי אייזנבך</option>
-                        <option value='{"type":"programs", "folder":"Eli_Klein", "prefix":"Klein", "yearLen":4}' data-i18n="prog_Eli_Klein">אלי קליין</option>
-                        <option value='{"type":"programs", "folder":"Yehuda_Galili", "prefix":"Yehuda_Galili", "yearLen":4}' data-i18n="prog_Yehuda_Galili">יהודה גלילי</option>
-                        <option value='{"type":"programs", "folder":"Bardak", "prefix":"Bardak", "yearLen":2}' data-i18n="prog_Bardak">ברדק</option>
-                        <option value='{"type":"programs", "folder":"Habama_Hamerkzit", "prefix":"Habama_Hamerkzit", "yearLen":2}' data-i18n="prog_Habama_Hamerkzit">הבמה המרכזית</option>
-                        <option value='{"type":"programs", "folder":"Kobi_Sela", "prefix":"Kobis", "yearLen":2}' data-i18n="prog_Kobi_Sela">קובי סלע</option>
-                        <option value='{"type":"programs", "folder":"Yaron_Bar", "prefix":"Yaron_Bar", "yearLen":4}' data-i18n="prog_Yaron_Bar">ירון בר</option>
-                        <option value='{"type":"programs", "folder":"Ackerman", "prefix":"Ackerman", "yearLen":2}' data-i18n="prog_Ackerman">אקרמן</option>
-                        <option value='{"type":"programs", "folder":"Kobi_mendy", "prefix":"Kobi_mendy", "yearLen":2}' data-i18n="prog_Kobi_mendy">קובי ומנדי</option>
-                        <option value='{"type":"programs", "folder":"Avremi_Roth", "prefix":"Avremi_Roth", "yearLen":2}' data-i18n="prog_Avremi_Roth">אברמי רוט</option>
-                        <option value='{"type":"programs", "folder":"Eli_Friedman", "prefix":"Eli_Friedman", "yearLen":4}' data-i18n="prog_Eli_Friedman">אלי פרידמן</option>
-                        <option value='{"type":"programs", "folder":"Naftali_kempeh", "prefix":"Naftali_kempeh", "yearLen":4}' data-i18n="prog_Naftali_kempeh">נפתלי קמפה</option>
-                        <option value='{"type":"programs", "folder":"meni_shwartz", "prefix":"meni_shwartz", "yearLen":4}' data-i18n="prog_meni_shwartz">מני שוורץ</option>
-                        <option value='{"type":"programs", "folder":"Erez_Shmueli", "prefix":"Erez_Shmueli", "yearLen":4}' data-i18n="prog_Erez_Shmueli">ארז שמואלי</option>
-                        <option value='{"type":"programs", "folder":"Yuval_Stupel", "prefix":"Yuval_Stupel", "yearLen":4}' data-i18n="prog_Yuval_Stupel">יובל סטופל</option>
-                        <option value='{"type":"programs", "folder":"Beketzev_hayom", "prefix":"Beketzev_hayom", "yearLen":2}' data-i18n="prog_Beketzev_hayom">בקצב היום</option>
-                        <option value='{"type":"programs", "folder":"Kobi_brumer", "prefix":"kobi_brumer", "yearLen":2}' data-i18n="prog_Kobi_brumer">קובי ברומר</option>
-                        <option value='{"type":"programs", "folder":"Yehuda_Dim", "prefix":"Dim", "yearLen":4}' data-i18n="prog_Yehuda_Dim">יהודה דים</option>
-                        <option value='{"type":"programs", "folder":"Bayamim_Hahem", "prefix":"Bayamim_Hahem", "yearLen":4}' data-i18n="prog_Bayamim_Hahem">בימים ההם</option>
-                        <option value='{"type":"programs", "folder":"Yakov_Bloch", "prefix":"Yakov_Bloch", "yearLen":4}' data-i18n="prog_Yakov_Bloch">יעקב בלוך</option>
-                        <option value='{"type":"programs", "folder":"Ephraim_Kamisar", "prefix":"Ephraim_Kamisar", "yearLen":4}' data-i18n="prog_Ephraim_Kamisar">אפרים קמיסר</option>
-                        <option value='{"type":"programs", "folder":"Until_Lag_Baomer", "prefix":"Until_Lag_Baomer", "yearLen":2}' data-i18n="prog_Until_Lag_Baomer">עד ל"ג בעומר</option>
-                        <option value='{"type":"programs", "folder":"Gideon_Levine", "prefix":"Gideon_Levine", "yearLen":2}' data-i18n="prog_Gideon_Levine">גדעון לוין</option>
-                        <option value='{"type":"programs", "folder":"Zvi_Weiss", "prefix":"Zvi_Weiss", "yearLen":4}' data-i18n="prog_Zvi_Weiss">צבי וייס</option>
-                    </optgroup>
-                    
-                    <optgroup label="פודקאסטים" data-i18n-label="podcastsGroup">
-                        <option value='{"type":"podcasts", "folder":"YourMelody", "prefix":"Hamangina_Shelachem", "yearLen":2}' data-i18n="prog_YourMelody">המנגינה שלכם</option>
-                    </optgroup>
-                </select>
+    <!-- Main Container (Flex for side-by-side layout on large screens) -->
+    <div class="flex flex-col lg:flex-row gap-6 items-start justify-center w-full max-w-5xl mt-16 lg:mt-10">
+        
+        <!-- Main Form Panel -->
+        <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl w-full lg:max-w-lg transition-colors duration-300">
+            <div class="text-center mb-8">
+                <h2 class="text-4xl font-extrabold text-blue-600 dark:text-blue-400 tracking-tight" data-i18n="appTitle">ELINK</h2>
+                <p class="text-gray-500 dark:text-gray-400 mt-2 font-medium" data-i18n="appSubtitle">מחולל הקישורים החכם</p>
             </div>
 
-            <!-- בחירת תאריך -->
-            <div class="grid grid-cols-2 gap-4">
+            <div class="space-y-5">
+                <!-- בחירת תוכנית -->
                 <div>
-                    <label for="dateSelect" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="selectDateLabel">בחר תאריך:</label>
-                    <input type="date" id="dateSelect" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
+                    <label for="programSelect" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="selectProgramLabel">בחר תוכנית:</label>
+                    <select id="programSelect" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
+                        <option value="" disabled selected data-i18n="selectProgramPlaceholder">-- בחר מרשימת התוכניות --</option>
+                        
+                        <optgroup label="תוכניות יומיות / שבועיות" data-i18n-label="dailyProgramsGroup">
+                            <option value='{"type":"programs", "folder":"Gil_Israelov", "prefix":"Gil_Israelov", "yearLen":4}' data-i18n="prog_Gil_Israelov">גיל ישראלוב</option>
+                            <option value='{"type":"programs", "folder":"Mendy_Weiss", "prefix":"Mendy_Weiss", "yearLen":4}' data-i18n="prog_Mendy_Weiss">מנדי וייס</option>
+                            <option value='{"type":"programs", "folder":"Avi_Ilson", "prefix":"Avi_Ilson", "yearLen":2}' data-i18n="prog_Avi_Ilson">אבי אילסון</option>
+                            <option value='{"type":"programs", "folder":"Hershey_Eisenbach", "prefix":"Hershey_Eisenbach", "yearLen":4}' data-i18n="prog_Hershey_Eisenbach">הרשי אייזנבך</option>
+                            <option value='{"type":"programs", "folder":"Eli_Klein", "prefix":"Klein", "yearLen":4}' data-i18n="prog_Eli_Klein">אלי קליין</option>
+                            <option value='{"type":"programs", "folder":"Yehuda_Galili", "prefix":"Yehuda_Galili", "yearLen":4}' data-i18n="prog_Yehuda_Galili">יהודה גלילי</option>
+                            <option value='{"type":"programs", "folder":"Bardak", "prefix":"Bardak", "yearLen":2}' data-i18n="prog_Bardak">ברדק</option>
+                            <option value='{"type":"programs", "folder":"Habama_Hamerkzit", "prefix":"Habama_Hamerkzit", "yearLen":2}' data-i18n="prog_Habama_Hamerkzit">הבמה המרכזית</option>
+                            <option value='{"type":"programs", "folder":"Kobi_Sela", "prefix":"Kobis", "yearLen":2}' data-i18n="prog_Kobi_Sela">קובי סלע</option>
+                            <option value='{"type":"programs", "folder":"Yaron_Bar", "prefix":"Yaron_Bar", "yearLen":4}' data-i18n="prog_Yaron_Bar">ירון בר</option>
+                            <option value='{"type":"programs", "folder":"Ackerman", "prefix":"Ackerman", "yearLen":2}' data-i18n="prog_Ackerman">אקרמן</option>
+                            <option value='{"type":"programs", "folder":"Kobi_mendy", "prefix":"Kobi_mendy", "yearLen":2}' data-i18n="prog_Kobi_mendy">קובי ומנדי</option>
+                            <option value='{"type":"programs", "folder":"Avremi_Roth", "prefix":"Avremi_Roth", "yearLen":2}' data-i18n="prog_Avremi_Roth">אברמי רוט</option>
+                            <option value='{"type":"programs", "folder":"Eli_Friedman", "prefix":"Eli_Friedman", "yearLen":4}' data-i18n="prog_Eli_Friedman">אלי פרידמן</option>
+                            <option value='{"type":"programs", "folder":"Naftali_kempeh", "prefix":"Naftali_kempeh", "yearLen":4}' data-i18n="prog_Naftali_kempeh">נפתלי קמפה</option>
+                            <option value='{"type":"programs", "folder":"meni_shwartz", "prefix":"meni_shwartz", "yearLen":4}' data-i18n="prog_meni_shwartz">מני שוורץ</option>
+                            <option value='{"type":"programs", "folder":"Erez_Shmueli", "prefix":"Erez_Shmueli", "yearLen":4}' data-i18n="prog_Erez_Shmueli">ארז שמואלי</option>
+                            <option value='{"type":"programs", "folder":"Yuval_Stupel", "prefix":"Yuval_Stupel", "yearLen":4}' data-i18n="prog_Yuval_Stupel">יובל סטופל</option>
+                            <option value='{"type":"programs", "folder":"Beketzev_hayom", "prefix":"Beketzev_hayom", "yearLen":2}' data-i18n="prog_Beketzev_hayom">בקצב היום</option>
+                            <option value='{"type":"programs", "folder":"Kobi_brumer", "prefix":"kobi_brumer", "yearLen":2}' data-i18n="prog_Kobi_brumer">קובי ברומר</option>
+                            <option value='{"type":"programs", "folder":"Yehuda_Dim", "prefix":"Dim", "yearLen":4}' data-i18n="prog_Yehuda_Dim">יהודה דים</option>
+                            <option value='{"type":"programs", "folder":"Bayamim_Hahem", "prefix":"Bayamim_Hahem", "yearLen":4}' data-i18n="prog_Bayamim_Hahem">בימים ההם</option>
+                            <option value='{"type":"programs", "folder":"Yakov_Bloch", "prefix":"Yakov_Bloch", "yearLen":4}' data-i18n="prog_Yakov_Bloch">יעקב בלוך</option>
+                            <option value='{"type":"programs", "folder":"Ephraim_Kamisar", "prefix":"Ephraim_Kamisar", "yearLen":4}' data-i18n="prog_Ephraim_Kamisar">אפרים קמיסר</option>
+                            <option value='{"type":"programs", "folder":"Until_Lag_Baomer", "prefix":"Until_Lag_Baomer", "yearLen":2}' data-i18n="prog_Until_Lag_Baomer">עד ל"ג בעומר</option>
+                            <option value='{"type":"programs", "folder":"Gideon_Levine", "prefix":"Gideon_Levine", "yearLen":2}' data-i18n="prog_Gideon_Levine">גדעון לוין</option>
+                            <option value='{"type":"programs", "folder":"Zvi_Weiss", "prefix":"Zvi_Weiss", "yearLen":4}' data-i18n="prog_Zvi_Weiss">צבי וייס</option>
+                        </optgroup>
+                        
+                        <optgroup label="פודקאסטים" data-i18n-label="podcastsGroup">
+                            <option value='{"type":"podcasts", "folder":"YourMelody", "prefix":"Hamangina_Shelachem", "yearLen":2}' data-i18n="prog_YourMelody">המנגינה שלכם</option>
+                        </optgroup>
+                    </select>
                 </div>
-                <div>
-                    <label for="partSelect" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="partOptionalLabel">חלק (אופציונלי):</label>
-                    <input type="text" id="partSelect" placeholder="למשל: a או b" data-i18n-placeholder="partPlaceholder" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
+
+                <!-- בחירת תאריך -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="dateSelect" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="selectDateLabel">בחר תאריך:</label>
+                        <input type="date" id="dateSelect" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
+                    </div>
+                    <div>
+                        <label for="partSelect" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="partOptionalLabel">חלק (אופציונלי):</label>
+                        <input type="text" id="partSelect" placeholder="למשל: a או b" data-i18n-placeholder="partPlaceholder" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
+                    </div>
                 </div>
-            </div>
 
-            <!-- כפתור יצירה -->
-            <button id="generateBtn" onclick="generateLink()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all flex justify-center items-center gap-2">
-                <i class="fas fa-link"></i> <span data-i18n="generateLinkBtn">הפק קישור</span>
-            </button>
+                <!-- כפתור יצירה -->
+                <button id="generateBtn" onclick="generateLink()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all flex justify-center items-center gap-2">
+                    <i class="fas fa-link"></i> <span data-i18n="generateLinkBtn">הפק קישור</span>
+                </button>
 
-            <!-- אזור תוצאה -->
-            <div id="resultArea" class="hidden mt-6 space-y-4">
+                <!-- אזור תוצאה -->
+                <div id="resultArea" class="hidden mt-6 space-y-4">
+                    
+                    <!-- שדה לינק מלא -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="generatedLinkLabel">הקישור שהופק:</label>
+                        <div class="relative">
+                            <textarea id="output" readonly class="w-full px-4 py-3 pr-20 ltr:pl-20 ltr:pr-4 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 text-left font-mono text-sm h-24 resize-none focus:outline-none transition-colors" dir="ltr"></textarea>
+                            
+                            <div class="absolute top-3 right-3 rtl:right-3 ltr:left-3 ltr:right-auto flex flex-col gap-2">
+                                <button onclick="copyToClipboard()" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n-title="copyLinkTitle" title="העתק קישור">
+                                    <i class="fas fa-copy text-xl"></i>
+                                </button>
+                                <a id="openLinkBtn" href="#" target="_blank" class="text-gray-500 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors" data-i18n-title="openNewTabTitle" title="פתח בטאב חדש">
+                                    <i class="fas fa-external-link-alt text-xl"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div id="copyMsg" class="text-green-600 dark:text-green-400 text-sm font-semibold mt-2 hidden text-center" data-i18n="copySuccessMsg">הקישור הועתק בהצלחה!</div>
+                    </div>
+
+                    <!-- שדה שם קובץ -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="generatedFileNameLabel">שם הקובץ:</label>
+                        <div class="relative">
+                            <input type="text" id="fileNameOutput" readonly class="w-full px-4 py-3 pr-12 ltr:pl-12 ltr:pr-4 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 text-left font-mono text-sm focus:outline-none transition-colors" dir="ltr">
+                            
+                            <div class="absolute top-3 right-3 rtl:right-3 ltr:left-3 ltr:right-auto flex flex-col gap-2">
+                                <button onclick="copyFileNameToClipboard()" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n-title="copyFileNameTitle" title="העתק שם קובץ">
+                                    <i class="fas fa-copy text-xl"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="copyFileNameMsg" class="text-green-600 dark:text-green-400 text-sm font-semibold mt-2 hidden text-center" data-i18n="copyFileNameSuccessMsg">שם הקובץ הועתק בהצלחה!</div>
+                    </div>
+
+                    <!-- שדה תאריך משולב -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="generatedDateLabel">יום ותאריך:</label>
+                        <div class="relative">
+                            <input type="text" id="combinedDateOutput" readonly class="w-full px-4 py-3 pr-12 ltr:pl-12 ltr:pr-4 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 text-right font-mono text-sm focus:outline-none transition-colors" dir="rtl">
+                            
+                            <div class="absolute top-3 left-3 flex flex-col gap-2">
+                                <button onclick="copyCombinedDateToClipboard()" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n-title="copyDateTitle" title="העתק יום ותאריך">
+                                    <i class="fas fa-copy text-xl"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="copyCombinedDateMsg" class="text-green-600 dark:text-green-400 text-sm font-semibold mt-2 hidden text-center" data-i18n="copyDateSuccessMsg">היום והתאריך הועתקו בהצלחה!</div>
+                    </div>
+
+                </div>
                 
-                <!-- שדה לינק מלא -->
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="generatedLinkLabel">הקישור שהופק:</label>
-                    <div class="relative">
-                        <textarea id="output" readonly class="w-full px-4 py-3 pr-20 ltr:pl-20 ltr:pr-4 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 text-left font-mono text-sm h-24 resize-none focus:outline-none transition-colors" dir="ltr"></textarea>
-                        
-                        <div class="absolute top-3 right-3 rtl:right-3 ltr:left-3 ltr:right-auto flex flex-col gap-2">
-                            <button onclick="copyToClipboard()" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n-title="copyLinkTitle" title="העתק קישור">
-                                <i class="fas fa-copy text-xl"></i>
-                            </button>
-                            <a id="openLinkBtn" href="#" target="_blank" class="text-gray-500 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors" data-i18n-title="openNewTabTitle" title="פתח בטאב חדש">
-                                <i class="fas fa-external-link-alt text-xl"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div id="copyMsg" class="text-green-600 dark:text-green-400 text-sm font-semibold mt-2 hidden text-center" data-i18n="copySuccessMsg">הקישור הועתק בהצלחה!</div>
-                </div>
-
-                <!-- שדה שם קובץ -->
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="generatedFileNameLabel">שם הקובץ:</label>
-                    <div class="relative">
-                        <input type="text" id="fileNameOutput" readonly class="w-full px-4 py-3 pr-12 ltr:pl-12 ltr:pr-4 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 text-left font-mono text-sm focus:outline-none transition-colors" dir="ltr">
-                        
-                        <div class="absolute top-3 right-3 rtl:right-3 ltr:left-3 ltr:right-auto flex flex-col gap-2">
-                            <button onclick="copyFileNameToClipboard()" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n-title="copyFileNameTitle" title="העתק שם קובץ">
-                                <i class="fas fa-copy text-xl"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div id="copyFileNameMsg" class="text-green-600 dark:text-green-400 text-sm font-semibold mt-2 hidden text-center" data-i18n="copyFileNameSuccessMsg">שם הקובץ הועתק בהצלחה!</div>
-                </div>
-
-                <!-- שדה תאריך משולב -->
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="generatedDateLabel">יום ותאריך:</label>
-                    <div class="relative">
-                        <input type="text" id="combinedDateOutput" readonly class="w-full px-4 py-3 pr-12 ltr:pl-12 ltr:pr-4 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 text-right font-mono text-sm focus:outline-none transition-colors" dir="rtl">
-                        
-                        <div class="absolute top-3 left-3 flex flex-col gap-2">
-                            <button onclick="copyCombinedDateToClipboard()" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n-title="copyDateTitle" title="העתק יום ותאריך">
-                                <i class="fas fa-copy text-xl"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div id="copyCombinedDateMsg" class="text-green-600 dark:text-green-400 text-sm font-semibold mt-2 hidden text-center" data-i18n="copyDateSuccessMsg">היום והתאריך הועתקו בהצלחה!</div>
-                </div>
-
             </div>
             
+            <!-- הקדשה אישית -->
+            <div class="mt-8 pt-4 border-t border-gray-200 dark:border-gray-700 text-center">
+                <p class="text-xs font-medium text-gray-400 dark:text-gray-500 italic tracking-wider">
+                    Written specially for Eli from Monsey
+                </p>
+            </div>
         </div>
-        
-        <!-- הקדשה אישית -->
-        <div class="mt-8 pt-4 border-t border-gray-200 dark:border-gray-700 text-center">
-            <p class="text-xs font-medium text-gray-400 dark:text-gray-500 italic tracking-wider">
-                Written specially for Eli from Monsey
-            </p>
+
+        <!-- Quick Copy Side Panel (Collapsible) -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full lg:w-72 transition-colors duration-300 self-start">
+            <button onclick="toggleQuickCopy()" class="w-full flex justify-between items-center p-6 bg-transparent focus:outline-none group">
+                <h3 class="text-xl font-bold text-gray-800 dark:text-white" data-i18n="quickCopyTitle">העתקה מהירה</h3>
+                <i id="quickCopyChevron" class="fas fa-chevron-down text-gray-500 dark:text-gray-400 transition-transform duration-300"></i>
+            </button>
+            
+            <div id="quickCopyContent" class="hidden px-6 pb-6 pt-0 border-t border-gray-100 dark:border-gray-700">
+                <div class="flex flex-col gap-3 mt-4">
+                    <button onclick="copyQuickText(this)" class="w-full flex justify-between items-center px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors text-gray-700 dark:text-gray-200 font-medium group text-sm">
+                        <span data-i18n="qcDay1">יום ראשון</span>
+                        <i class="fas fa-copy text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+                    </button>
+                    <button onclick="copyQuickText(this)" class="w-full flex justify-between items-center px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors text-gray-700 dark:text-gray-200 font-medium group text-sm">
+                        <span data-i18n="qcDay2">יום שני</span>
+                        <i class="fas fa-copy text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+                    </button>
+                    <button onclick="copyQuickText(this)" class="w-full flex justify-between items-center px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors text-gray-700 dark:text-gray-200 font-medium group text-sm">
+                        <span data-i18n="qcDay3">יום שלישי</span>
+                        <i class="fas fa-copy text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+                    </button>
+                    <button onclick="copyQuickText(this)" class="w-full flex justify-between items-center px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors text-gray-700 dark:text-gray-200 font-medium group text-sm">
+                        <span data-i18n="qcDay4">יום רביעי</span>
+                        <i class="fas fa-copy text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+                    </button>
+                    <button onclick="copyQuickText(this)" class="w-full flex justify-between items-center px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors text-gray-700 dark:text-gray-200 font-medium group text-sm">
+                        <span data-i18n="qcDay5">יום חמישי</span>
+                        <i class="fas fa-copy text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+                    </button>
+                    <button onclick="copyQuickText(this)" class="w-full flex justify-between items-center px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors text-gray-700 dark:text-gray-200 font-medium group text-sm">
+                        <span data-i18n="qcErevShabbat">ערב שבת פרשת</span>
+                        <i class="fas fa-copy text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+                    </button>
+                    <button onclick="copyQuickText(this)" class="w-full flex justify-between items-center px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors text-gray-700 dark:text-gray-200 font-medium group text-sm">
+                        <span data-i18n="qcMotash">מוצאי שבת פרשת</span>
+                        <i class="fas fa-copy text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+                    </button>
+                </div>
+                <div id="quickCopyMsg" class="text-green-600 dark:text-green-400 text-sm font-semibold mt-4 hidden text-center" data-i18n="quickCopySuccessMsg">הטקסט הועתק בהצלחה!</div>
+            </div>
         </div>
+
     </div>
 
     <script>
@@ -193,6 +241,15 @@
                 alertNoDate: "אנא בחר תאריך",
                 alertCopyFail: "ההעתקה נכשלה. אנא העתק ידנית.",
                 langBtnText: "English",
+                quickCopyTitle: "העתקה מהירה",
+                qcDay1: "יום ראשון",
+                qcDay2: "יום שני",
+                qcDay3: "יום שלישי",
+                qcDay4: "יום רביעי",
+                qcDay5: "יום חמישי",
+                qcErevShabbat: "ערב שבת פרשת",
+                qcMotash: "מוצאי שבת פרשת",
+                quickCopySuccessMsg: "הטקסט הועתק בהצלחה!",
                 
                 // תוכניות
                 prog_Gil_Israelov: "גיל ישראלוב",
@@ -251,6 +308,15 @@
                 alertNoDate: "Please select a date",
                 alertCopyFail: "Copy failed. Please copy manually.",
                 langBtnText: "עברית",
+                quickCopyTitle: "Quick Copy",
+                qcDay1: "יום ראשון",
+                qcDay2: "יום שני",
+                qcDay3: "יום שלישי",
+                qcDay4: "יום רביעי",
+                qcDay5: "יום חמישי",
+                qcErevShabbat: "ערב שבת פרשת",
+                qcMotash: "מוצאי שבת פרשת",
+                quickCopySuccessMsg: "Text copied successfully!",
                 
                 // Programs (Transliterated from Hebrew)
                 prog_Gil_Israelov: "Gil Israelov",
@@ -367,6 +433,43 @@
             }
         }
 
+        // פונקציית פתיחה/סגירה של פאנל העתקה מהירה
+        function toggleQuickCopy() {
+            const content = document.getElementById('quickCopyContent');
+            const chevron = document.getElementById('quickCopyChevron');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                chevron.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                chevron.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // פונקציית העתקה מהירה מפאנל הצד
+        function copyQuickText(btnElement) {
+            const textToCopy = btnElement.querySelector('span').innerText;
+            const tempInput = document.createElement("input");
+            tempInput.value = textToCopy;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            
+            try {
+                document.execCommand("copy");
+                const msg = document.getElementById('quickCopyMsg');
+                msg.classList.remove('hidden');
+                setTimeout(() => {
+                    msg.classList.add('hidden');
+                }, 2500);
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+                alert(getAlertMsg('alertCopyFail'));
+            }
+            
+            document.body.removeChild(tempInput);
+        }
+
         // פונקציית יצירת הקישור
         async function generateLink() {
             const programSelect = document.getElementById('programSelect').value;
@@ -403,7 +506,6 @@
 
                 // קריאה ל-API חיצוני (Hebcal) לקבלת התאריך העברי באותיות תקניות ושנה עברית
                 let formattedHebrewDate = "";
-                let hebrewYearStr = "";
                 try {
                     const hebcalUrl = `https://www.hebcal.com/converter?cfg=json&gy=${year}&gm=${parseInt(month)}&gd=${parseInt(day)}&g2h=1`;
                     const response = await fetch(hebcalUrl);
@@ -412,8 +514,6 @@
                     if (data && data.hebrew) {
                         // ה-API מחזיר טקסט עם ניקוד, אז ננקה את הניקוד בעזרת Regex כדי לקבל טקסט נקי
                         formattedHebrewDate = data.hebrew.replace(/[\u0591-\u05C7]/g, '');
-                        const words = formattedHebrewDate.split(' ');
-                        hebrewYearStr = words[words.length - 1]; // שולף את השנה (למשל: "תשפ״ו")
                     } else {
                         formattedHebrewDate = "שגיאה בהמרה";
                     }
@@ -428,50 +528,58 @@
                 const daysPrefixes = ["יום ראשון", "יום שני", "יום שלישי", "יום רביעי", "יום חמישי", "ערב שבת", "מוצאי שבת"];
                 let dayName = daysPrefixes[dayIndex]; // ברירת המחדל
 
-                // שליפת שם הפרשה (או שבת מיוחדת) לקראת השבת הקרובה
-                try {
-                    const saturdayDate = new Date(dateObjForDay);
-                    saturdayDate.setDate(dateObjForDay.getDate() + (6 - dayIndex));
-                    const satYear = saturdayDate.getFullYear();
-                    const satMonth = saturdayDate.getMonth() + 1;
-                    const satDay = saturdayDate.getDate();
-
-                    const parashaUrl = `https://www.hebcal.com/hebcal?v=1&cfg=json&gy=${satYear}&gm=${satMonth}&gd=${satDay}&s=on&lg=h`;
-                    const pRes = await fetch(parashaUrl);
-                    const pData = await pRes.json();
-                    
-                    let parashaName = "";
-                    if (pData && pData.items) {
-                        const parashaItem = pData.items.find(i => i.category === 'parashat');
-                        // מחפש שבתות מיוחדות כמו "שבת הגדול"
-                        const specialShabbat = pData.items.find(i => i.hebrew && i.hebrew.startsWith('שבת ') && !i.hebrew.includes('מבָרְכִים'));
+                // הוספת פרשת שבוע אך ורק בימי שישי ושבת
+                if (dayIndex === 5 || dayIndex === 6) {
+                    try {
+                        const saturdayDate = new Date(dateObjForDay);
+                        saturdayDate.setDate(dateObjForDay.getDate() + (6 - dayIndex));
+                        const satYear = saturdayDate.getFullYear();
+                        const satMonth = saturdayDate.getMonth() + 1;
+                        const satDay = saturdayDate.getDate();
                         
-                        let pName = parashaItem ? parashaItem.hebrew.replace(/[\u0591-\u05C7]/g, '') : "";
-                        let sName = specialShabbat ? specialShabbat.hebrew.replace(/[\u0591-\u05C7]/g, '') : "";
+                        // מחרוזת תאריך מדוייקת של השבת הקרובה כדי לאתר רק אותה
+                        const satDateString = `${satYear}-${String(satMonth).padStart(2, '0')}-${String(satDay).padStart(2, '0')}`;
 
-                        if (dayIndex === 5 || dayIndex === 6) {
-                            // בשישי ושבת ניתן עדיפות לשבת מיוחדת כמו "שבת הגדול"
+                        const parashaUrl = `https://www.hebcal.com/hebcal?v=1&cfg=json&gy=${satYear}&gm=${satMonth}&s=on&lg=h`;
+                        const pRes = await fetch(parashaUrl);
+                        const pData = await pRes.json();
+                        
+                        let parashaName = "";
+                        if (pData && pData.items) {
+                            // סינון כדי למצוא רק את האירועים של השבת הספציפית המדוייקת (ולא סתם את הראשונה בחודש)
+                            const itemsOnSat = pData.items.filter(i => i.date === satDateString);
+                            
+                            const parashaItem = itemsOnSat.find(i => i.category === 'parashat');
+                            // מחפש שבתות מיוחדות כמו "שבת הגדול"
+                            const specialShabbat = itemsOnSat.find(i => i.hebrew && i.hebrew.startsWith('שבת ') && !i.hebrew.includes('מבָרְכִים'));
+                            
+                            let pName = parashaItem ? parashaItem.hebrew.replace(/[\u0591-\u05C7]/g, '') : "";
+                            let sName = specialShabbat ? specialShabbat.hebrew.replace(/[\u0591-\u05C7]/g, '') : "";
+
                             if (sName) {
                                 // מורידים את המילה שבת כדי שלא יהיה "ערב שבת שבת הגדול" אלא "ערב שבת הגדול"
                                 parashaName = sName.replace("שבת ", ""); 
-                            } else {
+                            } else if (pName) {
                                 parashaName = pName;
+                                // הבטחת הוספת המילה "פרשת" אם היא חסרה
+                                if (!parashaName.startsWith("פרשת ")) {
+                                    parashaName = "פרשת " + parashaName;
+                                }
                             }
-                        } else {
-                            // בראשון עד חמישי, נשתמש תמיד בשם הפרשה הרגיל (למשל: יום ראשון פרשת צו)
-                            parashaName = pName;
                         }
-                    }
 
-                    // אם מצאנו פרשה ושנה, נרכיב אותם יחד עם היום
-                    if (parashaName && hebrewYearStr) {
-                        dayName = `${dayName} ${parashaName} ${hebrewYearStr}`;
+                        // חיבור השם המיוחד לימים שישי ושבת
+                        if (parashaName) {
+                            dayName = `${dayName} ${parashaName}`;
+                        }
+                    } catch (err) {
+                        console.error("Parasha API error:", err);
                     }
-                } catch (err) {
-                    console.error("Parasha API error:", err);
                 }
 
                 // הרכבת המחרוזת המשולבת וחיבור הכל יחד לשורה אחת אלגנטית
+                // בימי חול זה יהיה "יום חמישי - ..."
+                // בשישי ושבת זה יהיה "ערב שבת פרשת ויקרא - ..."
                 const combinedDate = `${dayName} - ${formattedHebrewDate} / ${day}/${month}/${year}`;
 
                 // הרכבת הלינק הסופי להעתקה (יחסי)
