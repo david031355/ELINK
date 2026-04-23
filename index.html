@@ -16,6 +16,20 @@
         body {
             font-family: 'Heebo', sans-serif;
         }
+        /* עיצוב גלילה מותאם לחלונית העריכה */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 10px;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #475569;
+        }
     </style>
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100 dark:bg-gray-900 transition-colors duration-300 relative">
@@ -34,7 +48,7 @@
         </button>
     </div>
 
-    <!-- Main Container (Flex for side-by-side layout on large screens) -->
+    <!-- Main Container -->
     <div class="flex flex-col lg:flex-row gap-6 items-start justify-center w-full max-w-5xl mt-16 lg:mt-10">
         
         <!-- Main Form Panel -->
@@ -47,45 +61,16 @@
             <div class="space-y-5">
                 <!-- בחירת תוכנית -->
                 <div>
-                    <label for="programSelect" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="selectProgramLabel">בחר תוכנית:</label>
-                    <select id="programSelect" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
-                        <option value="" disabled selected data-i18n="selectProgramPlaceholder">-- בחר מרשימת התוכניות --</option>
-                        
-                        <optgroup label="תוכניות יומיות / שבועיות" data-i18n-label="dailyProgramsGroup">
-                            <option value='{"type":"programs", "folder":"Gil_Israelov", "prefix":"Gil_Israelov", "yearLen":4}' data-i18n="prog_Gil_Israelov">גיל ישראלוב</option>
-                            <option value='{"type":"programs", "folder":"Mendy_Weiss", "prefix":"Mendy_Weiss", "yearLen":4}' data-i18n="prog_Mendy_Weiss">מנדי וייס</option>
-                            <option value='{"type":"programs", "folder":"Avi_Ilson", "prefix":"Avi_Ilson", "yearLen":2}' data-i18n="prog_Avi_Ilson">אבי אילסון</option>
-                            <option value='{"type":"programs", "folder":"Hershey_Eisenbach", "prefix":"Hershey_Eisenbach", "yearLen":4}' data-i18n="prog_Hershey_Eisenbach">הרשי אייזנבך</option>
-                            <option value='{"type":"programs", "folder":"Eli_Klein", "prefix":"Klein", "yearLen":4}' data-i18n="prog_Eli_Klein">אלי קליין</option>
-                            <option value='{"type":"programs", "folder":"Yehuda_Galili", "prefix":"Yehuda_Galili", "yearLen":4}' data-i18n="prog_Yehuda_Galili">יהודה גלילי</option>
-                            <option value='{"type":"programs", "folder":"Bardak", "prefix":"Bardak", "yearLen":2}' data-i18n="prog_Bardak">ברדק</option>
-                            <option value='{"type":"programs", "folder":"Habama_Hamerkzit", "prefix":"Habama_Hamerkzit", "yearLen":2}' data-i18n="prog_Habama_Hamerkzit">הבמה המרכזית</option>
-                            <option value='{"type":"programs", "folder":"Kobi_Sela", "prefix":"Kobis", "yearLen":2}' data-i18n="prog_Kobi_Sela">קובי סלע</option>
-                            <option value='{"type":"programs", "folder":"Yaron_Bar", "prefix":"Yaron_Bar", "yearLen":4}' data-i18n="prog_Yaron_Bar">ירון בר</option>
-                            <option value='{"type":"programs", "folder":"Ackerman", "prefix":"Ackerman", "yearLen":2}' data-i18n="prog_Ackerman">אקרמן</option>
-                            <option value='{"type":"programs", "folder":"Kobi_mendy", "prefix":"Kobi_mendy", "yearLen":2}' data-i18n="prog_Kobi_mendy">קובי ומנדי</option>
-                            <option value='{"type":"programs", "folder":"Avremi_Roth", "prefix":"Avremi_Roth", "yearLen":2}' data-i18n="prog_Avremi_Roth">אברמי רוט</option>
-                            <option value='{"type":"programs", "folder":"Eli_Friedman", "prefix":"Eli_Friedman", "yearLen":4}' data-i18n="prog_Eli_Friedman">אלי פרידמן</option>
-                            <option value='{"type":"programs", "folder":"Naftali_kempeh", "prefix":"Naftali_kempeh", "yearLen":4}' data-i18n="prog_Naftali_kempeh">נפתלי קמפה</option>
-                            <option value='{"type":"programs", "folder":"meni_shwartz", "prefix":"meni_shwartz", "yearLen":4}' data-i18n="prog_meni_shwartz">מני שוורץ</option>
-                            <option value='{"type":"programs", "folder":"Erez_Shmueli", "prefix":"Erez_Shmueli", "yearLen":4}' data-i18n="prog_Erez_Shmueli">ארז שמואלי</option>
-                            <option value='{"type":"programs", "folder":"Yuval_Stupel", "prefix":"Yuval_Stupel", "yearLen":4}' data-i18n="prog_Yuval_Stupel">יובל סטופל</option>
-                            <option value='{"type":"programs", "folder":"Beketzev_hayom", "prefix":"Beketzev_hayom", "yearLen":2}' data-i18n="prog_Beketzev_hayom">בקצב היום</option>
-                            <option value='{"type":"programs", "folder":"Kobi_brumer", "prefix":"kobi_brumer", "yearLen":2}' data-i18n="prog_Kobi_brumer">קובי ברומר</option>
-                            <option value='{"type":"programs", "folder":"Yehuda_Dim", "prefix":"Dim", "yearLen":4}' data-i18n="prog_Yehuda_Dim">יהודה דים</option>
-                            <option value='{"type":"programs", "folder":"Bayamim_Hahem", "prefix":"Bayamim_Hahem", "yearLen":4}' data-i18n="prog_Bayamim_Hahem">בימים ההם</option>
-                            <option value='{"type":"programs", "folder":"Yakov_Bloch", "prefix":"Yakov_Bloch", "yearLen":4}' data-i18n="prog_Yakov_Bloch">יעקב בלוך</option>
-                            <option value='{"type":"programs", "folder":"Ephraim_Kamisar", "prefix":"Ephraim_Kamisar", "yearLen":4}' data-i18n="prog_Ephraim_Kamisar">אפרים קמיסר</option>
-                            <option value='{"type":"programs", "folder":"Until_Lag_Baomer", "prefix":"Until_Lag_Baomer", "yearLen":2}' data-i18n="prog_Until_Lag_Baomer">עד ל"ג בעומר</option>
-                            <option value='{"type":"programs", "folder":"Gideon_Levine", "prefix":"Gideon_Levine", "yearLen":2}' data-i18n="prog_Gideon_Levine">גדעון לוין</option>
-                            <option value='{"type":"programs", "folder":"Zvi_Weiss", "prefix":"Zvi_Weiss", "yearLen":4}' data-i18n="prog_Zvi_Weiss">צבי וייס</option>
-                            <option value='{"type":"programs", "folder":"Ruli_Ezrachi", "prefix":"Ruli_Ezrachi", "yearLen":4}' data-i18n="prog_Ruli_Ezrachi">רולי אזרחי</option>
-                        </optgroup>
-                        
-                        <optgroup label="פודקאסטים" data-i18n-label="podcastsGroup">
-                            <option value='{"type":"podcasts", "folder":"YourMelody", "prefix":"Hamangina_Shelachem", "yearLen":2}' data-i18n="prog_YourMelody">המנגינה שלכם</option>
-                        </optgroup>
-                    </select>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="selectProgramLabel">בחר תוכנית:</label>
+                    <div class="flex gap-2">
+                        <select id="programSelect" class="flex-1 w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
+                            <!-- האפשרויות יטענו לכאן דינמית באמצעות JS על פי הסדר האישי -->
+                        </select>
+                        <!-- כפתור עריכת סדר -->
+                        <button onclick="openReorderModal()" class="px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-300 dark:border-gray-600 rounded-lg transition-colors text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500" data-i18n-title="editOrderBtnTitle" title="שנה סדר רשימה">
+                            <i class="fas fa-sort-amount-down"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- בחירת תאריך -->
@@ -209,10 +194,88 @@
                 <div id="quickCopyMsg" class="text-green-600 dark:text-green-400 text-sm font-semibold mt-4 hidden text-center" data-i18n="quickCopySuccessMsg">הטקסט הועתק בהצלחה!</div>
             </div>
         </div>
+    </div>
 
+    <!-- Modal לסידור הרשימה -->
+    <div id="reorderModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl w-full max-w-md shadow-2xl overflow-hidden flex flex-col transform scale-95 transition-transform duration-300" style="max-height: 85vh;">
+            <div class="p-5 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+                <h3 class="text-xl font-bold text-gray-800 dark:text-white" data-i18n="reorderTitle">סידור רשימת התוכניות</h3>
+                <button onclick="closeReorderModal()" class="text-gray-400 hover:text-red-500 transition-colors focus:outline-none">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-4 space-y-2 custom-scrollbar bg-gray-100 dark:bg-gray-900" id="reorderList">
+                <!-- הרשימה תתרנדר לכאן -->
+            </div>
+            
+            <div class="p-4 border-t border-gray-200 dark:border-gray-700 flex justify-between gap-3 bg-white dark:bg-gray-800">
+                <button onclick="resetOrder()" class="px-4 py-2 text-sm font-semibold text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors border border-gray-300 dark:border-gray-600 rounded-lg hover:border-blue-400 dark:hover:border-blue-500" data-i18n="reorderResetBtn">שחזר ברירת מחדל</button>
+                <div class="flex gap-2">
+                    <button onclick="closeReorderModal()" class="px-4 py-2 text-sm font-semibold text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors" data-i18n="reorderCancelBtn">ביטול</button>
+                    <button onclick="saveOrder()" class="px-4 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-md" data-i18n="reorderSaveBtn">שמור שינויים</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
+        // --- מסד הנתונים הראשי של התוכניות ---
+        const programsData = [
+            { id: "prog_Gil_Israelov", value: '{"type":"programs", "folder":"Gil_Israelov", "prefix":"Gil_Israelov", "yearLen":4}' },
+            { id: "prog_Mendy_Weiss", value: '{"type":"programs", "folder":"Mendy_Weiss", "prefix":"Mendy_Weiss", "yearLen":4}' },
+            { id: "prog_Avi_Ilson", value: '{"type":"programs", "folder":"Avi_Ilson", "prefix":"Avi_Ilson", "yearLen":2}' },
+            { id: "prog_Hershey_Eisenbach", value: '{"type":"programs", "folder":"Hershey_Eisenbach", "prefix":"Hershey_Eisenbach", "yearLen":4}' },
+            { id: "prog_Eli_Klein", value: '{"type":"programs", "folder":"Eli_Klein", "prefix":"Klein", "yearLen":4}' },
+            { id: "prog_Yehuda_Galili", value: '{"type":"programs", "folder":"Yehuda_Galili", "prefix":"Yehuda_Galili", "yearLen":4}' },
+            { id: "prog_Bardak", value: '{"type":"programs", "folder":"Bardak", "prefix":"Bardak", "yearLen":2}' },
+            { id: "prog_Habama_Hamerkzit", value: '{"type":"programs", "folder":"Habama_Hamerkzit", "prefix":"Habama_Hamerkzit", "yearLen":2}' },
+            { id: "prog_Kobi_Sela", value: '{"type":"programs", "folder":"Kobi_Sela", "prefix":"Kobis", "yearLen":2}' },
+            { id: "prog_Yaron_Bar", value: '{"type":"programs", "folder":"Yaron_Bar", "prefix":"Yaron_Bar", "yearLen":4}' },
+            { id: "prog_Ackerman", value: '{"type":"programs", "folder":"Ackerman", "prefix":"Ackerman", "yearLen":2}' },
+            { id: "prog_Kobi_mendy", value: '{"type":"programs", "folder":"Kobi_mendy", "prefix":"Kobi_mendy", "yearLen":2}' },
+            { id: "prog_Avremi_Roth", value: '{"type":"programs", "folder":"Avremi_Roth", "prefix":"Avremi_Roth", "yearLen":2}' },
+            { id: "prog_Eli_Friedman", value: '{"type":"programs", "folder":"Eli_Friedman", "prefix":"Eli_Friedman", "yearLen":4}' },
+            { id: "prog_Naftali_kempeh", value: '{"type":"programs", "folder":"Naftali_kempeh", "prefix":"Naftali_kempeh", "yearLen":4}' },
+            { id: "prog_meni_shwartz", value: '{"type":"programs", "folder":"meni_shwartz", "prefix":"meni_shwartz", "yearLen":4}' },
+            { id: "prog_Erez_Shmueli", value: '{"type":"programs", "folder":"Erez_Shmueli", "prefix":"Erez_Shmueli", "yearLen":4}' },
+            { id: "prog_Yuval_Stupel", value: '{"type":"programs", "folder":"Yuval_Stupel", "prefix":"Yuval_Stupel", "yearLen":4}' },
+            { id: "prog_Beketzev_hayom", value: '{"type":"programs", "folder":"Beketzev_hayom", "prefix":"Beketzev_hayom", "yearLen":2}' },
+            { id: "prog_Kobi_brumer", value: '{"type":"programs", "folder":"Kobi_brumer", "prefix":"kobi_brumer", "yearLen":2}' },
+            { id: "prog_Yehuda_Dim", value: '{"type":"programs", "folder":"Yehuda_Dim", "prefix":"Dim", "yearLen":4}' },
+            { id: "prog_Bayamim_Hahem", value: '{"type":"programs", "folder":"Bayamim_Hahem", "prefix":"Bayamim_Hahem", "yearLen":4}' },
+            { id: "prog_Yakov_Bloch", value: '{"type":"programs", "folder":"Yakov_Bloch", "prefix":"Yakov_Bloch", "yearLen":4}' },
+            { id: "prog_Ephraim_Kamisar", value: '{"type":"programs", "folder":"Ephraim_Kamisar", "prefix":"Ephraim_Kamisar", "yearLen":4}' },
+            { id: "prog_Until_Lag_Baomer", value: '{"type":"programs", "folder":"Until_Lag_Baomer", "prefix":"Until_Lag_Baomer", "yearLen":2}' },
+            { id: "prog_Gideon_Levine", value: '{"type":"programs", "folder":"Gideon_Levine", "prefix":"Gideon_Levine", "yearLen":2}' },
+            { id: "prog_Zvi_Weiss", value: '{"type":"programs", "folder":"Zvi_Weiss", "prefix":"Zvi_Weiss", "yearLen":4}' },
+            { id: "prog_Ruli_Ezrachi", value: '{"type":"programs", "folder":"Ruli_Ezrachi", "prefix":"Ruli_Ezrachi", "yearLen":4}' },
+            { id: "prog_YourMelody", value: '{"type":"podcasts", "folder":"YourMelody", "prefix":"Hamangina_Shelachem", "yearLen":2}' }
+        ];
+
+        // טעינת הסדר המותאם אישית מהזיכרון
+        let currentOrder = [];
+        function initOrder() {
+            try {
+                const saved = localStorage.getItem('app_programs_order');
+                if (saved) {
+                    currentOrder = JSON.parse(saved);
+                    // הוספת תוכניות חדשות שאולי נוספו למערכת ולא היו בסדר השמור
+                    programsData.forEach(p => {
+                        if (!currentOrder.includes(p.id)) currentOrder.push(p.id);
+                    });
+                    // סינון תוכניות ישנות שאולי הוסרו
+                    currentOrder = currentOrder.filter(id => programsData.some(p => p.id === id));
+                } else {
+                    currentOrder = programsData.map(p => p.id); // ברירת מחדל
+                }
+            } catch (e) {
+                currentOrder = programsData.map(p => p.id);
+            }
+        }
+        initOrder();
+
         // מילון התרגומים
         const i18n = {
             he: {
@@ -220,8 +283,6 @@
                 appSubtitle: "מחולל הקישורים החכם",
                 selectProgramLabel: "בחר תוכנית:",
                 selectProgramPlaceholder: "-- בחר מרשימת התוכניות --",
-                dailyProgramsGroup: "תוכניות יומיות / שבועיות",
-                podcastsGroup: "פודקאסטים",
                 selectDateLabel: "בחר תאריך:",
                 partOptionalLabel: "חלק (אופציונלי):",
                 partPlaceholder: "למשל: a או b",
@@ -251,6 +312,13 @@
                 qcErevShabbat: "ערב שבת פרשת",
                 qcMotash: "מוצאי שבת פרשת",
                 quickCopySuccessMsg: "הטקסט הועתק בהצלחה!",
+                
+                // תרגומי מודאל הסידור
+                editOrderBtnTitle: "שנה סדר רשימה",
+                reorderTitle: "סידור רשימת התוכניות",
+                reorderSaveBtn: "שמור שינויים",
+                reorderCancelBtn: "ביטול",
+                reorderResetBtn: "שחזר ברירת מחדל",
                 
                 // תוכניות
                 prog_Gil_Israelov: "גיל ישראלוב",
@@ -288,8 +356,6 @@
                 appSubtitle: "The Smart Link Generator",
                 selectProgramLabel: "Select Program:",
                 selectProgramPlaceholder: "-- Select from the list --",
-                dailyProgramsGroup: "Daily / Weekly Programs",
-                podcastsGroup: "Podcasts",
                 selectDateLabel: "Select Date:",
                 partOptionalLabel: "Part (Optional):",
                 partPlaceholder: "e.g., a or b",
@@ -320,6 +386,13 @@
                 qcMotash: "מוצאי שבת פרשת",
                 quickCopySuccessMsg: "Text copied successfully!",
                 
+                // Reorder Modal Translations
+                editOrderBtnTitle: "Edit List Order",
+                reorderTitle: "Reorder Programs",
+                reorderSaveBtn: "Save Order",
+                reorderCancelBtn: "Cancel",
+                reorderResetBtn: "Reset Default",
+
                 // Programs (Transliterated from Hebrew)
                 prog_Gil_Israelov: "Gil Israelov",
                 prog_Mendy_Weiss: "Mendy Weiss",
@@ -353,10 +426,31 @@
             }
         };
 
-        // ניהול שפות
         let currentLang = localStorage.getItem('app_lang') || 'he';
 
+        // רינדור רשימת הבחירה לפי הסדר האישי
+        function populateSelect() {
+            const select = document.getElementById('programSelect');
+            const savedVal = select.value; // שמירת הבחירה הנוכחית כדי לא לאפס אותה
+            
+            select.innerHTML = `<option value="" disabled selected data-i18n="selectProgramPlaceholder">-- בחר מרשימת התוכניות --</option>`;
+            
+            currentOrder.forEach(id => {
+                const prog = programsData.find(p => p.id === id);
+                if (prog) {
+                    const opt = document.createElement('option');
+                    opt.value = prog.value;
+                    opt.setAttribute('data-i18n', prog.id);
+                    // יתורגם מיד ע"י applyLanguage
+                    select.appendChild(opt);
+                }
+            });
+
+            if (savedVal) select.value = savedVal;
+        }
+
         function initLanguage() {
+            populateSelect();
             applyLanguage(currentLang);
         }
 
@@ -373,38 +467,26 @@
 
             const t = i18n[lang];
 
-            // עדכון טקסטים רגילים
+            // עדכון טקסטים רגילים ורשימות בחירה
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (t[key]) el.textContent = t[key];
             });
 
-            // עדכון פלייסחולדרים
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                 const key = el.getAttribute('data-i18n-placeholder');
                 if (t[key]) el.placeholder = t[key];
             });
 
-            // עדכון optgroups
-            document.querySelectorAll('[data-i18n-label]').forEach(el => {
-                const key = el.getAttribute('data-i18n-label');
-                if (t[key]) el.label = t[key];
-            });
-
-            // עדכון titles (tooltips)
             document.querySelectorAll('[data-i18n-title]').forEach(el => {
                 const key = el.getAttribute('data-i18n-title');
                 if (t[key]) el.title = t[key];
             });
 
-            // עדכון כפתור שפה
             document.getElementById('langBtnText').textContent = t.langBtnText;
-            
-            // עדכון כותרת המסמך
             document.title = t.appTitle + " - " + (lang === 'he' ? "מחולל קישורים" : "Link Generator");
         }
 
-        // פונקציית שליפת הודעות למערכת ההתראות מהמילון
         function getAlertMsg(key) {
             return i18n[currentLang][key];
         }
@@ -417,24 +499,78 @@
             document.documentElement.classList.remove('dark');
         }
 
-        // הפעלת שפה בטעינה
-        initLanguage();
+        // --- ניהול מודאל סידור רשימה ---
+        let tempOrder = []; // מערך זמני בזמן שהמודאל פתוח
 
-        // פונקציית החלפת ערכת הנושא (כהה/בהיר)
-        function toggleTheme() {
-            const html = document.documentElement;
-            const icon = document.getElementById('themeIcon');
+        function openReorderModal() {
+            tempOrder = [...currentOrder];
+            renderReorderList();
             
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                localStorage.theme = 'light';
-                icon.classList.replace('fa-sun', 'fa-moon');
-            } else {
-                html.classList.add('dark');
-                localStorage.theme = 'dark';
-                icon.classList.replace('fa-moon', 'fa-sun');
+            const modal = document.getElementById('reorderModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.querySelector('div').classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeReorderModal() {
+            const modal = document.getElementById('reorderModal');
+            modal.classList.add('opacity-0');
+            modal.querySelector('div').classList.add('scale-95');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        function renderReorderList() {
+            const listEl = document.getElementById('reorderList');
+            listEl.innerHTML = '';
+            
+            tempOrder.forEach((id, index) => {
+                const prog = programsData.find(p => p.id === id);
+                if(!prog) return;
+
+                const t = i18n[currentLang];
+                const div = document.createElement('div');
+                div.className = "flex justify-between items-center bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-all";
+                div.innerHTML = `
+                    <span class="text-gray-800 dark:text-gray-200 font-medium text-sm flex-1 ml-2 rtl:ml-0 rtl:mr-2">${t[prog.id]}</span>
+                    <div class="flex gap-1">
+                        <button onclick="moveItem(${index}, -1)" class="${index === 0 ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed' : 'text-gray-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-700'} w-8 h-8 flex items-center justify-center rounded-md transition-colors focus:outline-none" ${index === 0 ? 'disabled' : ''}>
+                            <i class="fas fa-arrow-up"></i>
+                        </button>
+                        <button onclick="moveItem(${index}, 1)" class="${index === tempOrder.length - 1 ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed' : 'text-gray-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-700'} w-8 h-8 flex items-center justify-center rounded-md transition-colors focus:outline-none" ${index === tempOrder.length - 1 ? 'disabled' : ''}>
+                            <i class="fas fa-arrow-down"></i>
+                        </button>
+                    </div>
+                `;
+                listEl.appendChild(div);
+            });
+        }
+
+        function moveItem(index, direction) {
+            if (index + direction < 0 || index + direction >= tempOrder.length) return;
+            const temp = tempOrder[index];
+            tempOrder[index] = tempOrder[index + direction];
+            tempOrder[index + direction] = temp;
+            renderReorderList(); // רינדור מחדש של הרשימה בחלון צף
+        }
+
+        function saveOrder() {
+            currentOrder = [...tempOrder];
+            localStorage.setItem('app_programs_order', JSON.stringify(currentOrder));
+            initLanguage(); // ירנדר מחדש גם את ה-Select הראשי ויחיל שפה
+            closeReorderModal();
+        }
+
+        function resetOrder() {
+            if(confirm(currentLang === 'he' ? "האם אתה בטוח שברצונך לשחזר את הרשימה למצבה המקורי?" : "Are you sure you want to reset the list to its original order?")) {
+                tempOrder = programsData.map(p => p.id);
+                renderReorderList();
             }
         }
+
+        // הפעלת שפה בטעינה (מכיל קריאה לבניית הרשימה הדינמית)
+        initLanguage();
 
         // פונקציית פתיחה/סגירה של פאנל העתקה מהירה
         function toggleQuickCopy() {
@@ -495,19 +631,19 @@
             btn.disabled = true;
 
             try {
-                const programData = JSON.parse(programSelect);
+                const programDataJSON = JSON.parse(programSelect);
                 
-                // חילוץ חלקי התאריך ישירות מהמחרוזת כדי למנוע בעיות של אזורי זמן (למשל בארה"ב)
+                // חילוץ חלקי התאריך
                 const [year, month, day] = dateVal.split('-');
 
-                // פורמט שנה לסוף הקובץ
-                const fileYear = programData.yearLen === 2 ? year.slice(-2) : year;
+                // פורמט שנה
+                const fileYear = programDataJSON.yearLen === 2 ? year.slice(-2) : year;
 
-                // יצירת שם הקובץ בלבד (ללא סיומת)
-                const baseFileName = `${programData.prefix}${day}-${month}-${fileYear}${partVal}`;
+                // יצירת שם הקובץ בלבד
+                const baseFileName = `${programDataJSON.prefix}${day}-${month}-${fileYear}${partVal}`;
                 const fileNameWithExt = `${baseFileName}.mp3`;
 
-                // קריאה ל-API חיצוני (Hebcal) לקבלת התאריך העברי באותיות תקניות ושנה עברית
+                // קריאה ל-API חיצוני (Hebcal)
                 let formattedHebrewDate = "";
                 try {
                     const hebcalUrl = `https://www.hebcal.com/converter?cfg=json&gy=${year}&gm=${parseInt(month)}&gd=${parseInt(day)}&g2h=1`;
@@ -515,7 +651,6 @@
                     const data = await response.json();
                     
                     if (data && data.hebrew) {
-                        // ה-API מחזיר טקסט עם ניקוד, אז ננקה את הניקוד בעזרת Regex כדי לקבל טקסט נקי
                         formattedHebrewDate = data.hebrew.replace(/[\u0591-\u05C7]/g, '');
                     } else {
                         formattedHebrewDate = "שגיאה בהמרה";
@@ -525,13 +660,11 @@
                     formattedHebrewDate = "שגיאת רשת";
                 }
 
-                // הגדרת קידומות לימים בהתאם לסטנדרט
                 const dateObjForDay = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
                 const dayIndex = dateObjForDay.getDay();
                 const daysPrefixes = ["יום ראשון", "יום שני", "יום שלישי", "יום רביעי", "יום חמישי", "ערב שבת", "מוצאי שבת"];
-                let dayName = daysPrefixes[dayIndex]; // ברירת המחדל
+                let dayName = daysPrefixes[dayIndex];
 
-                // הוספת פרשת שבוע אך ורק בימי שישי ושבת
                 if (dayIndex === 5 || dayIndex === 6) {
                     try {
                         const saturdayDate = new Date(dateObjForDay);
@@ -540,7 +673,6 @@
                         const satMonth = saturdayDate.getMonth() + 1;
                         const satDay = saturdayDate.getDate();
                         
-                        // מחרוזת תאריך מדוייקת של השבת הקרובה כדי לאתר רק אותה
                         const satDateString = `${satYear}-${String(satMonth).padStart(2, '0')}-${String(satDay).padStart(2, '0')}`;
 
                         const parashaUrl = `https://www.hebcal.com/hebcal?v=1&cfg=json&gy=${satYear}&gm=${satMonth}&s=on&lg=h`;
@@ -549,29 +681,24 @@
                         
                         let parashaName = "";
                         if (pData && pData.items) {
-                            // סינון כדי למצוא רק את האירועים של השבת הספציפית המדוייקת (ולא סתם את הראשונה בחודש)
                             const itemsOnSat = pData.items.filter(i => i.date === satDateString);
                             
                             const parashaItem = itemsOnSat.find(i => i.category === 'parashat');
-                            // מחפש שבתות מיוחדות כמו "שבת הגדול"
                             const specialShabbat = itemsOnSat.find(i => i.hebrew && i.hebrew.startsWith('שבת ') && !i.hebrew.includes('מבָרְכִים'));
                             
                             let pName = parashaItem ? parashaItem.hebrew.replace(/[\u0591-\u05C7]/g, '') : "";
                             let sName = specialShabbat ? specialShabbat.hebrew.replace(/[\u0591-\u05C7]/g, '') : "";
 
                             if (sName) {
-                                // מורידים את המילה שבת כדי שלא יהיה "ערב שבת שבת הגדול" אלא "ערב שבת הגדול"
                                 parashaName = sName.replace("שבת ", ""); 
                             } else if (pName) {
                                 parashaName = pName;
-                                // הבטחת הוספת המילה "פרשת" אם היא חסרה
                                 if (!parashaName.startsWith("פרשת ")) {
                                     parashaName = "פרשת " + parashaName;
                                 }
                             }
                         }
 
-                        // חיבור השם המיוחד לימים שישי ושבת
                         if (parashaName) {
                             dayName = `${dayName} ${parashaName}`;
                         }
@@ -580,113 +707,71 @@
                     }
                 }
 
-                // הרכבת המחרוזת המשולבת וחיבור הכל יחד לשורה אחת אלגנטית
-                // בימי חול זה יהיה "יום חמישי - ..."
-                // בשישי ושבת זה יהיה "ערב שבת פרשת ויקרא - ..."
                 const combinedDate = `${dayName} - ${formattedHebrewDate} / ${day}/${month}/${year}`;
 
-                // הרכבת הלינק הסופי להעתקה (יחסי)
-                const basePath = `/upload/mp3/${programData.type}`;
-                const relativeLink = `${basePath}/${programData.folder}/${year}/${month}/${fileNameWithExt}`;
+                const basePath = `/upload/mp3/${programDataJSON.type}`;
+                const relativeLink = `${basePath}/${programDataJSON.folder}/${year}/${month}/${fileNameWithExt}`;
 
-                // הצגת התוצאה (לינק מלא)
-                const outputEl = document.getElementById('output');
-                outputEl.value = relativeLink;
-
-                // הצגת התוצאה (שם קובץ בלבד ללא סיומת)
-                const fileNameOutputEl = document.getElementById('fileNameOutput');
-                fileNameOutputEl.value = baseFileName;
-
-                // הצגת התוצאה (יום ותאריך משולב)
-                const combinedDateOutputEl = document.getElementById('combinedDateOutput');
-                combinedDateOutputEl.value = combinedDate;
+                document.getElementById('output').value = relativeLink;
+                document.getElementById('fileNameOutput').value = baseFileName;
+                document.getElementById('combinedDateOutput').value = combinedDate;
                 
-                // עדכון כפתור הפתיחה בטאב חדש עם הקישור המלא
                 const openLinkBtn = document.getElementById('openLinkBtn');
                 openLinkBtn.href = `https://media.kcm.fm${relativeLink}`;
                 
                 document.getElementById('resultArea').classList.remove('hidden');
                 
-                // איפוס הודעות העתקה אם היו מוצגות
                 document.getElementById('copyMsg').classList.add('hidden');
                 document.getElementById('copyFileNameMsg').classList.add('hidden');
                 document.getElementById('copyCombinedDateMsg').classList.add('hidden');
             } finally {
-                // החזרת הכפתור למצב רגיל
                 btn.innerHTML = originalBtnHtml;
                 btn.disabled = false;
             }
         }
 
-        // פונקציית העתקה ללוח - לינק מלא
         function copyToClipboard() {
             const outputEl = document.getElementById('output');
-            
             const tempInput = document.createElement("input");
             tempInput.value = outputEl.value;
             document.body.appendChild(tempInput);
             tempInput.select();
-            
             try {
                 document.execCommand("copy");
                 const msg = document.getElementById('copyMsg');
                 msg.classList.remove('hidden');
-                setTimeout(() => {
-                    msg.classList.add('hidden');
-                }, 3000);
-            } catch (err) {
-                console.error('Failed to copy text: ', err);
-                alert(getAlertMsg('alertCopyFail'));
-            }
-            
+                setTimeout(() => { msg.classList.add('hidden'); }, 3000);
+            } catch (err) { alert(getAlertMsg('alertCopyFail')); }
             document.body.removeChild(tempInput);
         }
 
-        // פונקציית העתקה ללוח - שם קובץ בלבד
         function copyFileNameToClipboard() {
             const outputEl = document.getElementById('fileNameOutput');
-            
             const tempInput = document.createElement("input");
             tempInput.value = outputEl.value;
             document.body.appendChild(tempInput);
             tempInput.select();
-            
             try {
                 document.execCommand("copy");
                 const msg = document.getElementById('copyFileNameMsg');
                 msg.classList.remove('hidden');
-                setTimeout(() => {
-                    msg.classList.add('hidden');
-                }, 3000);
-            } catch (err) {
-                console.error('Failed to copy text: ', err);
-                alert(getAlertMsg('alertCopyFail'));
-            }
-            
+                setTimeout(() => { msg.classList.add('hidden'); }, 3000);
+            } catch (err) { alert(getAlertMsg('alertCopyFail')); }
             document.body.removeChild(tempInput);
         }
 
-        // פונקציית העתקה ללוח - יום ותאריך משולב
         function copyCombinedDateToClipboard() {
             const outputEl = document.getElementById('combinedDateOutput');
-            
             const tempInput = document.createElement("input");
             tempInput.value = outputEl.value;
             document.body.appendChild(tempInput);
             tempInput.select();
-            
             try {
                 document.execCommand("copy");
                 const msg = document.getElementById('copyCombinedDateMsg');
                 msg.classList.remove('hidden');
-                setTimeout(() => {
-                    msg.classList.add('hidden');
-                }, 3000);
-            } catch (err) {
-                console.error('Failed to copy text: ', err);
-                alert(getAlertMsg('alertCopyFail'));
-            }
-            
+                setTimeout(() => { msg.classList.add('hidden'); }, 3000);
+            } catch (err) { alert(getAlertMsg('alertCopyFail')); }
             document.body.removeChild(tempInput);
         }
     </script>
