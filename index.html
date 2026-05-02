@@ -97,9 +97,9 @@
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="generatedLinkLabel">הקישור שהופק:</label>
                         <div class="relative">
-                            <textarea id="output" readonly class="w-full px-4 py-3 pr-20 ltr:pl-20 ltr:pr-4 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 text-left font-mono text-sm h-24 resize-none focus:outline-none transition-colors" dir="ltr"></textarea>
+                            <textarea id="output" readonly class="w-full pl-12 pr-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 text-left font-mono text-sm h-24 resize-none focus:outline-none transition-colors" dir="ltr"></textarea>
                             
-                            <div class="absolute top-3 right-3 rtl:right-3 ltr:left-3 ltr:right-auto flex flex-col gap-2">
+                            <div class="absolute top-3 left-3 flex flex-col gap-2">
                                 <button onclick="copyToClipboard()" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n-title="copyLinkTitle" title="העתק קישור">
                                     <i class="fas fa-copy text-xl"></i>
                                 </button>
@@ -115,9 +115,9 @@
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="generatedFileNameLabel">שם הקובץ:</label>
                         <div class="relative">
-                            <input type="text" id="fileNameOutput" readonly class="w-full px-4 py-3 pr-12 ltr:pl-12 ltr:pr-4 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 text-left font-mono text-sm focus:outline-none transition-colors" dir="ltr">
+                            <input type="text" id="fileNameOutput" readonly class="w-full pl-12 pr-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 text-left font-mono text-sm focus:outline-none transition-colors" dir="ltr">
                             
-                            <div class="absolute top-3 right-3 rtl:right-3 ltr:left-3 ltr:right-auto flex flex-col gap-2">
+                            <div class="absolute top-3 left-3 flex flex-col gap-2">
                                 <button onclick="copyFileNameToClipboard()" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n-title="copyFileNameTitle" title="העתק שם קובץ">
                                     <i class="fas fa-copy text-xl"></i>
                                 </button>
@@ -130,7 +130,7 @@
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="generatedDateLabel">יום ותאריך:</label>
                         <div class="relative">
-                            <input type="text" id="combinedDateOutput" readonly class="w-full px-4 py-3 pr-12 ltr:pl-12 ltr:pr-4 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 text-right font-mono text-sm focus:outline-none transition-colors" dir="rtl">
+                            <input type="text" id="combinedDateOutput" readonly class="w-full pl-12 pr-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 text-right font-mono text-sm focus:outline-none transition-colors" dir="rtl">
                             
                             <div class="absolute top-3 left-3 flex flex-col gap-2">
                                 <button onclick="copyCombinedDateToClipboard()" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n-title="copyDateTitle" title="העתק יום ותאריך">
@@ -497,6 +497,22 @@
             document.getElementById('themeIcon').classList.replace('fa-moon', 'fa-sun');
         } else {
             document.documentElement.classList.remove('dark');
+        }
+
+        // פונקציית החלפת ערכת הנושא (כהה/בהיר) שהיתה חסרה
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('themeIcon');
+            
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.theme = 'light';
+                icon.classList.replace('fa-sun', 'fa-moon');
+            } else {
+                html.classList.add('dark');
+                localStorage.theme = 'dark';
+                icon.classList.replace('fa-moon', 'fa-sun');
+            }
         }
 
         // --- ניהול מודאל סידור רשימה ---
