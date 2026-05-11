@@ -202,6 +202,41 @@
                     <i id="quickCopyChevron" class="fas fa-chevron-down text-gray-500 dark:text-gray-400 transition-transform duration-300"></i>
                 </button>
                 
+                <div id="quickCopyContent" class="hidden px-6 pb-6 pt-0 border-t border-gray-100 dark:border-gray-700">
+                    <div class="flex flex-col gap-3 mt-4">
+                        <button onclick="copyQuickText(this)" class="w-full flex justify-between items-center px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors text-gray-700 dark:text-gray-200 font-medium group text-sm">
+                            <span data-i18n="qcDay1">יום ראשון</span>
+                            <i class="fas fa-copy text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+                        </button>
+                        <button onclick="copyQuickText(this)" class="w-full flex justify-between items-center px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors text-gray-700 dark:text-gray-200 font-medium group text-sm">
+                            <span data-i18n="qcDay2">יום שני</span>
+                            <i class="fas fa-copy text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+                        </button>
+                        <button onclick="copyQuickText(this)" class="w-full flex justify-between items-center px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors text-gray-700 dark:text-gray-200 font-medium group text-sm">
+                            <span data-i18n="qcDay3">יום שלישי</span>
+                            <i class="fas fa-copy text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+                        </button>
+                        <button onclick="copyQuickText(this)" class="w-full flex justify-between items-center px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors text-gray-700 dark:text-gray-200 font-medium group text-sm">
+                            <span data-i18n="qcDay4">יום רביעי</span>
+                            <i class="fas fa-copy text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+                        </button>
+                        <button onclick="copyQuickText(this)" class="w-full flex justify-between items-center px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors text-gray-700 dark:text-gray-200 font-medium group text-sm">
+                            <span data-i18n="qcDay5">יום חמישי</span>
+                            <i class="fas fa-copy text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+                        </button>
+                        <button onclick="copyQuickText(this)" class="w-full flex justify-between items-center px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors text-gray-700 dark:text-gray-200 font-medium group text-sm">
+                            <span data-i18n="qcErevShabbat">ערב שבת פרשת</span>
+                            <i class="fas fa-copy text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+                        </button>
+                        <button onclick="copyQuickText(this)" class="w-full flex justify-between items-center px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors text-gray-700 dark:text-gray-200 font-medium group text-sm">
+                            <span data-i18n="qcMotash">מוצאי שבת פרשת</span>
+                            <i class="fas fa-copy text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+                        </button>
+                    </div>
+                    <div id="quickCopyMsg" class="text-green-600 dark:text-green-400 text-sm font-semibold mt-4 hidden text-center" data-i18n="quickCopySuccessMsg">הטקסט הועתק בהצלחה!</div>
+                </div>
+            </div>
+
             <!-- Audio Player Panel (Custom Design) -->
             <div id="playerPanel" class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full p-6 transition-colors duration-300 hidden">
                 <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-5 text-center border-b border-gray-200 dark:border-gray-700 pb-3" data-i18n="audioPlayerTitle">האזנה להקלטה</h3>
