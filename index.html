@@ -30,6 +30,45 @@
         .dark .custom-scrollbar::-webkit-scrollbar-thumb {
             background-color: #475569;
         }
+        
+        /* עיצוב בר ההתקדמות של הנגן */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 14px;
+            width: 14px;
+            border-radius: 50%;
+            background: #2563eb;
+            cursor: pointer;
+            margin-top: -5px;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+        .dark input[type=range]::-webkit-slider-thumb {
+            background: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #e2e8f0;
+            border-radius: 2px;
+        }
+        .dark input[type=range]::-webkit-slider-runnable-track {
+            background: #334155;
+        }
+        
+        /* כפתור פליי עם מעבר רך */
+        .play-btn-transition {
+            transition: all 0.2s ease-in-out;
+        }
+        .play-btn-transition:active {
+            transform: scale(0.95);
+        }
     </style>
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100 dark:bg-gray-900 transition-colors duration-300 relative">
@@ -153,47 +192,62 @@
             </div>
         </div>
 
-        <!-- Quick Copy Side Panel (Collapsible) -->
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full lg:w-72 transition-colors duration-300 self-start">
-            <button onclick="toggleQuickCopy()" class="w-full flex justify-between items-center p-6 bg-transparent focus:outline-none group">
-                <h3 class="text-xl font-bold text-gray-800 dark:text-white" data-i18n="quickCopyTitle">העתקה מהירה</h3>
-                <i id="quickCopyChevron" class="fas fa-chevron-down text-gray-500 dark:text-gray-400 transition-transform duration-300"></i>
-            </button>
+        <!-- Side Panels Column (Quick Copy + Player) -->
+        <div class="flex flex-col gap-6 w-full lg:w-72 self-start">
             
-            <div id="quickCopyContent" class="hidden px-6 pb-6 pt-0 border-t border-gray-100 dark:border-gray-700">
-                <div class="flex flex-col gap-3 mt-4">
-                    <button onclick="copyQuickText(this)" class="w-full flex justify-between items-center px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors text-gray-700 dark:text-gray-200 font-medium group text-sm">
-                        <span data-i18n="qcDay1">יום ראשון</span>
-                        <i class="fas fa-copy text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+            <!-- Quick Copy Side Panel (Collapsible) -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full transition-colors duration-300">
+                <button onclick="toggleQuickCopy()" class="w-full flex justify-between items-center p-6 bg-transparent focus:outline-none group">
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-white" data-i18n="quickCopyTitle">העתקה מהירה</h3>
+                    <i id="quickCopyChevron" class="fas fa-chevron-down text-gray-500 dark:text-gray-400 transition-transform duration-300"></i>
+                </button>
+                
+            <!-- Audio Player Panel (Custom Design) -->
+            <div id="playerPanel" class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full p-6 transition-colors duration-300 hidden">
+                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-5 text-center border-b border-gray-200 dark:border-gray-700 pb-3" data-i18n="audioPlayerTitle">האזנה להקלטה</h3>
+                
+                <!-- אלמנט האודיו הנסתר -->
+                <audio id="audioElement" preload="metadata">
+                    <source id="audioSource" src="" type="audio/mpeg">
+                </audio>
+
+                <!-- הנגן המעוצב -->
+                <div class="flex flex-col items-center gap-4 mt-2">
+                    
+                    <!-- כפתור פליי/פאוז מרכזי -->
+                    <button id="playPauseBtn" onclick="togglePlay()" class="w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center shadow-lg play-btn-transition focus:outline-none focus:ring-4 focus:ring-blue-500/50">
+                        <i id="playIcon" class="fas fa-play text-2xl ml-1 rtl:ml-0 rtl:mr-1"></i>
                     </button>
-                    <button onclick="copyQuickText(this)" class="w-full flex justify-between items-center px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors text-gray-700 dark:text-gray-200 font-medium group text-sm">
-                        <span data-i18n="qcDay2">יום שני</span>
-                        <i class="fas fa-copy text-gray-400 group-hover:text-blue-500 transition-colors"></i>
-                    </button>
-                    <button onclick="copyQuickText(this)" class="w-full flex justify-between items-center px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors text-gray-700 dark:text-gray-200 font-medium group text-sm">
-                        <span data-i18n="qcDay3">יום שלישי</span>
-                        <i class="fas fa-copy text-gray-400 group-hover:text-blue-500 transition-colors"></i>
-                    </button>
-                    <button onclick="copyQuickText(this)" class="w-full flex justify-between items-center px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors text-gray-700 dark:text-gray-200 font-medium group text-sm">
-                        <span data-i18n="qcDay4">יום רביעי</span>
-                        <i class="fas fa-copy text-gray-400 group-hover:text-blue-500 transition-colors"></i>
-                    </button>
-                    <button onclick="copyQuickText(this)" class="w-full flex justify-between items-center px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors text-gray-700 dark:text-gray-200 font-medium group text-sm">
-                        <span data-i18n="qcDay5">יום חמישי</span>
-                        <i class="fas fa-copy text-gray-400 group-hover:text-blue-500 transition-colors"></i>
-                    </button>
-                    <button onclick="copyQuickText(this)" class="w-full flex justify-between items-center px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors text-gray-700 dark:text-gray-200 font-medium group text-sm">
-                        <span data-i18n="qcErevShabbat">ערב שבת פרשת</span>
-                        <i class="fas fa-copy text-gray-400 group-hover:text-blue-500 transition-colors"></i>
-                    </button>
-                    <button onclick="copyQuickText(this)" class="w-full flex justify-between items-center px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors text-gray-700 dark:text-gray-200 font-medium group text-sm">
-                        <span data-i18n="qcMotash">מוצאי שבת פרשת</span>
-                        <i class="fas fa-copy text-gray-400 group-hover:text-blue-500 transition-colors"></i>
-                    </button>
+                    
+                    <!-- ציר זמן ושליטה -->
+                    <div class="w-full flex flex-col gap-2">
+                        <input type="range" id="progressBar" value="0" min="0" max="100" class="w-full focus:outline-none">
+                        
+                        <div class="flex justify-between w-full text-xs font-semibold text-gray-500 dark:text-gray-400 font-mono" dir="ltr">
+                            <span id="currentTimeDisplay">00:00</span>
+                            <span id="durationDisplay">00:00</span>
+                        </div>
+                    </div>
+
+                    <!-- כפתור השתקה ושליטת עוצמה -->
+                    <div class="w-full flex items-center justify-between mt-1">
+                        <button onclick="toggleMute()" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors focus:outline-none p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <i id="muteIcon" class="fas fa-volume-up text-lg"></i>
+                        </button>
+                        
+                        <!-- מחוון קובץ (אופציונלי, כרגע מראה אנימציית "גלים" קטנה כשהוא מנגן) -->
+                        <div id="playingWaves" class="flex gap-1 items-end h-4 opacity-0 transition-opacity">
+                            <div class="w-1 bg-blue-500 rounded-t-sm animate-[bounce_1s_infinite] h-full"></div>
+                            <div class="w-1 bg-blue-500 rounded-t-sm animate-[bounce_1s_infinite_0.2s] h-3/4"></div>
+                            <div class="w-1 bg-blue-500 rounded-t-sm animate-[bounce_1s_infinite_0.4s] h-full"></div>
+                        </div>
+                    </div>
+
                 </div>
-                <div id="quickCopyMsg" class="text-green-600 dark:text-green-400 text-sm font-semibold mt-4 hidden text-center" data-i18n="quickCopySuccessMsg">הטקסט הועתק בהצלחה!</div>
             </div>
+
         </div>
+
     </div>
 
     <!-- Modal לסידור הרשימה -->
@@ -221,6 +275,24 @@
     </div>
 
     <script>
+        // פונקציות בטוחות לגישה לזיכרון הדפדפן (מונע שגיאות קריסה)
+        function safeGetStorage(key, defaultVal) {
+            try {
+                const val = localStorage.getItem(key);
+                return val ? val : defaultVal;
+            } catch (e) {
+                return defaultVal;
+            }
+        }
+
+        function safeSetStorage(key, val) {
+            try {
+                localStorage.setItem(key, val);
+            } catch (e) {
+                // התעלמות משגיאות אם חסום
+            }
+        }
+
         // --- מסד הנתונים הראשי של התוכניות ---
         const programsData = [
             { id: "prog_Gil_Israelov", value: '{"type":"programs", "folder":"Gil_Israelov", "prefix":"Gil_Israelov", "yearLen":4}' },
@@ -257,9 +329,9 @@
         // טעינת הסדר המותאם אישית מהזיכרון
         let currentOrder = [];
         function initOrder() {
-            try {
-                const saved = localStorage.getItem('app_programs_order');
-                if (saved) {
+            const saved = safeGetStorage('app_programs_order', null);
+            if (saved) {
+                try {
                     currentOrder = JSON.parse(saved);
                     // הוספת תוכניות חדשות שאולי נוספו למערכת ולא היו בסדר השמור
                     programsData.forEach(p => {
@@ -267,11 +339,11 @@
                     });
                     // סינון תוכניות ישנות שאולי הוסרו
                     currentOrder = currentOrder.filter(id => programsData.some(p => p.id === id));
-                } else {
-                    currentOrder = programsData.map(p => p.id); // ברירת מחדל
+                } catch(e) {
+                    currentOrder = programsData.map(p => p.id);
                 }
-            } catch (e) {
-                currentOrder = programsData.map(p => p.id);
+            } else {
+                currentOrder = programsData.map(p => p.id); // ברירת מחדל
             }
         }
         initOrder();
@@ -312,6 +384,7 @@
                 qcErevShabbat: "ערב שבת פרשת",
                 qcMotash: "מוצאי שבת פרשת",
                 quickCopySuccessMsg: "הטקסט הועתק בהצלחה!",
+                audioPlayerTitle: "האזנה להקלטה",
                 
                 // תרגומי מודאל הסידור
                 editOrderBtnTitle: "שנה סדר רשימה",
@@ -385,6 +458,7 @@
                 qcErevShabbat: "ערב שבת פרשת",
                 qcMotash: "מוצאי שבת פרשת",
                 quickCopySuccessMsg: "Text copied successfully!",
+                audioPlayerTitle: "Listen to Recording",
                 
                 // Reorder Modal Translations
                 editOrderBtnTitle: "Edit List Order",
@@ -426,7 +500,7 @@
             }
         };
 
-        let currentLang = localStorage.getItem('app_lang') || 'he';
+        let currentLang = safeGetStorage('app_lang', 'he');
 
         // רינדור רשימת הבחירה לפי הסדר האישי
         function populateSelect() {
@@ -454,9 +528,9 @@
             applyLanguage(currentLang);
         }
 
-        function toggleLanguage() {
+        window.toggleLanguage = function() {
             currentLang = currentLang === 'he' ? 'en' : 'he';
-            localStorage.setItem('app_lang', currentLang);
+            safeSetStorage('app_lang', currentLang);
             applyLanguage(currentLang);
         }
 
@@ -492,25 +566,25 @@
         }
 
         // אתחול מצב כהה לפי העדפות השמורות בדפדפן
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        const savedTheme = safeGetStorage('theme', '');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
             document.getElementById('themeIcon').classList.replace('fa-moon', 'fa-sun');
         } else {
             document.documentElement.classList.remove('dark');
         }
 
-        // פונקציית החלפת ערכת הנושא (כהה/בהיר) שהיתה חסרה
-        function toggleTheme() {
+        window.toggleTheme = function() {
             const html = document.documentElement;
             const icon = document.getElementById('themeIcon');
             
             if (html.classList.contains('dark')) {
                 html.classList.remove('dark');
-                localStorage.theme = 'light';
+                safeSetStorage('theme', 'light');
                 icon.classList.replace('fa-sun', 'fa-moon');
             } else {
                 html.classList.add('dark');
-                localStorage.theme = 'dark';
+                safeSetStorage('theme', 'dark');
                 icon.classList.replace('fa-moon', 'fa-sun');
             }
         }
@@ -518,7 +592,7 @@
         // --- ניהול מודאל סידור רשימה ---
         let tempOrder = []; // מערך זמני בזמן שהמודאל פתוח
 
-        function openReorderModal() {
+        window.openReorderModal = function() {
             tempOrder = [...currentOrder];
             renderReorderList();
             
@@ -530,7 +604,7 @@
             }, 10);
         }
 
-        function closeReorderModal() {
+        window.closeReorderModal = function() {
             const modal = document.getElementById('reorderModal');
             modal.classList.add('opacity-0');
             modal.querySelector('div').classList.add('scale-95');
@@ -563,7 +637,7 @@
             });
         }
 
-        function moveItem(index, direction) {
+        window.moveItem = function(index, direction) {
             if (index + direction < 0 || index + direction >= tempOrder.length) return;
             const temp = tempOrder[index];
             tempOrder[index] = tempOrder[index + direction];
@@ -571,14 +645,14 @@
             renderReorderList(); // רינדור מחדש של הרשימה בחלון צף
         }
 
-        function saveOrder() {
+        window.saveOrder = function() {
             currentOrder = [...tempOrder];
-            localStorage.setItem('app_programs_order', JSON.stringify(currentOrder));
+            safeSetStorage('app_programs_order', JSON.stringify(currentOrder));
             initLanguage(); // ירנדר מחדש גם את ה-Select הראשי ויחיל שפה
             closeReorderModal();
         }
 
-        function resetOrder() {
+        window.resetOrder = function() {
             if(confirm(currentLang === 'he' ? "האם אתה בטוח שברצונך לשחזר את הרשימה למצבה המקורי?" : "Are you sure you want to reset the list to its original order?")) {
                 tempOrder = programsData.map(p => p.id);
                 renderReorderList();
@@ -589,7 +663,7 @@
         initLanguage();
 
         // פונקציית פתיחה/סגירה של פאנל העתקה מהירה
-        function toggleQuickCopy() {
+        window.toggleQuickCopy = function() {
             const content = document.getElementById('quickCopyContent');
             const chevron = document.getElementById('quickCopyChevron');
             
@@ -603,7 +677,7 @@
         }
 
         // פונקציית העתקה מהירה מפאנל הצד
-        function copyQuickText(btnElement) {
+        window.copyQuickText = function(btnElement) {
             const textToCopy = btnElement.querySelector('span').innerText;
             const tempInput = document.createElement("input");
             tempInput.value = textToCopy;
@@ -626,7 +700,7 @@
         }
 
         // פונקציית יצירת הקישור
-        async function generateLink() {
+        window.generateLink = async function() {
             const programSelect = document.getElementById('programSelect').value;
             const dateVal = document.getElementById('dateSelect').value;
             const partVal = document.getElementById('partSelect').value.trim().toLowerCase();
@@ -727,16 +801,36 @@
 
                 const basePath = `/upload/mp3/${programDataJSON.type}`;
                 const relativeLink = `${basePath}/${programDataJSON.folder}/${year}/${month}/${fileNameWithExt}`;
+                const fullLink = `https://media.kcm.fm${relativeLink}`;
 
                 document.getElementById('output').value = relativeLink;
                 document.getElementById('fileNameOutput').value = baseFileName;
                 document.getElementById('combinedDateOutput').value = combinedDate;
                 
                 const openLinkBtn = document.getElementById('openLinkBtn');
-                openLinkBtn.href = `https://media.kcm.fm${relativeLink}`;
+                openLinkBtn.href = fullLink;
                 
+                // עדכון הנגן המותאם אישית
+                const audioSource = document.getElementById('audioSource');
+                const audioElement = document.getElementById('audioElement');
+                
+                // איפוס UI של הנגן
+                const playIcon = document.getElementById('playIcon');
+                playIcon.classList.replace('fa-pause', 'fa-play');
+                document.getElementById('playingWaves').classList.add('opacity-0');
+                document.getElementById('progressBar').value = 0;
+                document.getElementById('currentTimeDisplay').innerText = "00:00";
+                document.getElementById('durationDisplay').innerText = "--:--"; // יתעדכן כשהמטא-דאטא ייטען
+                
+                // טעינת הקובץ החדש
+                audioSource.src = fullLink;
+                audioElement.load();
+
+                // חשיפת האזורים
                 document.getElementById('resultArea').classList.remove('hidden');
+                document.getElementById('playerPanel').classList.remove('hidden');
                 
+                // איפוס הודעות
                 document.getElementById('copyMsg').classList.add('hidden');
                 document.getElementById('copyFileNameMsg').classList.add('hidden');
                 document.getElementById('copyCombinedDateMsg').classList.add('hidden');
@@ -746,7 +840,7 @@
             }
         }
 
-        function copyToClipboard() {
+        window.copyToClipboard = function() {
             const outputEl = document.getElementById('output');
             const tempInput = document.createElement("input");
             tempInput.value = outputEl.value;
@@ -761,7 +855,7 @@
             document.body.removeChild(tempInput);
         }
 
-        function copyFileNameToClipboard() {
+        window.copyFileNameToClipboard = function() {
             const outputEl = document.getElementById('fileNameOutput');
             const tempInput = document.createElement("input");
             tempInput.value = outputEl.value;
@@ -776,19 +870,85 @@
             document.body.removeChild(tempInput);
         }
 
-        function copyCombinedDateToClipboard() {
-            const outputEl = document.getElementById('combinedDateOutput');
-            const tempInput = document.createElement("input");
-            tempInput.value = outputEl.value;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            try {
-                document.execCommand("copy");
-                const msg = document.getElementById('copyCombinedDateMsg');
-                msg.classList.remove('hidden');
-                setTimeout(() => { msg.classList.add('hidden'); }, 3000);
-            } catch (err) { alert(getAlertMsg('alertCopyFail')); }
-            document.body.removeChild(tempInput);
+        // --- פונקציות הנגן המותאם אישית ---
+        const audio = document.getElementById('audioElement');
+        const playBtn = document.getElementById('playPauseBtn');
+        const playIcon = document.getElementById('playIcon');
+        const progressBar = document.getElementById('progressBar');
+        const currentTimeDisplay = document.getElementById('currentTimeDisplay');
+        const durationDisplay = document.getElementById('durationDisplay');
+        const muteIcon = document.getElementById('muteIcon');
+        const playingWaves = document.getElementById('playingWaves');
+
+        // פורמט זמן לשניות ודקות (למשל: 03:45)
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "00:00";
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // טעינת זמן כולל כשהקובץ נטען
+        audio.addEventListener('loadedmetadata', () => {
+            progressBar.max = audio.duration;
+            durationDisplay.innerText = formatTime(audio.duration);
+        });
+
+        // עדכון בר ההתקדמות בזמן ניגון
+        audio.addEventListener('timeupdate', () => {
+            progressBar.value = audio.currentTime;
+            currentTimeDisplay.innerText = formatTime(audio.currentTime);
+            
+            // עדכון פס המילוי הכחול של טווח הנגן
+            const percentage = (audio.currentTime / audio.duration) * 100;
+            const bgLight = document.documentElement.classList.contains('dark') ? '#334155' : '#e2e8f0';
+            const bgFill = document.documentElement.classList.contains('dark') ? '#60a5fa' : '#2563eb';
+            progressBar.style.background = `linear-gradient(to right, ${bgFill} ${percentage}%, ${bgLight} ${percentage}%)`;
+        });
+
+        // קפיצה בזמן בעת גרירת הבר
+        progressBar.addEventListener('input', () => {
+            audio.currentTime = progressBar.value;
+            currentTimeDisplay.innerText = formatTime(progressBar.value);
+        });
+
+        // שינוי מצב פליי/פאוז
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                playIcon.classList.replace('fa-play', 'fa-pause');
+                // יישור האייקון למרכז כשהוא משתנה ל-pause
+                playIcon.classList.remove('ml-1', 'rtl:ml-0', 'rtl:mr-1');
+                playingWaves.classList.remove('opacity-0');
+            } else {
+                audio.pause();
+                playIcon.classList.replace('fa-pause', 'fa-play');
+                // החזרת ההזחה לאייקון הפליי
+                playIcon.classList.add('ml-1', 'rtl:ml-0', 'rtl:mr-1');
+                playingWaves.classList.add('opacity-0');
+            }
+        }
+
+        // עצירה בסוף השיר
+        audio.addEventListener('ended', () => {
+            playIcon.classList.replace('fa-pause', 'fa-play');
+            playIcon.classList.add('ml-1', 'rtl:ml-0', 'rtl:mr-1');
+            playingWaves.classList.add('opacity-0');
+            progressBar.value = 0;
+            audio.currentTime = 0;
+            progressBar.style.background = 'transparent';
+        });
+
+        // שינוי מצב השתקה
+        function toggleMute() {
+            audio.muted = !audio.muted;
+            if (audio.muted) {
+                muteIcon.classList.replace('fa-volume-up', 'fa-volume-mute');
+                muteIcon.classList.add('text-red-500');
+            } else {
+                muteIcon.classList.replace('fa-volume-mute', 'fa-volume-up');
+                muteIcon.classList.remove('text-red-500');
+            }
         }
     </script>
 </body>
