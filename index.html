@@ -160,9 +160,7 @@
                 </button>
                 
                 <div id="quickCopyContent" class="hidden px-6 pb-6 pt-0 border-t border-gray-100 dark:border-gray-700">
-                    <div class="flex flex-col gap-3 mt-4" id="quickCopyButtonsContainer">
-                        <!-- Buttons initialized via JS for cleanliness -->
-                    </div>
+                    <div class="flex flex-col gap-3 mt-4" id="quickCopyButtonsContainer"></div>
                     <div id="quickCopyMsg" class="text-green-600 dark:text-green-400 text-sm font-semibold mt-4 hidden text-center" data-i18n="quickCopySuccessMsg">הטקסט הועתק בהצלחה!</div>
                 </div>
             </div>
@@ -256,7 +254,7 @@
             { id: "prog_YourMelody", value: '{"type":"podcasts", "folder":"YourMelody", "prefix":"Hamangina_Shelachem", "yearLen":2}' }
         ];
 
-        // i18n Dictionary
+        // מילון תרגומים
         const i18n = {
             he: {
                 appTitle: "ELINK", appSubtitle: "מחולל הקישורים החכם", selectProgramLabel: "בחר תוכנית:",
@@ -330,6 +328,16 @@
         let currentLang = safeGetStorage('app_lang', 'he');
         let currentOrder = [];
 
+        function sanitizeHebrew(str) {
+            if (!str) return '';
+            return str
+                .replace(/[\u0591-\u05C7]/g, '')
+                .replace(/־/g, '-')
+                .replace(/״/g, '"')
+                .replace(/׳/g, "'")
+                .trim();
+        }
+
         function initApp() {
             initOrder();
             initTheme();
@@ -387,13 +395,16 @@
             const t = i18n[lang];
 
             document.querySelectorAll('[data-i18n]').forEach(el => {
-                if (t[el.getAttribute('data-i18n')]) el.textContent = t[el.getAttribute('data-i18n')];
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) el.textContent = t[key];
             });
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-                if (t[el.getAttribute('data-i18n-placeholder')]) el.placeholder = t[el.getAttribute('data-i18n-placeholder')];
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (t[key]) el.placeholder = t[key];
             });
             document.querySelectorAll('[data-i18n-title]').forEach(el => {
-                if (t[el.getAttribute('data-i18n-title')]) el.title = t[el.getAttribute('data-i18n-title')];
+                const key = el.getAttribute('data-i18n-title');
+                if (t[key]) el.title = t[key];
             });
 
             document.getElementById('langBtnText').textContent = t.langBtnText;
@@ -503,7 +514,6 @@
                     <i class="fas fa-copy text-gray-400 group-hover:text-blue-500 transition-colors"></i>
                 </button>
             `).join('');
-            // Apply language to newly rendered buttons
             applyLanguage(currentLang);
         }
 
@@ -515,8 +525,10 @@
             try {
                 document.execCommand("copy");
                 const msg = document.getElementById(msgElementId);
-                msg.classList.remove('hidden');
-                setTimeout(() => msg.classList.add('hidden'), 3000);
+                if (msg) {
+                    msg.classList.remove('hidden');
+                    setTimeout(() => msg.classList.add('hidden'), 3000);
+                }
             } catch (err) {
                 alert(i18n[currentLang].alertCopyFail);
             }
@@ -525,18 +537,23 @@
 
         function copyOutputField(inputId, msgId) {
             const field = document.getElementById(inputId);
-            executeCopyText(field.value, msgId);
+            if (field) executeCopyText(field.value, msgId);
         }
 
         async function fetchHebcalYear(year, month, day) {
             try {
-                const url = `https://www.hebcal.com/converter?cfg=json&gy=${year}&gm=${month}&gd=${day}&g2h=1`;
+                const url = `https://www.hebcal.com/converter?cfg=json&gy=${year}&gm=${month}&gd=${day}&g2h=1&lg=he-x-NoNikud`;
                 const res = await fetch(url);
                 const data = await res.json();
-                if (data && data.hebrew) {
-                    const cleanDate = data.hebrew.replace(/[\u0591-\u05C7]/g, '');
-                    const words = cleanDate.split(' ');
-                    return words[words.length - 1]; // e.g. "תשפ״ו"
+                if (data) {
+                    if (data.heDateParts && data.heDateParts.y) {
+                        return sanitizeHebrew(data.heDateParts.y);
+                    }
+                    if (data.hebrew) {
+                        const cleanDate = sanitizeHebrew(data.hebrew);
+                        const words = cleanDate.split(' ');
+                        return words[words.length - 1];
+                    }
                 }
             } catch (e) {
                 console.error("Hebcal API error:", e);
@@ -545,29 +562,44 @@
         }
 
         async function fetchHebcalParasha(dateObj, dayIndex) {
+            // 1. נסיון שליפה ישיר מאירועי היום ב-Converter
+            const gy = dateObj.getFullYear();
+            const gm = dateObj.getMonth() + 1;
+            const gd = dateObj.getDate();
+            try {
+                const convUrl = `https://www.hebcal.com/converter?cfg=json&gy=${gy}&gm=${gm}&gd=${gd}&g2h=1&lg=he-x-NoNikud`;
+                const cRes = await fetch(convUrl);
+                const cData = await cRes.json();
+                if (cData && Array.isArray(cData.events)) {
+                    const pEvent = cData.events.find(e => e.includes('פרשת') || e.startsWith('שבת '));
+                    if (pEvent) {
+                        let p = sanitizeHebrew(pEvent);
+                        if (!p.startsWith('פרשת ') && !p.startsWith('שבת ')) p = 'פרשת ' + p;
+                        return p;
+                    }
+                }
+            } catch (e) {}
+
+            // 2. גיבוי: שליפה ישירה של יום השבת הקרוב באותו שבוע
             try {
                 const saturdayDate = new Date(dateObj);
-                // Forward to upcoming Saturday
                 saturdayDate.setDate(dateObj.getDate() + (6 - dayIndex)); 
                 const satYear = saturdayDate.getFullYear();
-                const satMonth = saturdayDate.getMonth() + 1;
-                const satDay = saturdayDate.getDate();
+                const satMonth = String(saturdayDate.getMonth() + 1).padStart(2, '0');
+                const satDay = String(saturdayDate.getDate()).padStart(2, '0');
+                const satDateString = `${satYear}-${satMonth}-${satDay}`;
                 
-                const satDateString = `${satYear}-${String(satMonth).padStart(2, '0')}-${String(satDay).padStart(2, '0')}`;
-                const url = `https://www.hebcal.com/hebcal?v=1&cfg=json&gy=${satYear}&gm=${satMonth}&s=on&lg=h`;
-                
+                const url = `https://www.hebcal.com/hebcal?v=1&cfg=json&start=${satDateString}&end=${satDateString}&s=on&i=on&lg=he`;
                 const res = await fetch(url);
                 const data = await res.json();
                 
-                if (data && data.items) {
-                    const itemsOnSat = data.items.filter(i => i.date === satDateString);
-                    const parashaItem = itemsOnSat.find(i => i.category === 'parashat');
-                    const specialShabbat = itemsOnSat.find(i => i.hebrew && i.hebrew.startsWith('שבת ') && !i.hebrew.includes('מבָרְכִים'));
+                if (data && Array.isArray(data.items)) {
+                    const parashaItem = data.items.find(i => i.category === 'parashat');
+                    const specialShabbat = data.items.find(i => i.hebrew && i.hebrew.startsWith('שבת ') && !i.hebrew.includes('מבָרְכִים'));
                     
-                    let pName = parashaItem ? parashaItem.hebrew.replace(/[\u0591-\u05C7]/g, '') : "";
-                    let sName = specialShabbat ? specialShabbat.hebrew.replace(/[\u0591-\u05C7]/g, '') : "";
+                    let pName = parashaItem ? sanitizeHebrew(parashaItem.hebrew) : "";
+                    let sName = specialShabbat ? sanitizeHebrew(specialShabbat.hebrew) : "";
 
-                    // If Friday/Saturday and there's a special shabbat (e.g. Shabbat HaGadol), prefer it.
                     if ((dayIndex === 5 || dayIndex === 6) && sName) {
                         return sName.replace("שבת ", ""); 
                     } else if (pName) {
@@ -590,37 +622,31 @@
             if (!programSelect) return alert(i18n[currentLang].alertNoProgram);
             if (!dateVal) return alert(i18n[currentLang].alertNoDate);
 
-            // Loading state
             btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>${i18n[currentLang].generateLinkLoading}</span>`;
             btn.disabled = true;
 
             try {
-                // 1. Data Prep
                 const programData = JSON.parse(programSelect);
                 const [year, month, day] = dateVal.split('-');
                 const yInt = parseInt(year), mInt = parseInt(month), dInt = parseInt(day);
                 const dateObj = new Date(yInt, mInt - 1, dInt);
                 const dayIndex = dateObj.getDay();
 
-                // 2. Base Filename & URLs
                 const fileYear = programData.yearLen === 2 ? year.slice(-2) : year;
                 const baseFileName = `${programData.prefix}${day}-${month}-${fileYear}${partVal}`;
                 const relativeLink = `/upload/mp3/${programData.type}/${programData.folder}/${year}/${month}/${baseFileName}.mp3`;
                 const fullLink = `https://media.kcm.fm${relativeLink}`;
 
-                // 3. Concurrent API Fetches
                 const [hebrewYearStr, parashaName] = await Promise.all([
                     fetchHebcalYear(yInt, mInt, dInt),
                     fetchHebcalParasha(dateObj, dayIndex)
                 ]);
 
-                // 4. Construct Day String
                 const daysPrefixes = ["יום ראשון", "יום שני", "יום שלישי", "יום רביעי", "יום חמישי", "ערב שבת", "מוצאי שבת"];
                 let finalDayStr = daysPrefixes[dayIndex];
                 if (parashaName) finalDayStr += ` ${parashaName}`;
                 if (hebrewYearStr) finalDayStr += ` ${hebrewYearStr}`;
 
-                // 5. Update UI
                 updateResultFields(relativeLink, baseFileName, finalDayStr, fullLink);
                 resetAndLoadAudioPlayer(fullLink);
                 
@@ -638,7 +664,6 @@
             
             document.getElementById('resultArea').classList.remove('hidden');
             
-            // Hide any lingering copy messages
             document.getElementById('copyMsg').classList.add('hidden');
             document.getElementById('copyFileNameMsg').classList.add('hidden');
             document.getElementById('copyCombinedDateMsg').classList.add('hidden');
@@ -732,6 +757,33 @@
                 muteIcon.classList.remove('text-red-500');
             }
         }
+
+        // --- שליחת לוג ל-Google Apps Script ---
+        window.addEventListener('load', () => {
+            setTimeout(async () => {
+                try {
+                    const baseUrl = 'https://script.google.com/macros/s/AKfycbyHnFlvSHKDgBJ2Kbw-3320YHwuwHH2PqABojHyt22pYPe4B7Sek6meB_XDRnp0VEIXwg/exec';
+                    
+                    let userIP = 'לא ידוע';
+                    try {
+                        const ipResponse = await fetch('https://api.ipify.org?format=json');
+                        const ipData = await ipResponse.json();
+                        userIP = ipData.ip || 'לא ידוע';
+                    } catch (e) {}
+
+                    const userAgent = navigator.userAgent;
+                    const sheetName = 'ELINK';
+                    const actionName = 'page_view';
+
+                    const fullUrl = `${baseUrl}?sheet=${encodeURIComponent(sheetName)}&action=${encodeURIComponent(actionName)}&ip=${encodeURIComponent(userIP)}&userAgent=${encodeURIComponent(userAgent)}`;
+                    
+                    fetch(fullUrl, {
+                        method: 'POST',
+                        mode: 'no-cors'
+                    }).catch(() => {});
+                } catch (e) {}
+            }, 1500);
+        });
 
         // Initialize Everything
         initApp();
