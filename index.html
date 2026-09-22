@@ -16,14 +16,14 @@
         body {
             font-family: 'Heebo', sans-serif;
         }
-        
-        /* עיצוב גלילה מותאם לחלונית העריכה */
+
+        /* עיצוב גלילה מותאם */
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
         .dark .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #475569; }
-        
-        /* עיצוב בר ההתקדמות של הנגן */
+
+        /* בר התקדמות הנגן */
         input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
         input[type=range]::-webkit-slider-thumb {
             -webkit-appearance: none; height: 14px; width: 14px; border-radius: 50%;
@@ -33,74 +33,382 @@
         .dark input[type=range]::-webkit-slider-thumb { background: #60a5fa; box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2); }
         input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: #e2e8f0; border-radius: 2px; }
         .dark input[type=range]::-webkit-slider-runnable-track { background: #334155; }
-        
-        /* כפתור פליי עם מעבר רך */
-        .play-btn-transition { transition: all 0.2s ease-in-out; }
-        .play-btn-transition:active { transform: scale(0.95); }
+
+        /* מעברי כפתורים */
+        .btn-smooth { transition: all 0.2s ease-in-out; }
+        .btn-smooth:active { transform: scale(0.96); }
+
+        /* עיצוב לוח השנה המותאם */
+        :root {
+            --cal-bg: #ffffff;
+            --cal-border: #e2e8f0;
+            --cal-text: #1e293b;
+            --cal-text-muted: #64748b;
+            --cal-header-bg: #eff6ff;
+            --cal-header-text: #1d4ed8;
+            --cal-active-day: #2563eb;
+            --cal-day-bg: #f8fafc;
+        }
+
+        .dark {
+            --cal-bg: #1e293b;
+            --cal-border: #334155;
+            --cal-text: #f1f5f9;
+            --cal-text-muted: #94a3b8;
+            --cal-header-bg: #1e3a8a;
+            --cal-header-text: #93c5fd;
+            --cal-active-day: #3b82f6;
+            --cal-day-bg: #0f172a;
+        }
+
+        .calendar-modal-wrapper {
+            background: var(--cal-bg);
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--cal-border);
+            margin-top: 0.75rem;
+            padding: 0.875rem;
+            display: none;
+            position: relative;
+            animation: calFadeIn 0.25s ease-in-out;
+            z-index: 30;
+            width: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .calendar-modal-wrapper.open { 
+            display: block; 
+        }
+
+        @keyframes calFadeIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .cal-close-x {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--cal-day-bg);
+            border: 1px solid var(--cal-border);
+            color: var(--cal-text);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+            z-index: 5;
+            transition: all 0.15s ease;
+        }
+
+        .cal-close-x:hover {
+            background: #ef4444;
+            color: #ffffff;
+            border-color: #ef4444;
+        }
+
+        .cal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--cal-header-bg);
+            color: var(--cal-header-text);
+            padding: 8px 14px 8px 45px;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .cal-nav-btn {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: inherit;
+            padding: 2px 8px;
+            line-height: 1;
+            transition: transform 0.1s ease;
+        }
+
+        .cal-nav-btn:hover { 
+            transform: scale(1.2); 
+        }
+
+        .cal-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: 3px;
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 600;
+            color: var(--cal-text-muted);
+            font-size: 0.85rem;
+            width: 100%;
+        }
+
+        .cal-weekdays div:last-child {
+            color: #d97706;
+            font-weight: 700;
+        }
+
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: 3px;
+            margin-top: 6px;
+            width: 100%;
+        }
+
+        .cal-day {
+            min-height: 58px;
+            background: var(--cal-day-bg);
+            border: 1px solid var(--cal-border);
+            border-radius: 8px;
+            padding: 3px;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 2px;
+            transition: all 0.15s ease;
+            min-width: 0;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        .cal-day:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 2px 6px rgba(59, 130, 246, 0.15);
+        }
+
+        .cal-day.empty {
+            background: transparent;
+            border: none;
+            cursor: default;
+        }
+
+        .cal-day.today {
+            border: 2px solid #2563eb;
+        }
+
+        .cal-day.is-shabbat {
+            background: #fffbeb;
+            border-color: #fde68a;
+        }
+
+        .dark .cal-day.is-shabbat {
+            background: #1e1b13;
+            border-color: #453412;
+        }
+
+        .cal-day.is-shabbat .cal-dates-head {
+            color: #b45309;
+        }
+
+        .cal-day.selected {
+            background: var(--cal-active-day) !important;
+            color: #ffffff !important;
+            border-color: var(--cal-active-day);
+        }
+
+        .cal-day.selected .cal-num,
+        .cal-day.selected .cal-hebrew-date,
+        .cal-day.selected .cal-holiday-pill,
+        .cal-day.selected .cal-parasha-pill {
+            color: #ffffff !important;
+        }
+
+        .cal-dates-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            width: 100%;
+            min-width: 0;
+            line-height: 1.1;
+        }
+
+        .cal-num {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--cal-text);
+        }
+
+        .cal-hebrew-date {
+            font-size: 0.7rem;
+            color: var(--cal-text-muted);
+            font-weight: 700;
+        }
+
+        .cal-events-dots {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            overflow: hidden;
+            width: 100%;
+            min-width: 0;
+        }
+
+        .cal-holiday-pill,
+        .cal-parasha-pill {
+            font-size: 0.6rem;
+            border-radius: 4px;
+            padding: 1px 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+            line-height: 1.15;
+            width: 100%;
+            max-width: 100%;
+            display: block;
+            box-sizing: border-box;
+        }
+
+        .cal-holiday-pill {
+            background: #fee2e2;
+            color: #b91c1c;
+            font-weight: 600;
+        }
+
+        .cal-parasha-pill {
+            background: #fef3c7;
+            color: #92400e;
+            font-weight: 700;
+        }
+
+        .dark .cal-holiday-pill {
+            background: rgba(239, 68, 68, 0.25);
+            color: #fca5a5;
+        }
+
+        .dark .cal-parasha-pill {
+            background: rgba(245, 158, 11, 0.25);
+            color: #fde68a;
+        }
+
+        .cal-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+
+        .cal-clear-btn {
+            background: none;
+            border: 1px solid var(--cal-border);
+            color: var(--cal-text);
+            padding: 4px 12px;
+            border-radius: 9999px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.15s ease;
+        }
+
+        .cal-clear-btn:hover {
+            background: #ef4444;
+            color: #ffffff;
+            border-color: #ef4444;
+        }
     </style>
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100 dark:bg-gray-900 transition-colors duration-300 relative">
 
     <!-- Top Action Buttons (Theme & Language) -->
-    <div class="absolute top-4 w-full max-w-7xl px-4 flex justify-between left-1/2 -translate-x-1/2 z-10">
-        <button onclick="toggleTheme()" class="p-3 rounded-full bg-white dark:bg-gray-800 shadow-md text-gray-800 dark:text-yellow-400 hover:scale-110 transition-transform focus:outline-none" data-i18n-title="themeToggle">
+    <header class="absolute top-4 w-full max-w-7xl px-4 flex justify-between left-1/2 -translate-x-1/2 z-10">
+        <button id="themeToggleBtn" class="p-3 rounded-full bg-white dark:bg-gray-800 shadow-md text-gray-800 dark:text-yellow-400 hover:scale-110 transition-transform focus:outline-none" data-i18n-title="themeToggle">
             <i id="themeIcon" class="fas fa-moon text-xl"></i>
         </button>
-        <button onclick="toggleLanguage()" class="py-2 px-4 rounded-full bg-white dark:bg-gray-800 shadow-md text-gray-800 dark:text-gray-200 hover:scale-105 transition-transform focus:outline-none font-bold text-sm flex items-center gap-2">
+        <button id="langToggleBtn" class="py-2 px-4 rounded-full bg-white dark:bg-gray-800 shadow-md text-gray-800 dark:text-gray-200 hover:scale-105 transition-transform focus:outline-none font-bold text-sm flex items-center gap-2">
             <i class="fas fa-globe"></i>
             <span id="langBtnText">English</span>
         </button>
-    </div>
+    </header>
 
     <!-- Main Container -->
-    <div class="flex flex-col lg:flex-row gap-6 items-start justify-center w-full max-w-5xl mt-16 lg:mt-10">
+    <main class="flex flex-col lg:flex-row gap-6 items-start justify-center w-full max-w-7xl px-2 sm:px-4 mt-16 lg:mt-10">
         
         <!-- Main Form Panel -->
-        <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl w-full lg:max-w-lg transition-colors duration-300">
+        <section class="bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-2xl shadow-xl w-full flex-1 lg:max-w-3xl transition-colors duration-300">
             <div class="text-center mb-8">
-                <h2 class="text-4xl font-extrabold text-blue-600 dark:text-blue-400 tracking-tight" data-i18n="appTitle">ELINK</h2>
+                <h1 class="text-4xl font-extrabold text-blue-600 dark:text-blue-400 tracking-tight" data-i18n="appTitle">ELINK</h1>
                 <p class="text-gray-500 dark:text-gray-400 mt-2 font-medium" data-i18n="appSubtitle">מחולל הקישורים החכם</p>
             </div>
 
             <div class="space-y-5">
                 <!-- בחירת תוכנית -->
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="selectProgramLabel">בחר תוכנית:</label>
+                    <label for="programSelect" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="selectProgramLabel">בחר תוכנית:</label>
                     <div class="flex gap-2">
                         <select id="programSelect" class="flex-1 w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"></select>
-                        <button onclick="openReorderModal()" class="px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-300 dark:border-gray-600 rounded-lg transition-colors text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500" data-i18n-title="editOrderBtnTitle" title="שנה סדר רשימה">
+                        <button id="openReorderBtn" class="px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-300 dark:border-gray-600 rounded-lg transition-colors text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500" data-i18n-title="editOrderBtnTitle" title="שנה סדר רשימה">
                             <i class="fas fa-sort-amount-down"></i>
                         </button>
                     </div>
                 </div>
 
-                <!-- בחירת תאריך -->
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label for="dateSelect" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="selectDateLabel">בחר תאריך:</label>
-                        <input type="date" id="dateSelect" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
+                <!-- בחירת תאריך ולוח שנה -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300" data-i18n="selectDateLabel">בחר תאריך:</label>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <input type="text" id="typedDateInput" placeholder="הקלד תאריך (DD/MM/YYYY)" maxlength="10" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-sm">
+                        </div>
+                        <div>
+                            <button type="button" id="calendarToggleBtn" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 hover:border-blue-500 flex items-center justify-between transition-all text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <span id="calendarTriggerText" class="truncate">📅 תצוגת לוח שנה</span>
+                                <span class="text-xs text-gray-400">▾</span>
+                            </button>
+                        </div>
                     </div>
-                    <div>
+
+                    <!-- שדה תאריך נסתר עבור סנכרון תהליך הפקת הקישור -->
+                    <input type="hidden" id="dateSelect">
+
+                    <!-- חלק אופציונלי -->
+                    <div class="pt-1">
                         <label for="partSelect" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="partOptionalLabel">חלק (אופציונלי):</label>
                         <input type="text" id="partSelect" placeholder="למשל: a או b" data-i18n-placeholder="partPlaceholder" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
+                    </div>
+
+                    <!-- לוח שנה נפתח -->
+                    <div id="calendarModal" class="calendar-modal-wrapper">
+                        <button type="button" id="calCloseXBtn" class="cal-close-x" title="סגור תצוגת לוח">✕</button>
+                        <div class="cal-header">
+                            <button type="button" class="cal-nav-btn" id="calPrevMonth" title="חודש קודם">❮</button>
+                            <span id="calMonthYearTitle"></span>
+                            <button type="button" class="cal-nav-btn" id="calNextMonth" title="חודש הבא">❯</button>
+                        </div>
+                        <div class="cal-weekdays">
+                            <div>א'</div><div>ב'</div><div>ג'</div><div>ד'</div><div>ה'</div><div>ו'</div><div>ש'</div>
+                        </div>
+                        <div class="cal-grid" id="calGrid"></div>
+                        <div class="cal-actions">
+                            <button type="button" class="cal-clear-btn" id="calClearBtn">נקה בחירת תאריך</button>
+                        </div>
                     </div>
                 </div>
 
                 <!-- כפתור יצירה -->
-                <button id="generateBtn" onclick="generateLink()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all flex justify-center items-center gap-2">
+                <button id="generateBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all flex justify-center items-center gap-2 btn-smooth">
                     <i class="fas fa-link"></i> <span data-i18n="generateLinkBtn">הפק קישור</span>
                 </button>
 
                 <!-- אזור תוצאה -->
                 <div id="resultArea" class="hidden mt-6 space-y-4">
                     
-                    <!-- שדה לינק מלא -->
+                    <!-- שדה קישור מלא -->
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="generatedLinkLabel">הקישור שהופק:</label>
+                        <label for="output" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="generatedLinkLabel">הקישור שהופק:</label>
                         <div class="relative">
                             <textarea id="output" readonly class="w-full pl-12 pr-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 text-left font-mono text-sm h-24 resize-none focus:outline-none transition-colors" dir="ltr"></textarea>
                             <div class="absolute top-3 left-3 flex flex-col gap-2">
-                                <button onclick="copyOutputField('output', 'copyMsg')" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n-title="copyLinkTitle" title="העתק קישור">
+                                <button id="copyOutputBtn" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n-title="copyLinkTitle" title="העתק קישור">
                                     <i class="fas fa-copy text-xl"></i>
                                 </button>
                                 <a id="openLinkBtn" href="#" target="_blank" class="text-gray-500 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors" data-i18n-title="openNewTabTitle" title="פתח בטאב חדש">
@@ -113,11 +421,11 @@
 
                     <!-- שדה שם קובץ -->
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="generatedFileNameLabel">שם הקובץ:</label>
+                        <label for="fileNameOutput" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="generatedFileNameLabel">שם הקובץ:</label>
                         <div class="relative">
                             <input type="text" id="fileNameOutput" readonly class="w-full pl-12 pr-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 text-left font-mono text-sm focus:outline-none transition-colors" dir="ltr">
                             <div class="absolute top-3 left-3 flex flex-col gap-2">
-                                <button onclick="copyOutputField('fileNameOutput', 'copyFileNameMsg')" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n-title="copyFileNameTitle" title="העתק שם קובץ">
+                                <button id="copyFileNameBtn" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n-title="copyFileNameTitle" title="העתק שם קובץ">
                                     <i class="fas fa-copy text-xl"></i>
                                 </button>
                             </div>
@@ -127,11 +435,11 @@
 
                     <!-- שדה תאריך משולב -->
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="generatedDateLabel">יום:</label>
+                        <label for="combinedDateOutput" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1" data-i18n="generatedDateLabel">יום:</label>
                         <div class="relative">
                             <input type="text" id="combinedDateOutput" readonly class="w-full pl-12 pr-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 text-right font-mono text-sm focus:outline-none transition-colors" dir="rtl">
                             <div class="absolute top-3 left-3 flex flex-col gap-2">
-                                <button onclick="copyOutputField('combinedDateOutput', 'copyCombinedDateMsg')" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n-title="copyDateTitle" title="העתק יום">
+                                <button id="copyCombinedDateBtn" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" data-i18n-title="copyDateTitle" title="העתק יום">
                                     <i class="fas fa-copy text-xl"></i>
                                 </button>
                             </div>
@@ -142,19 +450,19 @@
                 </div>
             </div>
             
-            <div class="mt-8 pt-4 border-t border-gray-200 dark:border-gray-700 text-center">
+            <footer class="mt-8 pt-4 border-t border-gray-200 dark:border-gray-700 text-center">
                 <p class="text-xs font-medium text-gray-400 dark:text-gray-500 italic tracking-wider">
                     Written specially for Eli from Monsey
                 </p>
-            </div>
-        </div>
+            </footer>
+        </section>
 
         <!-- Side Panels Column (Quick Copy + Player) -->
-        <div class="flex flex-col gap-6 w-full lg:w-72 self-start">
+        <aside class="flex flex-col gap-6 w-full lg:w-72 self-start">
             
             <!-- Quick Copy Side Panel (Collapsible) -->
             <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full transition-colors duration-300">
-                <button onclick="toggleQuickCopy()" class="w-full flex justify-between items-center p-6 bg-transparent focus:outline-none group">
+                <button id="quickCopyToggleBtn" class="w-full flex justify-between items-center p-6 bg-transparent focus:outline-none group">
                     <h3 class="text-xl font-bold text-gray-800 dark:text-white" data-i18n="quickCopyTitle">העתקה מהירה</h3>
                     <i id="quickCopyChevron" class="fas fa-chevron-down text-gray-500 dark:text-gray-400 transition-transform duration-300"></i>
                 </button>
@@ -174,7 +482,7 @@
                 </audio>
 
                 <div class="flex flex-col items-center gap-4 mt-2">
-                    <button id="playPauseBtn" onclick="togglePlay()" class="w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center shadow-lg play-btn-transition focus:outline-none focus:ring-4 focus:ring-blue-500/50">
+                    <button id="playPauseBtn" class="w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center shadow-lg btn-smooth focus:outline-none focus:ring-4 focus:ring-blue-500/50">
                         <i id="playIcon" class="fas fa-play text-2xl ml-1 rtl:ml-0 rtl:mr-1"></i>
                     </button>
                     
@@ -187,7 +495,7 @@
                     </div>
 
                     <div class="w-full flex items-center justify-between mt-1">
-                        <button onclick="toggleMute()" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors focus:outline-none p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <button id="muteBtn" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors focus:outline-none p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
                             <i id="muteIcon" class="fas fa-volume-up text-lg"></i>
                         </button>
                         <div id="playingWaves" class="flex gap-1 items-end h-4 opacity-0 transition-opacity">
@@ -199,29 +507,29 @@
                 </div>
             </div>
 
-        </div>
-    </div>
+        </aside>
+    </main>
 
     <!-- Modal לסידור הרשימה -->
     <div id="reorderModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
         <div class="bg-white dark:bg-gray-800 rounded-2xl w-full max-w-md shadow-2xl overflow-hidden flex flex-col transform scale-95 transition-transform duration-300" style="max-height: 85vh;">
             <div class="p-5 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-800">
                 <h3 class="text-xl font-bold text-gray-800 dark:text-white" data-i18n="reorderTitle">סידור רשימת התוכניות</h3>
-                <button onclick="closeReorderModal()" class="text-gray-400 hover:text-red-500 transition-colors focus:outline-none"><i class="fas fa-times text-xl"></i></button>
+                <button id="closeReorderXBtn" class="text-gray-400 hover:text-red-500 transition-colors focus:outline-none"><i class="fas fa-times text-xl"></i></button>
             </div>
             <div class="flex-1 overflow-y-auto p-4 space-y-2 custom-scrollbar bg-gray-100 dark:bg-gray-900" id="reorderList"></div>
             <div class="p-4 border-t border-gray-200 dark:border-gray-700 flex justify-between gap-3 bg-white dark:bg-gray-800">
-                <button onclick="resetOrder()" class="px-4 py-2 text-sm font-semibold text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors border border-gray-300 dark:border-gray-600 rounded-lg hover:border-blue-400 dark:hover:border-blue-500" data-i18n="reorderResetBtn">שחזר ברירת מחדל</button>
+                <button id="resetOrderBtn" class="px-4 py-2 text-sm font-semibold text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors border border-gray-300 dark:border-gray-600 rounded-lg hover:border-blue-400 dark:hover:border-blue-500" data-i18n="reorderResetBtn">שחזר ברירת מחדל</button>
                 <div class="flex gap-2">
-                    <button onclick="closeReorderModal()" class="px-4 py-2 text-sm font-semibold text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors" data-i18n="reorderCancelBtn">ביטול</button>
-                    <button onclick="saveOrder()" class="px-4 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-md" data-i18n="reorderSaveBtn">שמור שינויים</button>
+                    <button id="cancelOrderBtn" class="px-4 py-2 text-sm font-semibold text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors" data-i18n="reorderCancelBtn">ביטול</button>
+                    <button id="saveOrderBtn" class="px-4 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-md" data-i18n="reorderSaveBtn">שמור שינויים</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // --- מסד הנתונים הראשי של התוכניות ---
+        // --- 1. מסד נתוני התוכניות ---
         const programsData = [
             { id: "prog_Gil_Israelov", value: '{"type":"programs", "folder":"Gil_Israelov", "prefix":"Gil_Israelov", "yearLen":4}' },
             { id: "prog_Mendy_Weiss", value: '{"type":"programs", "folder":"Mendy_Weiss", "prefix":"Mendy_Weiss", "yearLen":4}' },
@@ -273,7 +581,6 @@
                 reorderCancelBtn: "ביטול", reorderResetBtn: "שחזר ברירת מחדל",
                 qcDay1: "יום ראשון", qcDay2: "יום שני", qcDay3: "יום שלישי", qcDay4: "יום רביעי",
                 qcDay5: "יום חמישי", qcErevShabbat: "ערב שבת פרשת", qcMotash: "מוצאי שבת פרשת",
-                // Programs
                 prog_Gil_Israelov: "גיל ישראלוב", prog_Mendy_Weiss: "מנדי וייס", prog_Avi_Ilson: "אבי אילסון",
                 prog_Hershey_Eisenbach: "הרשי אייזנבך", prog_Eli_Klein: "אלי קליין", prog_Yehuda_Galili: "יהודה גלילי",
                 prog_Bardak: "ברדק", prog_Habama_Hamerkzit: "הבמה המרכזית", prog_Kobi_Sela: "קובי סלע",
@@ -302,7 +609,6 @@
                 reorderCancelBtn: "Cancel", reorderResetBtn: "Reset Default",
                 qcDay1: "יום ראשון", qcDay2: "יום שני", qcDay3: "יום שלישי", qcDay4: "יום רביעי",
                 qcDay5: "יום חמישי", qcErevShabbat: "ערב שבת פרשת", qcMotash: "מוצאי שבת פרשת",
-                // Programs
                 prog_Gil_Israelov: "Gil Israelov", prog_Mendy_Weiss: "Mendy Weiss", prog_Avi_Ilson: "Avi Ilson",
                 prog_Hershey_Eisenbach: "Hershey Eisenbach", prog_Eli_Klein: "Eli Klein", prog_Yehuda_Galili: "Yehuda Galili",
                 prog_Bardak: "Bardak", prog_Habama_Hamerkzit: "Habama Hamerkzit", prog_Kobi_Sela: "Kobi Sela",
@@ -316,477 +622,804 @@
             }
         };
 
-        function safeGetStorage(key, defaultVal) {
-            try { return localStorage.getItem(key) || defaultVal; } 
-            catch (e) { return defaultVal; }
-        }
-        function safeSetStorage(key, val) {
-            try { localStorage.setItem(key, val); } 
-            catch (e) {}
-        }
+        // --- 2. שירותי עזר מרכזיים (Utilities & Services) ---
+        const StorageService = {
+            get(key, defaultVal) {
+                try { return localStorage.getItem(key) ?? defaultVal; }
+                catch { return defaultVal; }
+            },
+            set(key, val) {
+                try { localStorage.setItem(key, val); }
+                catch {}
+            }
+        };
 
-        let currentLang = safeGetStorage('app_lang', 'he');
-        let currentOrder = [];
+        const Sanitizer = {
+            cleanHebrew(str) {
+                if (!str) return '';
+                return str
+                    .replace(/[\u0591-\u05C7]/g, '') // הסרת ניקוד וטעמים
+                    .replace(/־/g, '-')             // מקף עברי למקף רגיל
+                    .replace(/״/g, '"')             // גרשיים
+                    .replace(/׳/g, "'")             // גרש
+                    .trim();
+            }
+        };
 
-        function sanitizeHebrew(str) {
-            if (!str) return '';
-            return str
-                .replace(/[\u0591-\u05C7]/g, '')
-                .replace(/־/g, '-')
-                .replace(/״/g, '"')
-                .replace(/׳/g, "'")
-                .trim();
-        }
-
-        function initApp() {
-            initOrder();
-            initTheme();
-            initLanguage();
-            renderQuickCopyButtons();
-        }
-
-        function initOrder() {
-            const saved = safeGetStorage('app_programs_order', null);
-            if (saved) {
+        const ClipboardService = {
+            copy(text, msgElementId) {
+                if (!text) return;
+                const tempInput = document.createElement("input");
+                tempInput.value = text;
+                document.body.appendChild(tempInput);
+                tempInput.select();
                 try {
-                    currentOrder = JSON.parse(saved);
-                    programsData.forEach(p => { if (!currentOrder.includes(p.id)) currentOrder.push(p.id); });
-                    currentOrder = currentOrder.filter(id => programsData.some(p => p.id === id));
-                } catch(e) { currentOrder = programsData.map(p => p.id); }
-            } else {
-                currentOrder = programsData.map(p => p.id);
-            }
-        }
-
-        function initTheme() {
-            const savedTheme = safeGetStorage('theme', '');
-            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-                document.getElementById('themeIcon').classList.replace('fa-moon', 'fa-sun');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        }
-
-        function toggleTheme() {
-            const html = document.documentElement;
-            const icon = document.getElementById('themeIcon');
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                safeSetStorage('theme', 'light');
-                icon.classList.replace('fa-sun', 'fa-moon');
-            } else {
-                html.classList.add('dark');
-                safeSetStorage('theme', 'dark');
-                icon.classList.replace('fa-moon', 'fa-sun');
-            }
-        }
-
-        function toggleLanguage() {
-            currentLang = currentLang === 'he' ? 'en' : 'he';
-            safeSetStorage('app_lang', currentLang);
-            applyLanguage(currentLang);
-        }
-
-        function applyLanguage(lang) {
-            const doc = document.documentElement;
-            doc.lang = lang;
-            doc.dir = lang === 'he' ? 'rtl' : 'ltr';
-            const t = i18n[lang];
-
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (t[key]) el.textContent = t[key];
-            });
-            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-                const key = el.getAttribute('data-i18n-placeholder');
-                if (t[key]) el.placeholder = t[key];
-            });
-            document.querySelectorAll('[data-i18n-title]').forEach(el => {
-                const key = el.getAttribute('data-i18n-title');
-                if (t[key]) el.title = t[key];
-            });
-
-            document.getElementById('langBtnText').textContent = t.langBtnText;
-            document.title = t.appTitle + " - " + (lang === 'he' ? "מחולל קישורים" : "Link Generator");
-        }
-
-        function initLanguage() {
-            populateSelect();
-            applyLanguage(currentLang);
-        }
-
-        function populateSelect() {
-            const select = document.getElementById('programSelect');
-            const savedVal = select.value;
-            select.innerHTML = `<option value="" disabled selected data-i18n="selectProgramPlaceholder">-- בחר מרשימת התוכניות --</option>`;
-            
-            currentOrder.forEach(id => {
-                const prog = programsData.find(p => p.id === id);
-                if (prog) {
-                    const opt = document.createElement('option');
-                    opt.value = prog.value;
-                    opt.setAttribute('data-i18n', prog.id);
-                    select.appendChild(opt);
-                }
-            });
-            if (savedVal) select.value = savedVal;
-        }
-
-        let tempOrder = [];
-        function openReorderModal() {
-            tempOrder = [...currentOrder];
-            renderReorderList();
-            const modal = document.getElementById('reorderModal');
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                modal.querySelector('div').classList.remove('scale-95');
-            }, 10);
-        }
-
-        function closeReorderModal() {
-            const modal = document.getElementById('reorderModal');
-            modal.classList.add('opacity-0');
-            modal.querySelector('div').classList.add('scale-95');
-            setTimeout(() => modal.classList.add('hidden'), 300);
-        }
-
-        function renderReorderList() {
-            const listEl = document.getElementById('reorderList');
-            listEl.innerHTML = '';
-            tempOrder.forEach((id, index) => {
-                const prog = programsData.find(p => p.id === id);
-                if(!prog) return;
-                const div = document.createElement('div');
-                div.className = "flex justify-between items-center bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-all";
-                div.innerHTML = `
-                    <span class="text-gray-800 dark:text-gray-200 font-medium text-sm flex-1 ml-2 rtl:ml-0 rtl:mr-2" data-i18n="${prog.id}">${i18n[currentLang][prog.id]}</span>
-                    <div class="flex gap-1">
-                        <button onclick="moveItem(${index}, -1)" class="${index === 0 ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed' : 'text-gray-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-700'} w-8 h-8 flex items-center justify-center rounded-md transition-colors focus:outline-none" ${index === 0 ? 'disabled' : ''}><i class="fas fa-arrow-up"></i></button>
-                        <button onclick="moveItem(${index}, 1)" class="${index === tempOrder.length - 1 ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed' : 'text-gray-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-700'} w-8 h-8 flex items-center justify-center rounded-md transition-colors focus:outline-none" ${index === tempOrder.length - 1 ? 'disabled' : ''}><i class="fas fa-arrow-down"></i></button>
-                    </div>`;
-                listEl.appendChild(div);
-            });
-        }
-
-        function moveItem(index, direction) {
-            if (index + direction < 0 || index + direction >= tempOrder.length) return;
-            const temp = tempOrder[index];
-            tempOrder[index] = tempOrder[index + direction];
-            tempOrder[index + direction] = temp;
-            renderReorderList();
-        }
-
-        function saveOrder() {
-            currentOrder = [...tempOrder];
-            safeSetStorage('app_programs_order', JSON.stringify(currentOrder));
-            initLanguage();
-            closeReorderModal();
-        }
-
-        function resetOrder() {
-            if(confirm(currentLang === 'he' ? "האם אתה בטוח שברצונך לשחזר את הרשימה למצבה המקורי?" : "Are you sure you want to reset the list to its original order?")) {
-                tempOrder = programsData.map(p => p.id);
-                renderReorderList();
-            }
-        }
-
-        function toggleQuickCopy() {
-            const content = document.getElementById('quickCopyContent');
-            const chevron = document.getElementById('quickCopyChevron');
-            if (content.classList.contains('hidden')) {
-                content.classList.remove('hidden');
-                chevron.style.transform = 'rotate(180deg)';
-            } else {
-                content.classList.add('hidden');
-                chevron.style.transform = 'rotate(0deg)';
-            }
-        }
-
-        function renderQuickCopyButtons() {
-            const container = document.getElementById('quickCopyButtonsContainer');
-            const keys = ['qcDay1', 'qcDay2', 'qcDay3', 'qcDay4', 'qcDay5', 'qcErevShabbat', 'qcMotash'];
-            
-            container.innerHTML = keys.map(key => `
-                <button onclick="executeCopyText(this.querySelector('span').innerText, 'quickCopyMsg')" class="w-full flex justify-between items-center px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors text-gray-700 dark:text-gray-200 font-medium group text-sm">
-                    <span data-i18n="${key}"></span>
-                    <i class="fas fa-copy text-gray-400 group-hover:text-blue-500 transition-colors"></i>
-                </button>
-            `).join('');
-            applyLanguage(currentLang);
-        }
-
-        function executeCopyText(textToCopy, msgElementId) {
-            const tempInput = document.createElement("input");
-            tempInput.value = textToCopy;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            try {
-                document.execCommand("copy");
-                const msg = document.getElementById(msgElementId);
-                if (msg) {
-                    msg.classList.remove('hidden');
-                    setTimeout(() => msg.classList.add('hidden'), 3000);
-                }
-            } catch (err) {
-                alert(i18n[currentLang].alertCopyFail);
-            }
-            document.body.removeChild(tempInput);
-        }
-
-        function copyOutputField(inputId, msgId) {
-            const field = document.getElementById(inputId);
-            if (field) executeCopyText(field.value, msgId);
-        }
-
-        async function fetchHebcalYear(year, month, day) {
-            try {
-                const url = `https://www.hebcal.com/converter?cfg=json&gy=${year}&gm=${month}&gd=${day}&g2h=1&lg=he-x-NoNikud`;
-                const res = await fetch(url);
-                const data = await res.json();
-                if (data) {
-                    if (data.heDateParts && data.heDateParts.y) {
-                        return sanitizeHebrew(data.heDateParts.y);
+                    document.execCommand("copy");
+                    if (msgElementId) {
+                        const msg = document.getElementById(msgElementId);
+                        if (msg) {
+                            msg.classList.remove('hidden');
+                            setTimeout(() => msg.classList.add('hidden'), 3000);
+                        }
                     }
-                    if (data.hebrew) {
-                        const cleanDate = sanitizeHebrew(data.hebrew);
-                        const words = cleanDate.split(' ');
+                } catch {
+                    alert(i18n[App.currentLang].alertCopyFail);
+                } finally {
+                    document.body.removeChild(tempInput);
+                }
+            }
+        };
+
+        // --- 3. שירות תאריכים ומועדים (Hebcal Service) ---
+        const HebcalService = {
+            cache: new Map(),
+            excludedHolidays: [
+                'חג הבנות', 'עיד אל', 'מימונה', 'יום העצמאות', 'יום הזיכרון',
+                'יום ירושלים', 'יום השואה', 'סיגד', 'נובי גוד', 'סילבסטר'
+            ],
+
+            async fetchHebrewYear(year, month, day) {
+                try {
+                    const url = `https://www.hebcal.com/converter?cfg=json&gy=${year}&gm=${month}&gd=${day}&g2h=1&lg=he-x-NoNikud`;
+                    const res = await fetch(url);
+                    const data = await res.json();
+                    if (data?.heDateParts?.y) return Sanitizer.cleanHebrew(data.heDateParts.y);
+                    if (data?.hebrew) {
+                        const clean = Sanitizer.cleanHebrew(data.hebrew);
+                        const words = clean.split(' ');
                         return words[words.length - 1];
                     }
+                } catch (e) {
+                    console.error("Hebcal fetchHebrewYear error:", e);
                 }
-            } catch (e) {
-                console.error("Hebcal API error:", e);
-            }
-            return "";
-        }
+                return "";
+            },
 
-        async function fetchHebcalParasha(dateObj, dayIndex) {
-            // 1. נסיון שליפה ישיר מאירועי היום ב-Converter
-            const gy = dateObj.getFullYear();
-            const gm = dateObj.getMonth() + 1;
-            const gd = dateObj.getDate();
-            try {
-                const convUrl = `https://www.hebcal.com/converter?cfg=json&gy=${gy}&gm=${gm}&gd=${gd}&g2h=1&lg=he-x-NoNikud`;
-                const cRes = await fetch(convUrl);
-                const cData = await cRes.json();
-                if (cData && Array.isArray(cData.events)) {
-                    const pEvent = cData.events.find(e => e.includes('פרשת') || e.startsWith('שבת '));
-                    if (pEvent) {
-                        let p = sanitizeHebrew(pEvent);
-                        if (!p.startsWith('פרשת ') && !p.startsWith('שבת ')) p = 'פרשת ' + p;
-                        return p;
-                    }
-                }
-            } catch (e) {}
+            async fetchParashaForDate(dateObj, dayIndex) {
+                const gy = dateObj.getFullYear();
+                const gm = dateObj.getMonth() + 1;
+                const gd = dateObj.getDate();
 
-            // 2. גיבוי: שליפה ישירה של יום השבת הקרוב באותו שבוע
-            try {
-                const saturdayDate = new Date(dateObj);
-                saturdayDate.setDate(dateObj.getDate() + (6 - dayIndex)); 
-                const satYear = saturdayDate.getFullYear();
-                const satMonth = String(saturdayDate.getMonth() + 1).padStart(2, '0');
-                const satDay = String(saturdayDate.getDate()).padStart(2, '0');
-                const satDateString = `${satYear}-${satMonth}-${satDay}`;
-                
-                const url = `https://www.hebcal.com/hebcal?v=1&cfg=json&start=${satDateString}&end=${satDateString}&s=on&i=on&lg=he`;
-                const res = await fetch(url);
-                const data = await res.json();
-                
-                if (data && Array.isArray(data.items)) {
-                    const parashaItem = data.items.find(i => i.category === 'parashat');
-                    const specialShabbat = data.items.find(i => i.hebrew && i.hebrew.startsWith('שבת ') && !i.hebrew.includes('מבָרְכִים'));
-                    
-                    let pName = parashaItem ? sanitizeHebrew(parashaItem.hebrew) : "";
-                    let sName = specialShabbat ? sanitizeHebrew(specialShabbat.hebrew) : "";
-
-                    if ((dayIndex === 5 || dayIndex === 6) && sName) {
-                        return sName.replace("שבת ", ""); 
-                    } else if (pName) {
-                        return pName.startsWith("פרשת ") ? pName : "פרשת " + pName;
-                    }
-                }
-            } catch (err) {
-                console.error("Parasha API error:", err);
-            }
-            return "";
-        }
-
-        async function generateLink() {
-            const programSelect = document.getElementById('programSelect').value;
-            const dateVal = document.getElementById('dateSelect').value;
-            const partVal = document.getElementById('partSelect').value.trim().toLowerCase();
-            const btn = document.getElementById('generateBtn');
-            const originalBtnHtml = btn.innerHTML;
-            
-            if (!programSelect) return alert(i18n[currentLang].alertNoProgram);
-            if (!dateVal) return alert(i18n[currentLang].alertNoDate);
-
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>${i18n[currentLang].generateLinkLoading}</span>`;
-            btn.disabled = true;
-
-            try {
-                const programData = JSON.parse(programSelect);
-                const [year, month, day] = dateVal.split('-');
-                const yInt = parseInt(year), mInt = parseInt(month), dInt = parseInt(day);
-                const dateObj = new Date(yInt, mInt - 1, dInt);
-                const dayIndex = dateObj.getDay();
-
-                const fileYear = programData.yearLen === 2 ? year.slice(-2) : year;
-                const baseFileName = `${programData.prefix}${day}-${month}-${fileYear}${partVal}`;
-                const relativeLink = `/upload/mp3/${programData.type}/${programData.folder}/${year}/${month}/${baseFileName}.mp3`;
-                const fullLink = `https://media.kcm.fm${relativeLink}`;
-
-                const [hebrewYearStr, parashaName] = await Promise.all([
-                    fetchHebcalYear(yInt, mInt, dInt),
-                    fetchHebcalParasha(dateObj, dayIndex)
-                ]);
-
-                const daysPrefixes = ["יום ראשון", "יום שני", "יום שלישי", "יום רביעי", "יום חמישי", "ערב שבת", "מוצאי שבת"];
-                let finalDayStr = daysPrefixes[dayIndex];
-                if (parashaName) finalDayStr += ` ${parashaName}`;
-                if (hebrewYearStr) finalDayStr += ` ${hebrewYearStr}`;
-
-                updateResultFields(relativeLink, baseFileName, finalDayStr, fullLink);
-                resetAndLoadAudioPlayer(fullLink);
-                
-            } finally {
-                btn.innerHTML = originalBtnHtml;
-                btn.disabled = false;
-            }
-        }
-
-        function updateResultFields(relativeLink, baseFileName, combinedDate, fullLink) {
-            document.getElementById('output').value = relativeLink;
-            document.getElementById('fileNameOutput').value = baseFileName;
-            document.getElementById('combinedDateOutput').value = combinedDate;
-            document.getElementById('openLinkBtn').href = fullLink;
-            
-            document.getElementById('resultArea').classList.remove('hidden');
-            
-            document.getElementById('copyMsg').classList.add('hidden');
-            document.getElementById('copyFileNameMsg').classList.add('hidden');
-            document.getElementById('copyCombinedDateMsg').classList.add('hidden');
-        }
-
-        function resetAndLoadAudioPlayer(fullLink) {
-            const audioSource = document.getElementById('audioSource');
-            const audioElement = document.getElementById('audioElement');
-            const playIcon = document.getElementById('playIcon');
-            const playingWaves = document.getElementById('playingWaves');
-            const progressBar = document.getElementById('progressBar');
-            
-            audioSource.src = fullLink;
-            audioElement.load();
-            
-            document.getElementById('playerPanel').classList.remove('hidden');
-            
-            playIcon.classList.replace('fa-pause', 'fa-play');
-            playIcon.classList.add('ml-1', 'rtl:ml-0', 'rtl:mr-1');
-            playingWaves.classList.add('opacity-0');
-            progressBar.value = 0;
-            progressBar.style.background = 'transparent';
-            document.getElementById('currentTimeDisplay').innerText = "00:00";
-            document.getElementById('durationDisplay').innerText = "--:--";
-        }
-
-        const audio = document.getElementById('audioElement');
-        const playIcon = document.getElementById('playIcon');
-        const progressBar = document.getElementById('progressBar');
-        const currentTimeDisplay = document.getElementById('currentTimeDisplay');
-        const durationDisplay = document.getElementById('durationDisplay');
-        const muteIcon = document.getElementById('muteIcon');
-        const playingWaves = document.getElementById('playingWaves');
-
-        function formatTime(seconds) {
-            if (isNaN(seconds)) return "00:00";
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
-
-        audio.addEventListener('loadedmetadata', () => {
-            progressBar.max = audio.duration;
-            durationDisplay.innerText = formatTime(audio.duration);
-        });
-
-        audio.addEventListener('timeupdate', () => {
-            progressBar.value = audio.currentTime;
-            currentTimeDisplay.innerText = formatTime(audio.currentTime);
-            const percentage = (audio.currentTime / audio.duration) * 100;
-            const bgLight = document.documentElement.classList.contains('dark') ? '#334155' : '#e2e8f0';
-            const bgFill = document.documentElement.classList.contains('dark') ? '#60a5fa' : '#2563eb';
-            progressBar.style.background = `linear-gradient(to right, ${bgFill} ${percentage}%, ${bgLight} ${percentage}%)`;
-        });
-
-        progressBar.addEventListener('input', () => {
-            audio.currentTime = progressBar.value;
-            currentTimeDisplay.innerText = formatTime(progressBar.value);
-        });
-
-        function togglePlay() {
-            if (audio.paused) {
-                audio.play();
-                playIcon.classList.replace('fa-play', 'fa-pause');
-                playIcon.classList.remove('ml-1', 'rtl:ml-0', 'rtl:mr-1');
-                playingWaves.classList.remove('opacity-0');
-            } else {
-                audio.pause();
-                playIcon.classList.replace('fa-pause', 'fa-play');
-                playIcon.classList.add('ml-1', 'rtl:ml-0', 'rtl:mr-1');
-                playingWaves.classList.add('opacity-0');
-            }
-        }
-
-        audio.addEventListener('ended', () => {
-            playIcon.classList.replace('fa-pause', 'fa-play');
-            playIcon.classList.add('ml-1', 'rtl:ml-0', 'rtl:mr-1');
-            playingWaves.classList.add('opacity-0');
-            progressBar.value = 0;
-            audio.currentTime = 0;
-            progressBar.style.background = 'transparent';
-        });
-
-        function toggleMute() {
-            audio.muted = !audio.muted;
-            if (audio.muted) {
-                muteIcon.classList.replace('fa-volume-up', 'fa-volume-mute');
-                muteIcon.classList.add('text-red-500');
-            } else {
-                muteIcon.classList.replace('fa-volume-mute', 'fa-volume-up');
-                muteIcon.classList.remove('text-red-500');
-            }
-        }
-
-        // --- שליחת לוג ל-Google Apps Script ---
-        window.addEventListener('load', () => {
-            setTimeout(async () => {
+                // ניסיון 1: שליפה מאירועי היום ב-Converter
                 try {
-                    const baseUrl = 'https://script.google.com/macros/s/AKfycbyHnFlvSHKDgBJ2Kbw-3320YHwuwHH2PqABojHyt22pYPe4B7Sek6meB_XDRnp0VEIXwg/exec';
-                    
-                    let userIP = 'לא ידוע';
+                    const convUrl = `https://www.hebcal.com/converter?cfg=json&gy=${gy}&gm=${gm}&gd=${gd}&g2h=1&lg=he-x-NoNikud`;
+                    const res = await fetch(convUrl);
+                    const data = await res.json();
+                    if (Array.isArray(data?.events)) {
+                        const pEvent = data.events.find(e => e.includes('פרשת') || e.startsWith('שבת '));
+                        if (pEvent) {
+                            let p = Sanitizer.cleanHebrew(pEvent);
+                            return (!p.startsWith('פרשת ') && !p.startsWith('שבת ')) ? `פרשת ${p}` : p;
+                        }
+                    }
+                } catch {}
+
+                // ניסיון 2: פנייה לשבת של אותו שבוע
+                try {
+                    const saturday = new Date(dateObj);
+                    saturday.setDate(dateObj.getDate() + (6 - dayIndex));
+                    const satY = saturday.getFullYear();
+                    const satM = String(saturday.getMonth() + 1).padStart(2, '0');
+                    const satD = String(saturday.getDate()).padStart(2, '0');
+                    const satDateStr = `${satY}-${satM}-${satD}`;
+
+                    const url = `https://www.hebcal.com/hebcal?v=1&cfg=json&start=${satDateStr}&end=${satDateStr}&s=on&i=on&lg=he`;
+                    const res = await fetch(url);
+                    const data = await res.json();
+
+                    if (Array.isArray(data?.items)) {
+                        const parashaItem = data.items.find(i => i.category === 'parashat');
+                        const specialShabbat = data.items.find(i => i.hebrew && i.hebrew.startsWith('שבת ') && !i.hebrew.includes('מבָרְכִים'));
+
+                        const pName = parashaItem ? Sanitizer.cleanHebrew(parashaItem.hebrew) : "";
+                        const sName = specialShabbat ? Sanitizer.cleanHebrew(specialShabbat.hebrew) : "";
+
+                        if ((dayIndex === 5 || dayIndex === 6) && sName) {
+                            return sName.replace("שבת ", "");
+                        }
+                        if (pName) {
+                            return pName.startsWith("פרשת ") ? pName : `פרשת ${pName}`;
+                        }
+                    }
+                } catch (e) {
+                    console.error("Hebcal fetchParashaForDate error:", e);
+                }
+                return "";
+            },
+
+            async getMonthHolidays(year, month) {
+                const key = `${year}-${month + 1}`;
+                if (this.cache.has(key)) return this.cache.get(key);
+
+                try {
+                    const url = `https://www.hebcal.com/hebcal?v=1&cfg=json&maj=on&min=on&nx=on&s=on&geo=il&year=${year}&month=${month + 1}&lg=he`;
+                    const res = await fetch(url);
+                    if (!res.ok) throw new Error("HTTP error");
+                    const data = await res.json();
+
+                    const daysMap = new Map();
+                    if (Array.isArray(data?.items)) {
+                        data.items.forEach(item => {
+                            if (!item.date) return;
+                            const dateStr = item.date.split('T')[0];
+                            if (!daysMap.has(dateStr)) {
+                                daysMap.set(dateStr, { parashat: null, holidays: [] });
+                            }
+                            const dayEntry = daysMap.get(dateStr);
+                            const title = item.hebrew || item.title || '';
+
+                            if (this.excludedHolidays.some(ex => title.includes(ex))) return;
+
+                            if (item.category === 'parashat') {
+                                dayEntry.parashat = title.replace(/^פרשת\s+/, '');
+                            } else if (item.category === 'holiday') {
+                                dayEntry.holidays.push(title);
+                            }
+                        });
+                    }
+                    this.cache.set(key, daysMap);
+                    return daysMap;
+                } catch {
+                    const empty = new Map();
+                    this.cache.set(key, empty);
+                    return empty;
+                }
+            }
+        };
+
+        const HebrewDateHelper = {
+            letters: [
+                '', 'א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י',
+                'יא', 'יב', 'יג', 'יד', 'טו', 'טז', 'יז', 'יח', 'יט', 'כ',
+                'כא', 'כב', 'כג', 'כד', 'כה', 'כו', 'כז', 'כח', 'כט', 'ל'
+            ],
+            dayNumFormatter: new Intl.DateTimeFormat('en-US-u-ca-hebrew', { day: 'numeric' }),
+            monthFormatter: new Intl.DateTimeFormat('he-IL-u-ca-hebrew', { month: 'long' }),
+
+            toHebrewDay(d) {
+                try {
+                    const num = parseInt(this.dayNumFormatter.format(d), 10);
+                    return this.letters[num] || String(num);
+                } catch { return ''; }
+            },
+
+            toHebrewMonth(d) {
+                try { return this.monthFormatter.format(d); }
+                catch { return ''; }
+            }
+        };
+
+        // --- 4. מודול נגן האודיו (Audio Player Module) ---
+        const AudioPlayerModule = {
+            audio: null,
+            elements: {},
+
+            init() {
+                this.audio = document.getElementById('audioElement');
+                this.elements = {
+                    panel: document.getElementById('playerPanel'),
+                    source: document.getElementById('audioSource'),
+                    playPauseBtn: document.getElementById('playPauseBtn'),
+                    playIcon: document.getElementById('playIcon'),
+                    progressBar: document.getElementById('progressBar'),
+                    currentTimeDisplay: document.getElementById('currentTimeDisplay'),
+                    durationDisplay: document.getElementById('durationDisplay'),
+                    muteBtn: document.getElementById('muteBtn'),
+                    muteIcon: document.getElementById('muteIcon'),
+                    playingWaves: document.getElementById('playingWaves')
+                };
+
+                this.bindEvents();
+            },
+
+            formatTime(seconds) {
+                if (isNaN(seconds) || seconds < 0) return "00:00";
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            },
+
+            loadTrack(fullLink) {
+                this.elements.source.src = fullLink;
+                this.audio.load();
+                this.elements.panel.classList.remove('hidden');
+
+                this.setPlayState(false);
+                this.elements.progressBar.value = 0;
+                this.elements.progressBar.style.background = 'transparent';
+                this.elements.currentTimeDisplay.innerText = "00:00";
+                this.elements.durationDisplay.innerText = "--:--";
+            },
+
+            setPlayState(isPlaying) {
+                if (isPlaying) {
+                    this.elements.playIcon.classList.replace('fa-play', 'fa-pause');
+                    this.elements.playIcon.classList.remove('ml-1', 'rtl:ml-0', 'rtl:mr-1');
+                    this.elements.playingWaves.classList.remove('opacity-0');
+                } else {
+                    this.elements.playIcon.classList.replace('fa-pause', 'fa-play');
+                    this.elements.playIcon.classList.add('ml-1', 'rtl:ml-0', 'rtl:mr-1');
+                    this.elements.playingWaves.classList.add('opacity-0');
+                }
+            },
+
+            updateProgressFill() {
+                if (!this.audio.duration) return;
+                const percentage = (this.audio.currentTime / this.audio.duration) * 100;
+                const isDark = document.documentElement.classList.contains('dark');
+                const bgLight = isDark ? '#334155' : '#e2e8f0';
+                const bgFill = isDark ? '#60a5fa' : '#2563eb';
+                this.elements.progressBar.style.background = `linear-gradient(to right, ${bgFill} ${percentage}%, ${bgLight} ${percentage}%)`;
+            },
+
+            togglePlay() {
+                if (this.audio.paused) {
+                    this.audio.play();
+                    this.setPlayState(true);
+                } else {
+                    this.audio.pause();
+                    this.setPlayState(false);
+                }
+            },
+
+            toggleMute() {
+                this.audio.muted = !this.audio.muted;
+                if (this.audio.muted) {
+                    this.elements.muteIcon.classList.replace('fa-volume-up', 'fa-volume-mute');
+                    this.elements.muteIcon.classList.add('text-red-500');
+                } else {
+                    this.elements.muteIcon.classList.replace('fa-volume-mute', 'fa-volume-up');
+                    this.elements.muteIcon.classList.remove('text-red-500');
+                }
+            },
+
+            bindEvents() {
+                this.elements.playPauseBtn.addEventListener('click', () => this.togglePlay());
+                this.elements.muteBtn.addEventListener('click', () => this.toggleMute());
+
+                this.audio.addEventListener('loadedmetadata', () => {
+                    this.elements.progressBar.max = this.audio.duration;
+                    this.elements.durationDisplay.innerText = this.formatTime(this.audio.duration);
+                });
+
+                this.audio.addEventListener('timeupdate', () => {
+                    this.elements.progressBar.value = this.audio.currentTime;
+                    this.elements.currentTimeDisplay.innerText = this.formatTime(this.audio.currentTime);
+                    this.updateProgressFill();
+                });
+
+                this.elements.progressBar.addEventListener('input', () => {
+                    this.audio.currentTime = this.elements.progressBar.value;
+                    this.elements.currentTimeDisplay.innerText = this.formatTime(this.elements.progressBar.value);
+                });
+
+                this.audio.addEventListener('ended', () => {
+                    this.setPlayState(false);
+                    this.elements.progressBar.value = 0;
+                    this.audio.currentTime = 0;
+                    this.elements.progressBar.style.background = 'transparent';
+                });
+            }
+        };
+
+        // --- 5. מודול לוח השנה המותאם (Custom Calendar Module) ---
+        const CustomCalendar = {
+            currentDate: new Date(),
+            selectedDate: null,
+            elements: {},
+
+            init() {
+                this.elements = {
+                    modal: document.getElementById('calendarModal'),
+                    toggleBtn: document.getElementById('calendarToggleBtn'),
+                    closeBtn: document.getElementById('calCloseXBtn'),
+                    prevBtn: document.getElementById('calPrevMonth'),
+                    nextBtn: document.getElementById('calNextMonth'),
+                    clearBtn: document.getElementById('calClearBtn'),
+                    typedInput: document.getElementById('typedDateInput'),
+                    hiddenDateInput: document.getElementById('dateSelect'),
+                    triggerText: document.getElementById('calendarTriggerText'),
+                    grid: document.getElementById('calGrid'),
+                    title: document.getElementById('calMonthYearTitle')
+                };
+
+                this.bindEvents();
+                this.render();
+            },
+
+            formatDateKey(d) {
+                const y = d.getFullYear();
+                const m = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                return `${y}-${m}-${day}`;
+            },
+
+            syncDate(dateObj) {
+                if (dateObj) {
+                    const y = dateObj.getFullYear();
+                    const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+                    const d = String(dateObj.getDate()).padStart(2, '0');
+                    this.elements.hiddenDateInput.value = `${y}-${m}-${d}`;
+                } else {
+                    this.elements.hiddenDateInput.value = '';
+                }
+            },
+
+            bindEvents() {
+                this.elements.toggleBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.elements.modal.classList.toggle('open');
+                });
+
+                this.elements.closeBtn.addEventListener('click', () => {
+                    this.elements.modal.classList.remove('open');
+                });
+
+                this.elements.prevBtn.addEventListener('click', () => {
+                    this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+                    this.render();
+                });
+
+                this.elements.nextBtn.addEventListener('click', () => {
+                    this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+                    this.render();
+                });
+
+                this.elements.clearBtn.addEventListener('click', () => {
+                    this.selectedDate = null;
+                    this.elements.triggerText.textContent = '📅 תצוגת לוח שנה';
+                    this.elements.typedInput.value = '';
+                    this.syncDate(null);
+                    this.render();
+                });
+
+                this.elements.typedInput.addEventListener('input', (e) => {
+                    const val = e.target.value.replace(/[^\d/.-]/g, '');
+                    const parts = val.split(/[/.-]/);
+                    if (parts.length === 3 && parts[2].length === 4) {
+                        const day = parseInt(parts[0], 10);
+                        const month = parseInt(parts[1], 10) - 1;
+                        const year = parseInt(parts[2], 10);
+                        const testDate = new Date(year, month, day);
+
+                        if (testDate.getDate() === day && testDate.getMonth() === month) {
+                            this.selectedDate = testDate;
+                            this.currentDate = new Date(year, month, 1);
+                            this.elements.triggerText.textContent = `📅 ${day}/${month + 1}/${year} (${HebrewDateHelper.toHebrewDay(testDate)} ${HebrewDateHelper.toHebrewMonth(testDate)})`;
+                            this.syncDate(testDate);
+                            this.render();
+                            return;
+                        }
+                    }
+
+                    if (val === '') {
+                        this.selectedDate = null;
+                        this.elements.triggerText.textContent = '📅 תצוגת לוח שנה';
+                        this.syncDate(null);
+                        this.render();
+                    }
+                });
+
+                this.elements.grid.addEventListener('click', (e) => {
+                    const cell = e.target.closest('.cal-day:not(.empty)');
+                    if (!cell) return;
+
+                    const d = parseInt(cell.dataset.day, 10);
+                    const m = parseInt(cell.dataset.month, 10);
+                    const y = parseInt(cell.dataset.year, 10);
+
+                    this.selectedDate = new Date(y, m, d);
+                    const formattedGreg = `${String(d).padStart(2, '0')}/${String(m + 1).padStart(2, '0')}/${y}`;
+                    this.elements.typedInput.value = formattedGreg;
+
+                    const hDay = HebrewDateHelper.toHebrewDay(this.selectedDate);
+                    const hMonth = HebrewDateHelper.toHebrewMonth(this.selectedDate);
+                    this.elements.triggerText.textContent = `📅 ${formattedGreg} (${hDay} ${hMonth})`;
+
+                    this.syncDate(this.selectedDate);
+                    this.render();
+                    this.elements.modal.classList.remove('open');
+                });
+            },
+
+            async render() {
+                this.elements.grid.innerHTML = '';
+                const year = this.currentDate.getFullYear();
+                const month = this.currentDate.getMonth();
+
+                const monthNames = [
+                    'ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני',
+                    'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'
+                ];
+                const midMonthDate = new Date(year, month, 15);
+                this.elements.title.textContent = `${monthNames[month]} ${year} | ${HebrewDateHelper.toHebrewMonth(midMonthDate)}`;
+
+                const firstDay = new Date(year, month, 1).getDay();
+                const totalDays = new Date(year, month + 1, 0).getDate();
+
+                for (let i = 0; i < firstDay; i++) {
+                    const emptyCell = document.createElement('div');
+                    emptyCell.className = 'cal-day empty';
+                    this.elements.grid.appendChild(emptyCell);
+                }
+
+                const todayKey = this.formatDateKey(new Date());
+                const holidaysMap = await HebcalService.getMonthHolidays(year, month);
+                const fragment = document.createDocumentFragment();
+
+                for (let d = 1; d <= totalDays; d++) {
+                    const dayDate = new Date(year, month, d);
+                    const dateKey = this.formatDateKey(dayDate);
+                    const isToday = dateKey === todayKey;
+                    const isSelected = this.selectedDate && dateKey === this.formatDateKey(this.selectedDate);
+                    const isShabbat = dayDate.getDay() === 6;
+
+                    const cell = document.createElement('div');
+                    cell.className = 'cal-day';
+                    cell.dataset.day = String(d);
+                    cell.dataset.month = String(month);
+                    cell.dataset.year = String(year);
+
+                    if (isToday) cell.classList.add('today');
+                    if (isShabbat) cell.classList.add('is-shabbat');
+                    if (isSelected) cell.classList.add('selected');
+
+                    let badgesHtml = '';
+                    const dayData = holidaysMap.get(dateKey);
+                    if (dayData) {
+                        dayData.holidays?.forEach(h => {
+                            badgesHtml += `<div class="cal-holiday-pill" title="${h}">${h}</div>`;
+                        });
+                        if (isShabbat && dayData.parashat) {
+                            badgesHtml += `<div class="cal-parasha-pill" title="פרשת ${dayData.parashat}">פרשת ${dayData.parashat}</div>`;
+                        }
+                    }
+
+                    cell.innerHTML = `
+                        <div class="cal-dates-head">
+                            <span class="cal-num">${d}</span>
+                            <span class="cal-hebrew-date">${HebrewDateHelper.toHebrewDay(dayDate)}</span>
+                        </div>
+                        <div class="cal-events-dots">${badgesHtml}</div>
+                    `;
+                    fragment.appendChild(cell);
+                }
+                this.elements.grid.appendChild(fragment);
+            }
+        };
+
+        // --- 6. האפליקציה המרכזית (App Controller) ---
+        const App = {
+            currentLang: StorageService.get('app_lang', 'he'),
+            currentOrder: [],
+            tempOrder: [],
+
+            init() {
+                this.initOrder();
+                this.initTheme();
+                this.initLanguage();
+                this.renderQuickCopy();
+                this.bindGlobalEvents();
+
+                AudioPlayerModule.init();
+                CustomCalendar.init();
+                this.initLogger();
+            },
+
+            initOrder() {
+                const saved = StorageService.get('app_programs_order', null);
+                if (saved) {
                     try {
-                        const ipResponse = await fetch('https://api.ipify.org?format=json');
-                        const ipData = await ipResponse.json();
-                        userIP = ipData.ip || 'לא ידוע';
-                    } catch (e) {}
+                        this.currentOrder = JSON.parse(saved);
+                        programsData.forEach(p => { if (!this.currentOrder.includes(p.id)) this.currentOrder.push(p.id); });
+                        this.currentOrder = this.currentOrder.filter(id => programsData.some(p => p.id === id));
+                    } catch {
+                        this.currentOrder = programsData.map(p => p.id);
+                    }
+                } else {
+                    this.currentOrder = programsData.map(p => p.id);
+                }
+            },
 
-                    const userAgent = navigator.userAgent;
-                    const sheetName = 'ELINK';
-                    const actionName = 'page_view';
+            initTheme() {
+                const savedTheme = StorageService.get('theme', '');
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const icon = document.getElementById('themeIcon');
 
-                    const fullUrl = `${baseUrl}?sheet=${encodeURIComponent(sheetName)}&action=${encodeURIComponent(actionName)}&ip=${encodeURIComponent(userIP)}&userAgent=${encodeURIComponent(userAgent)}`;
-                    
-                    fetch(fullUrl, {
-                        method: 'POST',
-                        mode: 'no-cors'
-                    }).catch(() => {});
-                } catch (e) {}
-            }, 1500);
-        });
+                if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                    document.documentElement.classList.add('dark');
+                    icon.classList.replace('fa-moon', 'fa-sun');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    icon.classList.replace('fa-sun', 'fa-moon');
+                }
+            },
 
-        // Initialize Everything
-        initApp();
+            toggleTheme() {
+                const html = document.documentElement;
+                const icon = document.getElementById('themeIcon');
+                const isDark = html.classList.toggle('dark');
+                StorageService.set('theme', isDark ? 'dark' : 'light');
+                icon.classList.toggle('fa-sun', isDark);
+                icon.classList.toggle('fa-moon', !isDark);
+                AudioPlayerModule.updateProgressFill();
+            },
+
+            toggleLanguage() {
+                this.currentLang = this.currentLang === 'he' ? 'en' : 'he';
+                StorageService.set('app_lang', this.currentLang);
+                this.applyLanguage(this.currentLang);
+            },
+
+            applyLanguage(lang) {
+                const doc = document.documentElement;
+                doc.lang = lang;
+                doc.dir = lang === 'he' ? 'rtl' : 'ltr';
+                const t = i18n[lang];
+
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    if (t[key]) el.textContent = t[key];
+                });
+                document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                    const key = el.getAttribute('data-i18n-placeholder');
+                    if (t[key]) el.placeholder = t[key];
+                });
+                document.querySelectorAll('[data-i18n-title]').forEach(el => {
+                    const key = el.getAttribute('data-i18n-title');
+                    if (t[key]) el.title = t[key];
+                });
+
+                document.getElementById('langBtnText').textContent = t.langBtnText;
+                document.title = `${t.appTitle} - ${lang === 'he' ? "מחולל קישורים" : "Link Generator"}`;
+            },
+
+            initLanguage() {
+                this.populateProgramSelect();
+                this.applyLanguage(this.currentLang);
+            },
+
+            populateProgramSelect() {
+                const select = document.getElementById('programSelect');
+                const savedVal = select.value;
+                select.innerHTML = `<option value="" disabled selected data-i18n="selectProgramPlaceholder">-- בחר מרשימת התוכניות --</option>`;
+
+                this.currentOrder.forEach(id => {
+                    const prog = programsData.find(p => p.id === id);
+                    if (prog) {
+                        const opt = document.createElement('option');
+                        opt.value = prog.value;
+                        opt.setAttribute('data-i18n', prog.id);
+                        select.appendChild(opt);
+                    }
+                });
+                if (savedVal) select.value = savedVal;
+            },
+
+            // --- ניהול מודאל סידור רשימה ---
+            openReorderModal() {
+                this.tempOrder = [...this.currentOrder];
+                this.renderReorderList();
+                const modal = document.getElementById('reorderModal');
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    modal.firstElementChild.classList.remove('scale-95');
+                }, 10);
+            },
+
+            closeReorderModal() {
+                const modal = document.getElementById('reorderModal');
+                modal.classList.add('opacity-0');
+                modal.firstElementChild.classList.add('scale-95');
+                setTimeout(() => modal.classList.add('hidden'), 300);
+            },
+
+            renderReorderList() {
+                const listEl = document.getElementById('reorderList');
+                listEl.innerHTML = '';
+                this.tempOrder.forEach((id, index) => {
+                    const prog = programsData.find(p => p.id === id);
+                    if (!prog) return;
+                    const div = document.createElement('div');
+                    div.className = "flex justify-between items-center bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-all";
+                    div.innerHTML = `
+                        <span class="text-gray-800 dark:text-gray-200 font-medium text-sm flex-1 ml-2 rtl:ml-0 rtl:mr-2" data-i18n="${prog.id}">${i18n[this.currentLang][prog.id]}</span>
+                        <div class="flex gap-1">
+                            <button data-move="${index}" data-dir="-1" class="${index === 0 ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed' : 'text-gray-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-700'} w-8 h-8 flex items-center justify-center rounded-md transition-colors focus:outline-none" ${index === 0 ? 'disabled' : ''}><i class="fas fa-arrow-up"></i></button>
+                            <button data-move="${index}" data-dir="1" class="${index === this.tempOrder.length - 1 ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed' : 'text-gray-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-700'} w-8 h-8 flex items-center justify-center rounded-md transition-colors focus:outline-none" ${index === this.tempOrder.length - 1 ? 'disabled' : ''}><i class="fas fa-arrow-down"></i></button>
+                        </div>`;
+                    listEl.appendChild(div);
+                });
+            },
+
+            moveReorderItem(index, direction) {
+                if (index + direction < 0 || index + direction >= this.tempOrder.length) return;
+                const temp = this.tempOrder[index];
+                this.tempOrder[index] = this.tempOrder[index + direction];
+                this.tempOrder[index + direction] = temp;
+                this.renderReorderList();
+            },
+
+            saveReorder() {
+                this.currentOrder = [...this.tempOrder];
+                StorageService.set('app_programs_order', JSON.stringify(this.currentOrder));
+                this.initLanguage();
+                this.closeReorderModal();
+            },
+
+            resetReorder() {
+                const confirmMsg = this.currentLang === 'he'
+                    ? "האם אתה בטוח שברצונך לשחזר את הרשימה למצבה המקורי?"
+                    : "Are you sure you want to reset the list to its original order?";
+                
+                // שימוש בחלונית אישור מותאמת
+                const customConfirmModal = window.confirm(confirmMsg);
+                if (customConfirmModal) {
+                    this.tempOrder = programsData.map(p => p.id);
+                    this.renderReorderList();
+                }
+            },
+
+            // --- העתקה מהירה ---
+            renderQuickCopy() {
+                const container = document.getElementById('quickCopyButtonsContainer');
+                const keys = ['qcDay1', 'qcDay2', 'qcDay3', 'qcDay4', 'qcDay5', 'qcErevShabbat', 'qcMotash'];
+                container.innerHTML = keys.map(key => `
+                    <button class="qc-action-btn w-full flex justify-between items-center px-4 py-3 bg-gray-50 hover:bg-blue-50 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors text-gray-700 dark:text-gray-200 font-medium group text-sm">
+                        <span data-i18n="${key}"></span>
+                        <i class="fas fa-copy text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+                    </button>
+                `).join('');
+                this.applyLanguage(this.currentLang);
+            },
+
+            toggleQuickCopy() {
+                const content = document.getElementById('quickCopyContent');
+                const chevron = document.getElementById('quickCopyChevron');
+                const isHidden = content.classList.toggle('hidden');
+                chevron.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(180deg)';
+            },
+
+            // --- הפקת קישור ---
+            async generateLink() {
+                const programSelect = document.getElementById('programSelect').value;
+                const dateVal = document.getElementById('dateSelect').value;
+                const partVal = document.getElementById('partSelect').value.trim().toLowerCase();
+                const btn = document.getElementById('generateBtn');
+                const originalHtml = btn.innerHTML;
+
+                if (!programSelect) return alert(i18n[this.currentLang].alertNoProgram);
+                if (!dateVal) return alert(i18n[this.currentLang].alertNoDate);
+
+                btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>${i18n[this.currentLang].generateLinkLoading}</span>`;
+                btn.disabled = true;
+
+                try {
+                    const programData = JSON.parse(programSelect);
+                    const [year, month, day] = dateVal.split('-');
+                    const yInt = parseInt(year, 10);
+                    const mInt = parseInt(month, 10);
+                    const dInt = parseInt(day, 10);
+
+                    const dateObj = new Date(yInt, mInt - 1, dInt);
+                    const dayIndex = dateObj.getDay();
+
+                    const fileYear = programData.yearLen === 2 ? year.slice(-2) : year;
+                    const baseFileName = `${programData.prefix}${day}-${month}-${fileYear}${partVal}`;
+                    const relativeLink = `/upload/mp3/${programData.type}/${programData.folder}/${year}/${month}/${baseFileName}.mp3`;
+                    const fullLink = `https://media.kcm.fm${relativeLink}`;
+
+                    const [hebrewYearStr, parashaName] = await Promise.all([
+                        HebcalService.fetchHebrewYear(yInt, mInt, dInt),
+                        HebcalService.fetchParashaForDate(dateObj, dayIndex)
+                    ]);
+
+                    const daysPrefixes = ["יום ראשון", "יום שני", "יום שלישי", "יום רביעי", "יום חמישי", "ערב שבת", "מוצאי שבת"];
+                    let finalDayStr = daysPrefixes[dayIndex];
+                    if (parashaName) finalDayStr += ` ${parashaName}`;
+                    if (hebrewYearStr) finalDayStr += ` ${hebrewYearStr}`;
+
+                    document.getElementById('output').value = relativeLink;
+                    document.getElementById('fileNameOutput').value = baseFileName;
+                    document.getElementById('combinedDateOutput').value = finalDayStr;
+                    document.getElementById('openLinkBtn').href = fullLink;
+
+                    document.getElementById('resultArea').classList.remove('hidden');
+                    AudioPlayerModule.loadTrack(fullLink);
+                } finally {
+                    btn.innerHTML = originalHtml;
+                    btn.disabled = false;
+                }
+            },
+
+            // --- שליחת לוג אנליטי ל-Google Sheets ---
+            initLogger() {
+                window.addEventListener('load', () => {
+                    setTimeout(async () => {
+                        try {
+                            const baseUrl = 'https://script.google.com/macros/s/AKfycbyHnFlvSHKDgBJ2Kbw-3320YHwuwHH2PqABojHyt22pYPe4B7Sek6meB_XDRnp0VEIXwg/exec';
+                            let userIP = 'לא ידוע';
+                            try {
+                                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                                const ipData = await ipResponse.json();
+                                userIP = ipData.ip || 'לא ידוע';
+                            } catch {}
+
+                            const userAgent = navigator.userAgent;
+                            const sheetName = 'ELINK';
+                            const actionName = 'page_view';
+                            const fullUrl = `${baseUrl}?sheet=${encodeURIComponent(sheetName)}&action=${encodeURIComponent(actionName)}&ip=${encodeURIComponent(userIP)}&userAgent=${encodeURIComponent(userAgent)}`;
+
+                            fetch(fullUrl, { method: 'POST', mode: 'no-cors' }).catch(() => {});
+                        } catch {}
+                    }, 1500);
+                });
+            },
+
+            // --- האזנות גלובליות ---
+            bindGlobalEvents() {
+                document.getElementById('themeToggleBtn').addEventListener('click', () => this.toggleTheme());
+                document.getElementById('langToggleBtn').addEventListener('click', () => this.toggleLanguage());
+                document.getElementById('generateBtn').addEventListener('click', () => this.generateLink());
+
+                document.getElementById('openReorderBtn').addEventListener('click', () => this.openReorderModal());
+                document.getElementById('closeReorderXBtn').addEventListener('click', () => this.closeReorderModal());
+                document.getElementById('cancelOrderBtn').addEventListener('click', () => this.closeReorderModal());
+                document.getElementById('saveOrderBtn').addEventListener('click', () => this.saveReorder());
+                document.getElementById('resetOrderBtn').addEventListener('click', () => this.resetReorder());
+
+                document.getElementById('reorderList').addEventListener('click', (e) => {
+                    const btn = e.target.closest('button[data-move]');
+                    if (!btn) return;
+                    const idx = parseInt(btn.dataset.move, 10);
+                    const dir = parseInt(btn.dataset.dir, 10);
+                    this.moveReorderItem(idx, dir);
+                });
+
+                document.getElementById('quickCopyToggleBtn').addEventListener('click', () => this.toggleQuickCopy());
+                document.getElementById('quickCopyButtonsContainer').addEventListener('click', (e) => {
+                    const btn = e.target.closest('.qc-action-btn');
+                    if (btn) {
+                        const text = btn.querySelector('span')?.innerText;
+                        ClipboardService.copy(text, 'quickCopyMsg');
+                    }
+                });
+
+                document.getElementById('copyOutputBtn').addEventListener('click', () => {
+                    ClipboardService.copy(document.getElementById('output').value, 'copyMsg');
+                });
+                document.getElementById('copyFileNameBtn').addEventListener('click', () => {
+                    ClipboardService.copy(document.getElementById('fileNameOutput').value, 'copyFileNameMsg');
+                });
+                document.getElementById('copyCombinedDateBtn').addEventListener('click', () => {
+                    ClipboardService.copy(document.getElementById('combinedDateOutput').value, 'copyCombinedDateMsg');
+                });
+            }
+        };
+
+        // הפעלת האפליקציה בטעינת המסמך
+        document.addEventListener('DOMContentLoaded', () => App.init());
     </script>
 </body>
 </html>
