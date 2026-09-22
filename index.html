@@ -148,6 +148,7 @@
             color: var(--cal-text-muted);
             font-size: 0.85rem;
             width: 100%;
+            direction: ltr;
         }
 
         .cal-weekdays div:last-child {
@@ -161,6 +162,7 @@
             gap: 3px;
             margin-top: 6px;
             width: 100%;
+            direction: ltr;
         }
 
         .cal-day {
@@ -384,10 +386,10 @@
                             <span id="calMonthYearTitle"></span>
                             <button type="button" class="cal-nav-btn" id="calNextMonth" title="חודש הבא">❯</button>
                         </div>
-                        <div class="cal-weekdays">
+                        <div class="cal-weekdays" dir="ltr">
                             <div>א'</div><div>ב'</div><div>ג'</div><div>ד'</div><div>ה'</div><div>ו'</div><div>ש'</div>
                         </div>
-                        <div class="cal-grid" id="calGrid"></div>
+                        <div class="cal-grid" id="calGrid" dir="ltr"></div>
                         <div class="cal-actions">
                             <button type="button" class="cal-clear-btn" id="calClearBtn">נקה בחירת תאריך</button>
                         </div>
@@ -639,9 +641,21 @@
                 if (!str) return '';
                 return str
                     .replace(/[\u0591-\u05C7]/g, '') // הסרת ניקוד וטעמים
-                    .replace(/־/g, '-')             // מקף עברי למקף רגיל
+                    .replace(/[־–—]/g, ' - ')       // מקף עברי או קו מפריד למקף עם רווחים
+                    .replace(/\s*-\s*/g, ' - ')      // הבטחת רווחים סביב מקף
                     .replace(/״/g, '"')             // גרשיים
                     .replace(/׳/g, "'")             // גרש
+                    // הפרדה אם פרשיות מחוברות נדבקו ללא רווח:
+                    .replace(/נצביםוילך/g, 'נצבים - וילך')
+                    .replace(/ניצביםוילך/g, 'ניצבים - וילך')
+                    .replace(/ויקהלפקודי/g, 'ויקהל - פקודי')
+                    .replace(/תזריעמצורע/g, 'תזריע - מצורע')
+                    .replace(/אחרי מותקדושים/g, 'אחרי מות - קדושים')
+                    .replace(/אחרימותקדושים/g, 'אחרי מות - קדושים')
+                    .replace(/בהרבחוקותי/g, 'בהר - בחוקותי')
+                    .replace(/חוקתבלק/g, 'חוקת - בלק')
+                    .replace(/מטותמסעי/g, 'מטות - מסעי')
+                    .replace(/\s+/g, ' ')
                     .trim();
             }
         };
@@ -1342,6 +1356,9 @@
                         // חילוץ שם הפרשה בלבד ללא "פרשת "
                         let cleanParasha = parashaName ? parashaName.replace(/^פרשת\s+/, '').trim() : '';
 
+                        // הסדרת רווחים תקינים בפרשות מחוברות
+                        cleanParasha = cleanParasha.replace(/\s*-\s*/g, ' - ');
+
                         // אם זה בחודש תשרי לפני יום כיפור (עשרת ימי תשובה) והפרשה היא האזינו, נהוג לכנות "האזינו-שובה"
                         if (cleanParasha.includes("האזינו") && mInt >= 9) {
                             cleanParasha = "האזינו-שובה";
@@ -1360,7 +1377,10 @@
                     } else {
                         const daysPrefixes = ["יום ראשון", "יום שני", "יום שלישי", "יום רביעי", "יום חמישי", "ערב שבת", "מוצאי שבת"];
                         finalDayStr = daysPrefixes[dayIndex];
-                        if (parashaName) finalDayStr += ` ${parashaName}`;
+                        if (parashaName) {
+                            const formattedParasha = parashaName.replace(/\s*-\s*/g, ' - ');
+                            finalDayStr += ` ${formattedParasha}`;
+                        }
                         if (hebrewYearStr) finalDayStr += ` ${hebrewYearStr}`;
                     }
 
