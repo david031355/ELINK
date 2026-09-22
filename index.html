@@ -1374,6 +1374,9 @@
                         } else if (partVal === "b") {
                             finalDayStr = `${prefixTag}: שעה שניה - פרשת השבוע ווארטים`;
                         }
+                    } else if (programData.folder === "Kobi_Sela") {
+                        const shortYear = year.slice(-2);
+                        finalDayStr = `מצעד שירים במעלות עם קובי סלע ${day}.${month}.${shortYear}`;
                     } else {
                         const daysPrefixes = ["יום ראשון", "יום שני", "יום שלישי", "יום רביעי", "יום חמישי", "ערב שבת", "מוצאי שבת"];
                         finalDayStr = daysPrefixes[dayIndex];
