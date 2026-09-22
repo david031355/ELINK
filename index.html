@@ -1335,10 +1335,34 @@
                         HebcalService.fetchParashaForDate(dateObj, dayIndex)
                     ]);
 
-                    const daysPrefixes = ["יום ראשון", "יום שני", "יום שלישי", "יום רביעי", "יום חמישי", "ערב שבת", "מוצאי שבת"];
-                    let finalDayStr = daysPrefixes[dayIndex];
-                    if (parashaName) finalDayStr += ` ${parashaName}`;
-                    if (hebrewYearStr) finalDayStr += ` ${hebrewYearStr}`;
+                    let finalDayStr = "";
+
+                    // בדיקה האם מדובר בתוכנית של מני שוורץ
+                    if (programData.folder === "meni_shwartz" && (partVal === "a" || partVal === "b")) {
+                        // חילוץ שם הפרשה בלבד ללא "פרשת "
+                        let cleanParasha = parashaName ? parashaName.replace(/^פרשת\s+/, '').trim() : '';
+
+                        // אם זה בחודש תשרי לפני יום כיפור (עשרת ימי תשובה) והפרשה היא האזינו, נהוג לכנות "האזינו-שובה"
+                        if (cleanParasha.includes("האזינו") && mInt >= 9) {
+                            cleanParasha = "האזינו-שובה";
+                        }
+
+                        // קיצור שנת התאריך העברי (למשל תשפ"ז -> פ"ז, תשפ"ו -> פ"ו)
+                        let shortYear = hebrewYearStr ? hebrewYearStr.replace(/^תש/, '') : '';
+
+                        const prefixTag = `${cleanParasha}${shortYear ? ' ' + shortYear : ''}`;
+
+                        if (partVal === "a") {
+                            finalDayStr = `${prefixTag}: שעה ראשונה - מוזיקה קצבית`;
+                        } else if (partVal === "b") {
+                            finalDayStr = `${prefixTag}: שעה שניה - פרשת השבוע ווארטים`;
+                        }
+                    } else {
+                        const daysPrefixes = ["יום ראשון", "יום שני", "יום שלישי", "יום רביעי", "יום חמישי", "ערב שבת", "מוצאי שבת"];
+                        finalDayStr = daysPrefixes[dayIndex];
+                        if (parashaName) finalDayStr += ` ${parashaName}`;
+                        if (hebrewYearStr) finalDayStr += ` ${hebrewYearStr}`;
+                    }
 
                     document.getElementById('output').value = relativeLink;
                     document.getElementById('fileNameOutput').value = baseFileName;
